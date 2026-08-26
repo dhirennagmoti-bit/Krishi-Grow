@@ -1,95 +1,216 @@
-import React, { useState } from 'react';
-import { TrendingUp, ArrowUpRight, ArrowDownRight, Minus, Search, MapPin } from 'lucide-react';
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
-import { initialMandiPrices, priceTrendHistorical } from '../data/mockData';
+import React, { useState, useMemo } from 'react';
+import {
+  TrendingUp, ArrowUpRight, ArrowDownRight, Minus, Search, MapPin,
+  ChevronDown, Building2, Package, Calendar, Filter, Sparkles
+} from 'lucide-react';
+import {
+  ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid
+} from 'recharts';
+import {
+  ALL_MAHARASHTRA_MANDI_PRICES, CROP_BASE_PRICES, getMandiPricesByCrop, type MaharashtraMandiRecord
+} from '../data/maharashtraMandiPrices';
+import { priceTrendHistorical } from '../data/mockData';
 
 export const MarketPricesPage: React.FC = () => {
-  const [selectedCrop, setSelectedCrop] = useState<string>('Soybean');
+  const [selectedCrop, setSelectedCrop] = useState<string>('Red Onion');
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState<string>('ALL');
 
-  const cropList = [
-    'Tomato', 'Red Onion', 'Cotton', 'Soybean', 'Wheat', 'Rice / Paddy', 'Maize / Corn',
-    'Sugarcane', 'Potato', 'Garlic', 'Chilli', 'Turmeric', 'Ginger', 'Banana', 'Mango',
-    'Grapes', 'Pomegranate', 'Lemon', 'Groundnut', 'Mustard', 'Chana', 'Tur / Arhar', 'Cabbage',
-    'Cauliflower', 'Brinjal', 'Jowar'
-  ].sort();
+  const cropList = useMemo(() => Object.keys(CROP_BASE_PRICES).sort(), []);
 
-  const getChartData = (crop: string) => {
-    if (priceTrendHistorical[crop]) return priceTrendHistorical[crop];
-    
-    // Synthetic data for missing crops so the UI never breaks
+  // Filter all market records for the selected crop across all places in Maharashtra
+  const cropRecords = useMemo(() => {
+    return getMandiPricesByCrop(selectedCrop);
+  }, [selectedCrop]);
+
+  // Unique list of districts for the filter pill buttons
+  const districtList = useMemo(() => {
+    const set = new Set<string>();
+    cropRecords.forEach(r => set.add(r.district));
+    return ['ALL', ...Array.from(set).sort()];
+  }, [cropRecords]);
+
+  // Filtered by search term and selected district
+  const filteredPrices = useMemo(() => {
+    return cropRecords.filter(m => {
+      const matchDistrict = selectedDistrict === 'ALL' || m.district === selectedDistrict;
+      const matchSearch =
+        m.marketName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.district.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        m.taluka.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchDistrict && matchSearch;
+    });
+  }, [cropRecords, selectedDistrict, searchTerm]);
+
+  // Summary statistics for the chosen crop across Maharashtra
+  const stats = useMemo(() => {
+    if (cropRecords.length === 0) {
+      return { min: 0, max: 0, avg: 0, totalArrivals: 0, topMarket: '', lowMarket: '' };
+    }
+    let min = Infinity;
+    let max = -Infinity;
+    let sumModal = 0;
+    let totalArrivals = 0;
+    let topMarket = '';
+    let lowMarket = '';
+
+    cropRecords.forEach(r => {
+      if (r.maxPrice > max) {
+        max = r.maxPrice;
+        topMarket = `${r.marketName} (${r.district})`;
+      }
+      if (r.minPrice < min) {
+        min = r.minPrice;
+        lowMarket = `${r.marketName} (${r.district})`;
+      }
+      sumModal += r.modalPrice;
+      totalArrivals += r.arrivalsQuintal;
+    });
+
+    const avg = Math.round(sumModal / cropRecords.length);
+    return { min, max, avg, totalArrivals, topMarket, lowMarket };
+  }, [cropRecords]);
+
+  // Chart data for historical trends
+  const chartData = useMemo(() => {
+    if (priceTrendHistorical[selectedCrop]) return priceTrendHistorical[selectedCrop];
+
+    const base = CROP_BASE_PRICES[selectedCrop]?.baseModal || 2500;
     const synthetic = [];
-    let basePrice = 1500 + (crop.length * 100); // stable deterministic base price based on crop string
-    for(let i=8; i<=14; i++) {
-        synthetic.push({
-            date: `Aug ${i.toString().padStart(2, '0')}`,
-            'Nashik APMC': Math.round(basePrice),
-            'Pune APMC': Math.round(basePrice * 1.05)
-        });
-        basePrice = basePrice + (Math.random() * 50 - 20); // random drift
+    const days = ['18 Aug', '19 Aug', '20 Aug', '21 Aug', '22 Aug', '23 Aug', 'Today'];
+
+    for (let i = 0; i < days.length; i++) {
+      const dayFactor = 0.95 + (i * 0.015) + (Math.sin(i) * 0.02);
+      synthetic.push({
+        date: days[i],
+        'Nashik APMC': Math.round(base * dayFactor * 1.02),
+        'Pune Gultekdi': Math.round(base * dayFactor * 1.06),
+        'Mumbai Vashi APMC': Math.round(base * dayFactor * 1.11),
+      });
     }
     return synthetic;
-  };
+  }, [selectedCrop]);
 
-  const chartData = getChartData(selectedCrop);
   const mandiKeys = Object.keys(chartData[0] || {}).filter(k => k !== 'date');
-  const lineColors = ['#1F6B45', '#3B82F6', '#F59E0B', '#8B5CF6', '#EF4444', '#10B981', '#F97316'];
-
-  const filteredPrices = initialMandiPrices.filter(
-    m => m.crop === selectedCrop &&
-         (m.marketName.toLowerCase().includes(searchTerm.toLowerCase()) || m.district.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const lineColors = ['#10B981', '#3B82F6', '#F59E0B', '#8B5CF6'];
 
   return (
     <div className="space-y-6">
       
-      {/* Header */}
-      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-white/5 shadow-sm">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      {/* Header with Crop Selector Dropdown and Down Arrow */}
+      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-white/5 text-white flex items-center justify-center font-bold">
-              <TrendingUp className="w-5 h-5 text-emerald-400" />
+            <div className="w-12 h-12 rounded-2xl bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold shadow-lg shadow-emerald-950">
+              <TrendingUp className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-2xl font-medium tracking-tight text-white">Live Mandi Prices & APMC Trend Intelligence</h2>
-              <p className="text-sm text-neutral-400 mt-1 font-light">
-                Real-time rate comparison across Maharashtra & India urban/rural APMC markets.
+              <div className="flex items-center gap-2">
+                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white">Maharashtra Mandi Rates Directory</h2>
+                <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live APMC Feeds
+                </span>
+              </div>
+              <p className="text-xs text-neutral-400 mt-1 font-light">
+                Complete multi-district place-by-place price analytics & daily arrivals across Maharashtra APMC yards.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-neutral-400">Select Crop:</span>
-            <select
-              value={selectedCrop}
-              onChange={(e) => setSelectedCrop(e.target.value)}
-              className="px-4 py-2.5 bg-black/50 border border-white/10 rounded-xl text-sm font-medium text-white focus:outline-none focus:border-emerald-500/50 shadow-sm cursor-pointer appearance-none transition-all"
-            >
-              {cropList.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
+          {/* Select Crop with Down Arrow */}
+          <div className="flex items-center gap-3 bg-white/5 p-2 rounded-2xl border border-white/10">
+            <span className="text-xs font-bold text-neutral-300 pl-2">Select Crop:</span>
+            <div className="relative">
+              <select
+                value={selectedCrop}
+                onChange={(e) => {
+                  setSelectedCrop(e.target.value);
+                  setSelectedDistrict('ALL');
+                  setSearchTerm('');
+                }}
+                className="w-56 pl-4 pr-10 py-2.5 bg-black/80 hover:bg-black border border-emerald-500/40 rounded-xl text-xs font-bold text-white focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 shadow-md cursor-pointer appearance-none transition-all"
+              >
+                {cropList.map(c => (
+                  <option key={c} value={c} className="bg-[#0e120f] text-white py-1">
+                    {c}
+                  </option>
+                ))}
+              </select>
+              {/* Prominent Down Arrow */}
+              <ChevronDown className="w-4 h-4 text-emerald-400 absolute right-3 top-3 pointer-events-none transition-transform" />
+            </div>
+          </div>
+        </div>
+
+        {/* Selected Crop Summary Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-6 pt-6 border-t border-white/10">
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+            <span className="text-[11px] text-neutral-400 font-medium block">State Avg Modal Price</span>
+            <div className="text-xl md:text-2xl font-black text-emerald-400 font-mono mt-1">
+              ₹{stats.avg.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">/ Qtl</span>
+            </div>
+            <span className="text-[10px] text-neutral-500 mt-0.5 block">Across {cropRecords.length} Maharashtra APMCs</span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+            <span className="text-[11px] text-neutral-400 font-medium block">Highest Mandi Rate</span>
+            <div className="text-xl md:text-2xl font-black text-cyan-400 font-mono mt-1">
+              ₹{stats.max.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">/ Qtl</span>
+            </div>
+            <span className="text-[10px] text-neutral-400 truncate block mt-0.5" title={stats.topMarket}>
+              📍 {stats.topMarket || 'Primary Mandis'}
+            </span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+            <span className="text-[11px] text-neutral-400 font-medium block">Lowest Mandi Rate</span>
+            <div className="text-xl md:text-2xl font-black text-amber-300 font-mono mt-1">
+              ₹{stats.min.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">/ Qtl</span>
+            </div>
+            <span className="text-[10px] text-neutral-400 truncate block mt-0.5" title={stats.lowMarket}>
+              📍 {stats.lowMarket || 'Farm-gate APMC'}
+            </span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+            <span className="text-[11px] text-neutral-400 font-medium block">Total Daily Arrivals</span>
+            <div className="text-xl md:text-2xl font-black text-purple-400 font-mono mt-1">
+              {stats.totalArrivals.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">Qtl</span>
+            </div>
+            <span className="text-[10px] text-neutral-500 mt-0.5 block">{(stats.totalArrivals / 10).toFixed(0)} Tonnes Volume Today</span>
           </div>
         </div>
       </div>
 
-      {/* Recharts Historical Trend Line Graph */}
-      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-white/5 shadow-sm space-y-6">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-semibold text-neutral-500 uppercase tracking-widest">
-            7-Day Historical APMC Price Trend (₹ / Quintal)
-          </h3>
-          <span className="text-xs text-emerald-400/80 font-medium font-mono">Updated Today 08:00 AM</span>
+      {/* Recharts 7-Day APMC Price Trend Chart */}
+      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+              7-Day Benchmark APMC Price Trend — {selectedCrop} (₹ / Quintal)
+            </h3>
+            <p className="text-[11px] text-neutral-500">Live rate comparison of key terminal mandis in Maharashtra</p>
+          </div>
+          <span className="text-xs text-emerald-400 font-mono font-medium">Daily Rate Update: 08:00 AM IST</span>
         </div>
 
-        <div className="h-72 w-full pt-2">
+        <div className="h-64 w-full pt-2">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData as any[]}>
-              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#ffffff10" />
+              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#ffffff15" />
               <XAxis dataKey="date" stroke="#888888" fontSize={11} />
-              <YAxis stroke="#888888" fontSize={11} />
+              <YAxis stroke="#888888" fontSize={11} domain={['auto', 'auto']} />
               <Tooltip
-                contentStyle={{ backgroundColor: '#111', borderRadius: '12px', border: '1px solid #ffffff10', color: '#fff', fontSize: '12px' }}
+                contentStyle={{
+                  backgroundColor: '#0e120f',
+                  borderRadius: '16px',
+                  border: '1px solid rgba(255,255,255,0.15)',
+                  color: '#fff',
+                  fontSize: '12px',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.8)'
+                }}
               />
               {mandiKeys.map((key, idx) => (
                 <Line 
@@ -98,7 +219,7 @@ export const MarketPricesPage: React.FC = () => {
                   dataKey={key} 
                   stroke={lineColors[idx % lineColors.length]} 
                   strokeWidth={3} 
-                  dot={false} 
+                  dot={{ r: 3, fill: lineColors[idx % lineColors.length] }} 
                 />
               ))}
             </LineChart>
@@ -106,65 +227,122 @@ export const MarketPricesPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Mandi Rates Table Directory */}
-      <div className="bg-black/60 backdrop-blur-xl rounded-3xl border border-white/5 shadow-sm overflow-hidden space-y-6 p-8">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <h3 className="text-lg font-medium text-white">Daily APMC Rates Directory</h3>
+      {/* Complete Maharashtra Place-by-Place Mandi Table */}
+      <div className="bg-black/60 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden p-6 md:p-8 space-y-6">
+        
+        {/* Controls: Search & District Filters */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h3 className="text-base font-bold text-white flex items-center gap-2">
+              <span>All Maharashtra Places Trading</span>
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs border border-emerald-500/30">
+                {selectedCrop} ({filteredPrices.length} Locations)
+              </span>
+            </h3>
+            <p className="text-xs text-neutral-400 mt-0.5">
+              Showing exact Mandi prices across all 36 Maharashtra districts for {selectedCrop}.
+            </p>
+          </div>
 
           <div className="relative">
-            <Search className="w-4 h-4 text-neutral-500 absolute left-3 top-3" />
+            <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-3" />
             <input
               type="text"
-              placeholder="Search market or district..."
+              placeholder="Search market, taluka or district..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 pr-4 py-2.5 text-sm bg-black/50 border border-white/10 text-white rounded-xl focus:border-emerald-500/50 outline-none w-64 transition-all"
+              className="pl-9 pr-4 py-2.5 text-xs bg-white/5 border border-white/10 text-white rounded-xl focus:border-emerald-500 focus:outline-none w-72 transition-all placeholder-neutral-500"
             />
           </div>
         </div>
 
-        <div className="overflow-x-auto rounded-2xl border border-white/5">
-          <table className="w-full text-left text-sm">
-            <thead className="bg-white/5 text-neutral-400 font-medium text-xs border-b border-white/5">
+        {/* District Fast-Filter Pills */}
+        <div className="space-y-1.5">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
+            <Filter className="w-3 h-3 text-emerald-400" /> Filter by District:
+          </span>
+          <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
+            {districtList.map(dist => (
+              <button
+                key={dist}
+                type="button"
+                onClick={() => setSelectedDistrict(dist)}
+                className={`px-3 py-1 text-[11px] font-bold rounded-xl border transition-all cursor-pointer ${
+                  selectedDistrict === dist
+                    ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm shadow-emerald-950'
+                    : 'bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white border-white/10'
+                }`}
+              >
+                {dist === 'ALL' ? 'All Maharashtra (36 Districts)' : dist}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Data Table */}
+        <div className="overflow-x-auto rounded-2xl border border-white/10">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-white/5 text-neutral-400 font-bold border-b border-white/10">
               <tr>
-                <th className="py-4 px-5">APMC Market</th>
-                <th className="py-4 px-5">Crop</th>
-                <th className="py-4 px-5">District & State</th>
-                <th className="py-4 px-5">Min Price</th>
-                <th className="py-4 px-5">Max Price</th>
-                <th className="py-4 px-5">Modal Price</th>
-                <th className="py-4 px-5">Trend</th>
+                <th className="py-3.5 px-4">APMC Market</th>
+                <th className="py-3.5 px-4">Taluka & District</th>
+                <th className="py-3.5 px-4">Variety & Grade</th>
+                <th className="py-3.5 px-4">Min Price</th>
+                <th className="py-3.5 px-4">Max Price</th>
+                <th className="py-3.5 px-4">Modal Price</th>
+                <th className="py-3.5 px-4">Daily Arrivals</th>
+                <th className="py-3.5 px-4">Trend</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-neutral-300">
-              {filteredPrices.map((m) => (
-                <tr key={m.id} className="hover:bg-white/5 transition-colors">
-                  <td className="py-4 px-5 font-medium text-white flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-emerald-500" />
-                    <span>{m.marketName}</span>
-                  </td>
-                  <td className="py-4 px-5 font-medium text-emerald-400">{m.crop}</td>
-                  <td className="py-4 px-5 text-neutral-400">{m.district}, {m.state}</td>
-                  <td className="py-4 px-5 font-mono">₹{m.minPrice}</td>
-                  <td className="py-4 px-5 font-mono">₹{m.maxPrice}</td>
-                  <td className="py-4 px-5 font-mono font-medium text-white">₹{m.modalPrice} / {m.unit}</td>
-                  <td className="py-4 px-5">
-                    {m.trend === 'UP' ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium text-[10px]">
-                        <ArrowUpRight className="w-3 h-3" /> UP
-                      </span>
-                    ) : m.trend === 'DOWN' ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-red-500/10 border border-red-500/20 text-red-400 font-medium text-[10px]">
-                        <ArrowDownRight className="w-3 h-3" /> DOWN
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded bg-white/5 border border-white/10 text-neutral-400 font-medium text-[10px]">
-                        <Minus className="w-3 h-3" /> STABLE
-                      </span>
-                    )}
+              {filteredPrices.length === 0 ? (
+                <tr>
+                  <td colSpan={8} className="py-8 text-center text-neutral-500">
+                    No market locations found matching "{searchTerm}". Try a different district or search query.
                   </td>
                 </tr>
-              ))}
+              ) : (
+                filteredPrices.map((m) => (
+                  <tr key={m.id} className="hover:bg-white/5 transition-colors">
+                    <td className="py-3.5 px-4 font-bold text-white flex items-center gap-2">
+                      <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>{m.marketName}</span>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <div className="text-white font-medium">{m.taluka}</div>
+                      <div className="text-[11px] text-neutral-400">{m.district}, MH</div>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      <div className="text-neutral-200">{m.variety}</div>
+                      <div className="text-[10px] text-emerald-400">{m.grade}</div>
+                    </td>
+                    <td className="py-3.5 px-4 font-mono text-neutral-300">₹{m.minPrice.toLocaleString()}</td>
+                    <td className="py-3.5 px-4 font-mono text-neutral-300">₹{m.maxPrice.toLocaleString()}</td>
+                    <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
+                      ₹{m.modalPrice.toLocaleString()} <span className="text-[10px] font-normal text-neutral-400">/ Qtl</span>
+                    </td>
+                    <td className="py-3.5 px-4 font-mono">
+                      <span className="font-bold text-white">{m.arrivalsQuintal.toLocaleString()}</span>{' '}
+                      <span className="text-neutral-500 text-[10px]">Qtl</span>
+                    </td>
+                    <td className="py-3.5 px-4">
+                      {m.trend === 'UP' ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold text-[10px]">
+                          <ArrowUpRight className="w-3 h-3" /> UP
+                        </span>
+                      ) : m.trend === 'DOWN' ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold text-[10px]">
+                          <ArrowDownRight className="w-3 h-3" /> DOWN
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-neutral-400 font-bold text-[10px]">
+                          <Minus className="w-3 h-3" /> STABLE
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

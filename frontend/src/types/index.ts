@@ -152,6 +152,7 @@ export interface MandiPrice {
   id: string;
   crop: string;
   marketName: string;
+  taluka?: string;
   district: string;
   state: string;
   date: string;
@@ -159,6 +160,9 @@ export interface MandiPrice {
   maxPrice: number;
   modalPrice: number;
   price?: number;
+  arrivalsQuintal?: number;
+  variety?: string;
+  grade?: string;
   unit: string;
   trend: 'UP' | 'DOWN' | 'STABLE';
 }

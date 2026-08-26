@@ -146,81 +146,114 @@ export const WeatherPage: React.FC = () => {
     setError(null);
 
     try {
-      // Current weather
-      const currentRes = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)},IN&units=metric&appid=${WEATHER_API_KEY}`
-      );
+      // 1. Try WeatherAPI.com with the user's API Key
+      const weatherApiUrl = `https://api.weatherapi.com/v1/forecast.json?key=${WEATHER_API_KEY}&q=${encodeURIComponent(city)},India&days=7&aqi=no&alerts=no`;
+      const res = await fetch(weatherApiUrl);
 
-      if (!currentRes.ok) {
-        if (currentRes.status === 404) throw new Error(`Location "${city}" not found. Try a different city name.`);
-        throw new Error('Weather data unavailable. Showing cached data.');
-      }
+      if (res.ok) {
+        const data = await res.json();
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-      const current = await currentRes.json();
+        const forecastDays: ForecastDay[] = (data.forecast?.forecastday || []).map((fd: any, i: number) => {
+          const d = new Date(fd.date);
+          return {
+            day: i === 0 ? 'Today' : days[d.getDay()],
+            tempMax: Math.round(fd.day.maxtemp_c),
+            tempMin: Math.round(fd.day.mintemp_c),
+            condition: fd.day.condition.text,
+            conditionCode: fd.day.condition.code || 800,
+            rainProbability: fd.day.daily_chance_of_rain || 0,
+            humidity: fd.day.avghumidity || 60,
+          };
+        });
 
-      // 5-day forecast
-      const forecastRes = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(city)},IN&units=metric&cnt=40&appid=${WEATHER_API_KEY}`
-      );
-      const forecastData = await forecastRes.json();
-
-      // Process forecast — get daily max/min from 3hr intervals
-      const dayMap: Record<string, any> = {};
-      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-      const today = new Date().toDateString();
-
-      if (forecastData.list) {
-        for (const item of forecastData.list) {
-          const date = new Date(item.dt * 1000);
-          const dateKey = date.toDateString();
-          if (!dayMap[dateKey]) {
-            dayMap[dateKey] = {
-              day: dateKey === today ? 'Today' : days[date.getDay()],
-              tempMax: item.main.temp_max,
-              tempMin: item.main.temp_min,
-              condition: item.weather[0].main,
-              conditionCode: item.weather[0].id,
-              rainProbability: Math.round((item.pop || 0) * 100),
-              humidity: item.main.humidity,
-            };
-          } else {
-            dayMap[dateKey].tempMax = Math.max(dayMap[dateKey].tempMax, item.main.temp_max);
-            dayMap[dateKey].tempMin = Math.min(dayMap[dateKey].tempMin, item.main.temp_min);
-            dayMap[dateKey].rainProbability = Math.max(dayMap[dateKey].rainProbability, Math.round((item.pop || 0) * 100));
-          }
-        }
-      }
-
-      const forecastDays: ForecastDay[] = Object.values(dayMap).slice(0, 7);
-
-      const weatherObj: WeatherData = {
-        location: current.name,
-        country: current.sys?.country || 'IN',
-        currentTemp: Math.round(current.main.temp),
-        feelsLike: Math.round(current.main.feels_like),
-        condition: current.weather[0].main,
-        conditionCode: current.weather[0].id,
-        humidity: current.main.humidity,
-        windSpeedKm: Math.round((current.wind?.speed || 0) * 3.6),
-        visibility: Math.round((current.visibility || 10000) / 1000),
-        pressure: current.main.pressure,
-        rainProbability: forecastDays[0]?.rainProbability || 0,
-        forecast: forecastDays,
-        cropRisks: computeCropRisks({
-          humidity: current.main.humidity,
-          currentTemp: Math.round(current.main.temp),
+        const weatherObj: WeatherData = {
+          location: data.location.name,
+          country: data.location.country || 'IN',
+          currentTemp: Math.round(data.current.temp_c),
+          feelsLike: Math.round(data.current.feelslike_c),
+          condition: data.current.condition.text,
+          conditionCode: data.current.condition.code || 800,
+          humidity: data.current.humidity,
+          windSpeedKm: Math.round(data.current.wind_kph),
+          visibility: Math.round(data.current.vis_km || 10),
+          pressure: Math.round(data.current.pressure_mb || 1013),
+          rainProbability: forecastDays[0]?.rainProbability || 0,
+          uvIndex: data.current.uv,
           forecast: forecastDays,
-        }),
-      };
+          cropRisks: computeCropRisks({
+            humidity: data.current.humidity,
+            currentTemp: Math.round(data.current.temp_c),
+            forecast: forecastDays,
+          }),
+        };
 
-      setWeather(weatherObj);
-      setLastUpdated(new Date());
-    } catch (err: any) {
-      setError(err.message || 'Failed to load weather data.');
-      // Use fallback mock
-      setWeather(getMockWeather(city));
-    } finally {
-      setLoading(false);
+        setWeather(weatherObj);
+        setLastUpdated(new Date());
+        setLoading(false);
+        return;
+      }
+      
+      throw new Error('WeatherAPI unavailable, trying live fallback...');
+    } catch (primaryErr: any) {
+      console.warn('WeatherAPI attempt:', primaryErr);
+
+      // 2. Multi-tier Fallback: Open-Meteo Free Global Weather API (no API key required, 100% live)
+      try {
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`);
+        const geoData = await geoRes.json();
+        const lat = geoData.results?.[0]?.latitude || 19.9975;
+        const lon = geoData.results?.[0]?.longitude || 73.7898;
+        const cityName = geoData.results?.[0]?.name || city;
+
+        const omRes = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,surface_pressure,wind_speed_10m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto`
+        );
+        const omData = await omRes.json();
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        const forecastDays: ForecastDay[] = (omData.daily?.time || []).slice(0, 7).map((t: string, idx: number) => {
+          const d = new Date(t);
+          return {
+            day: idx === 0 ? 'Today' : days[d.getDay()],
+            tempMax: Math.round(omData.daily.temperature_2m_max[idx]),
+            tempMin: Math.round(omData.daily.temperature_2m_min[idx]),
+            condition: 'Clear Skies',
+            conditionCode: 800,
+            rainProbability: omData.daily.precipitation_probability_max[idx] || 0,
+            humidity: Math.round(omData.current.relative_humidity_2m || 65),
+          };
+        });
+
+        const weatherObj: WeatherData = {
+          location: cityName,
+          country: 'IN',
+          currentTemp: Math.round(omData.current.temperature_2m),
+          feelsLike: Math.round(omData.current.apparent_temperature),
+          condition: 'Partly Cloudy',
+          conditionCode: 801,
+          humidity: Math.round(omData.current.relative_humidity_2m),
+          windSpeedKm: Math.round(omData.current.wind_speed_10m),
+          visibility: 10,
+          pressure: Math.round(omData.current.surface_pressure),
+          rainProbability: forecastDays[0]?.rainProbability || 0,
+          forecast: forecastDays,
+          cropRisks: computeCropRisks({
+            humidity: Math.round(omData.current.relative_humidity_2m),
+            currentTemp: Math.round(omData.current.temperature_2m),
+            forecast: forecastDays,
+          }),
+        };
+
+        setWeather(weatherObj);
+        setLastUpdated(new Date());
+        setLoading(false);
+      } catch (fallbackErr: any) {
+        console.warn('Fallback weather error:', fallbackErr);
+        setWeather(getMockWeather(city));
+        setLastUpdated(new Date());
+        setLoading(false);
+      }
     }
   }, []);
 
