@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  Sprout, ArrowRight, TrendingUp, Truck, Users, CheckCircle2, Bot, Sparkles
+  Sprout, ArrowRight, TrendingUp, Truck, Users, CheckCircle2, Bot, Sparkles,
+  ShieldCheck, BarChart3, Factory, Warehouse, Building2
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { ValueChainFlow } from '../components/ValueChainFlow';
-import FoldText from '../components/ui/FoldText';
 import { LandingElasticFeatures } from '../components/ui/landing-elastic-features';
 
 export const LandingPage: React.FC = () => {
@@ -28,86 +28,89 @@ export const LandingPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-12 py-6 px-4 md:px-8 max-w-[550px] ml-2 md:ml-8 lg:ml-12 relative z-10 pb-32">
+    <div className="space-y-12 py-6 px-4 md:px-8 max-w-6xl mx-auto relative z-10 pb-32">
       
       {/* Hero Banner Section */}
-      <section className="relative rounded-3xl overflow-hidden bg-black/20 backdrop-blur-md text-white border border-white/10 shadow-2xl">
-        <div className="flex items-center">
-          
-          {/* Hero Content */}
-          <div className="w-full p-8 md:p-12 space-y-6 z-10">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight flex flex-col gap-2">
-              <FoldText
-                text="Connect crops to"
-                splitBy="word"
-                trigger="mount"
-              />
-              <FoldText
-                text="better markets & processing."
-                splitBy="word"
-                trigger="mount"
-                className="text-transparent bg-clip-text bg-gradient-to-r from-agri-300 via-emerald-200 to-amber-300"
-              />
-            </h1>
+      <section className="relative rounded-3xl overflow-hidden bg-black/60 backdrop-blur-2xl text-white border border-white/15 shadow-2xl">
+        <div className="p-8 md:p-14 space-y-6 relative z-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-bold border border-emerald-500/30">
+            <Sparkles className="w-3.5 h-3.5 animate-spin text-emerald-400" />
+            <span>India's Premier Agricultural Value Chain & Sourcing Suite</span>
+          </div>
 
-            <p className="text-sm sm:text-base text-gray-200 leading-relaxed">
-              <FoldText text="Optimize your harvest with data-backed decisions and connect directly with verified buyers." trigger="scroll" splitBy="word" />
-            </p>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight leading-tight">
+            Connect Crops to <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300">
+              Better Markets & Direct Processing
+            </span>
+          </h1>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <button
-                onClick={() => {
-                  setIsAuthModalOpen(true);
-                }}
-                className="px-6 py-3.5 bg-agri-500 hover:bg-agri-400 text-white font-bold text-sm rounded-xl shadow-lg hover:shadow-agri-500/30 transition-all flex items-center gap-2 group border border-agri-400/50"
-              >
-                <span><FoldText text="Get Started Now" trigger="scroll" splitBy="word" /></span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
+          <p className="text-base sm:text-lg text-neutral-300 max-w-2xl leading-relaxed">
+            Empowering Indian cultivators, aggregators, food processors, and wholesalers with end-to-end post-harvest intelligence, transparent mandi analytics, and direct digital supply chains.
+          </p>
 
-              <button
-                onClick={() => setActiveTab('solutions')}
-                className="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-bold text-sm rounded-xl border border-white/20 backdrop-blur-xs transition-all flex items-center gap-2"
-              >
-                <span><FoldText text="Explore Solutions" trigger="scroll" splitBy="word" /></span>
-              </button>
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="px-7 py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-2xl shadow-xl shadow-emerald-950/60 transition-all flex items-center gap-2 group cursor-pointer border border-emerald-500/40"
+            >
+              <span>Get Started Now</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+
+            <button
+              onClick={() => setActiveTab('solutions')}
+              className="px-7 py-4 bg-white/10 hover:bg-white/20 text-white font-bold text-sm rounded-2xl border border-white/20 backdrop-blur-md transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <span>Explore Solutions</span>
+            </button>
+          </div>
+
+          {/* Key Metrics */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-8 border-t border-white/10">
+            <div>
+              <div className="text-2xl md:text-3xl font-black font-mono text-emerald-400">12,500+</div>
+              <div className="text-xs text-neutral-400 font-medium mt-0.5">Active Farmers</div>
             </div>
-
-            {/* Micro Stats */}
-            <div className="grid grid-cols-3 gap-4 pt-6 border-t border-white/10">
-              <div>
-                <div className="text-xl md:text-2xl font-bold font-mono text-agri-300"><FoldText text="12,500+" trigger="scroll" /></div>
-                <div className="text-[11px] text-gray-300 font-medium"><FoldText text="Registered Farmers" trigger="scroll" splitBy="word" /></div>
-              </div>
-              <div>
-                <div className="text-xl md:text-2xl font-bold font-mono text-amber-300"><FoldText text="450+" trigger="scroll" /></div>
-                <div className="text-[11px] text-gray-300 font-medium"><FoldText text="Verified Buyers" trigger="scroll" splitBy="word" /></div>
-              </div>
-              <div>
-                <div className="text-xl md:text-2xl font-bold font-mono text-emerald-300"><FoldText text="₹42 Cr+" trigger="scroll" splitBy="word" /></div>
-                <div className="text-[11px] text-gray-300 font-medium"><FoldText text="Trade Facilitated" trigger="scroll" splitBy="word" /></div>
-              </div>
+            <div>
+              <div className="text-2xl md:text-3xl font-black font-mono text-amber-300">450+</div>
+              <div className="text-xs text-neutral-400 font-medium mt-0.5">Verified Buyers & FPCs</div>
+            </div>
+            <div>
+              <div className="text-2xl md:text-3xl font-black font-mono text-cyan-400">₹42 Cr+</div>
+              <div className="text-xs text-neutral-400 font-medium mt-0.5">Direct Trade Volume</div>
+            </div>
+            <div>
+              <div className="text-2xl md:text-3xl font-black font-mono text-purple-400">0%</div>
+              <div className="text-xs text-neutral-400 font-medium mt-0.5">Intermediary Fees</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Interactive Value Chain Flow Component */}
-      <section className="rounded-3xl bg-black/20 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden p-2">
+      <section className="rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/15 shadow-2xl overflow-hidden p-6 md:p-8">
+        <div className="mb-6">
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
+            End-to-End Traceability
+          </span>
+          <h2 className="text-2xl md:text-3xl font-bold text-white mt-3">Interactive Agri Value Chain</h2>
+          <p className="text-xs text-neutral-400 mt-1">From farm harvesting and quality testing to wholesale dispatch and food processing.</p>
+        </div>
         <ValueChainFlow />
       </section>
 
       {/* Platform Features Grid */}
-      <section className="space-y-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/10 shadow-2xl p-6 md:p-8">
+      <section className="space-y-6 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/15 shadow-2xl p-6 md:p-8">
         <div className="text-left max-w-2xl">
-          <span className="text-xs font-bold uppercase tracking-wider text-agri-300 bg-white/10 px-3 py-1 rounded-full border border-white/10">
-            <FoldText text="Comprehensive Suite" trigger="scroll" splitBy="word" />
+          <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
+            Platform Capabilities
           </span>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-4">
-            <FoldText text="Built for Farmers, Processors & Aggregators" trigger="scroll" splitBy="word" />
+          <h2 className="text-2xl md:text-3xl font-black text-white mt-3">
+            Built for Farmers, Processors & Aggregators
           </h2>
-          <p className="text-sm text-gray-300 mt-2">
-            <FoldText text="Eliminate post-harvest distress sales with data-backed decisions and direct value chain access." trigger="scroll" splitBy="word" />
+          <p className="text-xs text-neutral-400 mt-1">
+            Eliminate post-harvest distress sales with data-backed decisions and direct value chain access.
           </p>
         </div>
 
@@ -115,81 +118,80 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Dual Value Proposition: Farmer vs Buyer */}
-      <section className="bg-black/20 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-white/10 shadow-2xl space-y-8 text-white">
-        <div className="flex flex-col gap-12 divide-y divide-white/10">
+      <section className="bg-black/60 backdrop-blur-2xl rounded-3xl p-6 md:p-8 border border-white/15 shadow-2xl text-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 divide-y md:divide-y-0 md:divide-x divide-white/10">
           
           {/* Farmer Column */}
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-agri-300 text-xs font-bold rounded-full border border-white/10">
-              <Sprout className="w-4 h-4 text-agri-400" /> <FoldText text="FOR FARMERS" trigger="scroll" splitBy="word" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-950/60 text-emerald-400 text-xs font-bold rounded-full border border-emerald-500/30">
+              <Sprout className="w-4 h-4 text-emerald-400" /> FOR FARMERS & GROWERS
             </div>
-            <h3 className="text-2xl font-bold text-white"><FoldText text="Maximize Crop Realization" trigger="scroll" splitBy="word" /></h3>
-            <p className="text-sm text-gray-300">
-              <FoldText text="Stop suffering from distress sales during peak harvest. Transform raw produce into high-value market channels." trigger="scroll" splitBy="word" />
+            <h3 className="text-2xl font-bold text-white">Maximize Crop Realization</h3>
+            <p className="text-xs text-neutral-400 leading-relaxed">
+              Stop suffering from distress sales during peak harvest. Transform raw produce into high-value market channels.
             </p>
             <ul className="space-y-3 pt-2">
               {farmerBenefits.map((b, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-gray-200 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-agri-400 shrink-0 mt-0.5" />
-                  <span><FoldText text={b} trigger="scroll" splitBy="word" /></span>
+                <li key={i} className="flex items-start gap-3 text-xs text-neutral-300 font-medium">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>{b}</span>
                 </li>
               ))}
             </ul>
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="mt-6 px-6 py-3 bg-agri-500 text-white text-sm font-bold rounded-xl hover:bg-agri-400 transition-colors shadow-lg border border-agri-400/50"
+              className="mt-6 px-6 py-3.5 bg-emerald-600 text-white text-xs font-bold rounded-2xl hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-950 border border-emerald-500/40 cursor-pointer"
             >
-              <FoldText text="Register as Farmer" trigger="scroll" splitBy="word" />
+              Register as Farmer
             </button>
           </div>
 
           {/* Buyer Column */}
-          <div className="space-y-4 pt-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-purple-300 text-xs font-bold rounded-full border border-white/10">
-              <Users className="w-4 h-4 text-purple-400" /> <FoldText text="FOR BUYERS & PROCESSORS" trigger="scroll" splitBy="word" />
+          <div className="space-y-4 pt-8 md:pt-0 md:pl-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-950/60 text-purple-300 text-xs font-bold rounded-full border border-purple-500/30">
+              <Users className="w-4 h-4 text-purple-400" /> FOR BUYERS & PROCESSORS
             </div>
-            <h3 className="text-2xl font-bold text-white"><FoldText text="Direct Farm-Gate Procurement" trigger="scroll" splitBy="word" /></h3>
-            <p className="text-sm text-gray-300">
-              <FoldText text="Source graded agricultural raw materials directly from verified farm clusters with complete quality transparency." trigger="scroll" splitBy="word" />
+            <h3 className="text-2xl font-bold text-white">Direct Farm-Gate Procurement</h3>
+            <p className="text-xs text-neutral-400 leading-relaxed">
+              Source graded agricultural raw materials directly from verified farm clusters with complete quality transparency.
             </p>
             <ul className="space-y-3 pt-2">
               {buyerBenefits.map((b, i) => (
-                <li key={i} className="flex items-start gap-3 text-sm text-gray-200 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
-                  <span><FoldText text={b} trigger="scroll" splitBy="word" /></span>
+                <li key={i} className="flex items-start gap-3 text-xs text-neutral-300 font-medium">
+                  <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                  <span>{b}</span>
                 </li>
               ))}
             </ul>
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="mt-6 px-6 py-3 bg-white/20 backdrop-blur-md text-white text-sm font-bold rounded-xl hover:bg-white/30 transition-colors shadow-lg border border-white/20"
+              className="mt-6 px-6 py-3.5 bg-purple-600 text-white text-xs font-bold rounded-2xl hover:bg-purple-500 transition-all shadow-lg shadow-purple-950 border border-purple-500/40 cursor-pointer"
             >
-              <FoldText text="Register as Buyer" trigger="scroll" splitBy="word" />
+              Register as Buyer / Supply Chain Partner
             </button>
           </div>
         </div>
       </section>
 
       {/* Floating AI Callout Banner */}
-      <section className="bg-black/30 backdrop-blur-xl text-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl border border-amber-500/30 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-transparent to-agri-500/20 pointer-events-none" />
+      <section className="bg-gradient-to-r from-emerald-950/80 via-black/80 to-amber-950/80 backdrop-blur-2xl text-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl border border-emerald-500/30 relative overflow-hidden">
         <div className="flex items-center gap-4 relative z-10">
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center shrink-0">
-            <Bot className="w-8 h-8 text-amber-300" />
+          <div className="w-14 h-14 rounded-2xl bg-emerald-600/30 border border-emerald-500/40 flex items-center justify-center shrink-0">
+            <Bot className="w-7 h-7 text-emerald-400" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white"><FoldText text="Have questions about your harvest?" trigger="scroll" splitBy="word" /></h3>
-            <p className="text-xs text-gray-300 mt-1">
-              <FoldText text="Ask AgriAI assistant for instant advice on prices, transport, and disease treatment plans." trigger="scroll" splitBy="word" />
+            <h3 className="text-lg font-bold text-white">Have questions about your harvest or market prices?</h3>
+            <p className="text-xs text-neutral-300 mt-1">
+              Ask our AgriAI assistant for instant advice on prices, transport, crop diagnosis, and value addition.
             </p>
           </div>
         </div>
 
         <button
           onClick={() => setIsAIModalOpen(true)}
-          className="relative z-10 px-6 py-3 bg-amber-500/80 backdrop-blur-md text-white font-bold text-xs rounded-xl hover:bg-amber-400 transition-colors shadow-lg border border-amber-400/50 whitespace-nowrap"
+          className="relative z-10 px-6 py-3.5 bg-emerald-600 text-white font-bold text-xs rounded-2xl hover:bg-emerald-500 transition-all shadow-lg shadow-emerald-950 border border-emerald-500/40 whitespace-nowrap cursor-pointer"
         >
-          <FoldText text="Chat with AgriAI" trigger="scroll" splitBy="word" />
+          Chat with AgriAI
         </button>
       </section>
     </div>

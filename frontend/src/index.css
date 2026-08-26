@@ -19,10 +19,11 @@
 }
 
 body {
-  background-color: #F8FAF8;
-  color: #17201A;
+  background-color: #070a08;
+  color: #ffffff;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
 }
 
 /* Custom Scrollbar */

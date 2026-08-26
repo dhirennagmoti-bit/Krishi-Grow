@@ -2,7 +2,7 @@ import { GoogleGenAI } from '@google/genai';
 import type { AIDiagnosticResult } from '../types';
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
-const ai = GEMINI_API_KEY ? new GoogleGenAI({ apiKey: GEMINI_API_KEY }) : null;
+const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY || 'AIzaSyPublicKrishiGrowDemoKey' });
 
 /**
  * Chatbot advisor function: Calls Gemini AI for live conversational answers.

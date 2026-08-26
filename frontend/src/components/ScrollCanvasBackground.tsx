@@ -13,7 +13,6 @@ export const ScrollCanvasBackground: React.FC = () => {
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    // We have 300 frames. 1-indexed.
     const frameCount = 300;
     const currentFrame = (index: number) => 
       `/frames/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`;
@@ -23,27 +22,15 @@ export const ScrollCanvasBackground: React.FC = () => {
       frame: 0
     };
 
-    // Preload images
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      images.push(img);
-    }
-
-    // Set initial canvas size and draw first frame when it loads
-    const setCanvasSize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      render();
-    };
+    // Load first image immediately for initial render
+    const firstImg = new Image();
+    firstImg.src = currentFrame(1);
+    images[0] = firstImg;
 
     const render = () => {
-      // floor the frame index to handle decimal scrub values
-      const frameIndex = Math.floor(airpods.frame);
-      if (images[frameIndex] && images[frameIndex].complete) {
-        const img = images[frameIndex];
-        
-        // Calculate dimensions to cover the canvas (like object-fit: cover)
+      const frameIndex = Math.min(frameCount - 1, Math.max(0, Math.floor(airpods.frame)));
+      const img = images[frameIndex];
+      if (img && img.complete && img.naturalWidth > 0) {
         const canvasRatio = canvas.width / canvas.height;
         const imgRatio = img.width / img.height;
         
@@ -66,13 +53,22 @@ export const ScrollCanvasBackground: React.FC = () => {
       }
     };
 
-    images[0].onload = setCanvasSize;
+    const setCanvasSize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      render();
+    };
+
+    setCanvasSize();
+    firstImg.onload = setCanvasSize;
     window.addEventListener('resize', setCanvasSize);
 
-    // Refresh ScrollTrigger to recalculate document height after React mounts
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 500);
+    // Preload remaining images in background chunks
+    for (let i = 2; i <= frameCount; i++) {
+      const img = new Image();
+      img.src = currentFrame(i);
+      images[i - 1] = img;
+    }
 
     // Setup GSAP ScrollTrigger
     const trigger = gsap.to(airpods, {
@@ -83,12 +79,17 @@ export const ScrollCanvasBackground: React.FC = () => {
         trigger: document.body,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.5,
+        scrub: 0.3,
       },
       onUpdate: render
     });
 
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 400);
+
     return () => {
+      clearTimeout(refreshTimer);
       window.removeEventListener('resize', setCanvasSize);
       trigger.kill();
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -96,9 +97,13 @@ export const ScrollCanvasBackground: React.FC = () => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 w-screen h-screen z-[-1] pointer-events-none transition-opacity"
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 w-screen h-screen -z-10 pointer-events-none transition-opacity object-cover opacity-50"
+      />
+      {/* Ambient background glow gradient */}
+      <div className="fixed inset-0 -z-20 bg-radial from-emerald-950/40 via-[#070a08] to-[#040605] pointer-events-none" />
+    </>
   );
 };
