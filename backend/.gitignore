@@ -1,0 +1,22 @@
+# Backend Specific Git Ignore (Spring Boot / Maven)
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!mvnw
+!mvnw.cmd
+
+# IDEs & Editor files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# Databases & Logs
+*.log
+*.db
+h2-data/
+*.h2.db
+
+# Secrets
+.env
+application-local.yml

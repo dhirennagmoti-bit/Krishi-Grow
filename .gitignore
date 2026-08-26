@@ -1,0 +1,100 @@
+# =========================================================================
+# Krishi Grow - Global Git Ignore Configuration
+# =========================================================================
+
+# -------------------------------------------------------------------------
+# Operating System & IDE Files
+# -------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# JetBrains IDEs (IntelliJ IDEA, CLion, WebStorm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+
+# VS Code & Eclipse
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.project
+.classpath
+.settings/
+.factorypath
+
+# -------------------------------------------------------------------------
+# Backend Artifacts (Spring Boot / Java / Maven)
+# -------------------------------------------------------------------------
+backend/target/
+backend/bin/
+backend/*.log
+backend/h2-data/
+backend/*.db
+backend/*.h2.db
+backend/.mvn/timing.properties
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Target & Log wildcard fallbacks
+target/
+*.log
+*.sqlite
+*.db
+
+# -------------------------------------------------------------------------
+# Frontend Artifacts (React / Node / Vite)
+# -------------------------------------------------------------------------
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+frontend/.oxlint/
+frontend/coverage/
+frontend/*.tsbuildinfo
+
+# Node / JS wildcards
+node_modules/
+dist/
+build/
+.oxlint/
+.cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.eslintcache
+
+# -------------------------------------------------------------------------
+# Environment Variables & Secrets
+# -------------------------------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+frontend/.env
+frontend/.env.local
+backend/src/main/resources/application-local.yml
+*.pem
+*.key
+*.p12
+*.jks
+*.crt
+
+# -------------------------------------------------------------------------
+# Antigravity & AI IDE Internal Scratch Files
+# -------------------------------------------------------------------------
+.gemini/
+.agents/
+scratch/

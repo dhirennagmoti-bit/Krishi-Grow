@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll Animation Canvas</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            height: 500vh; /* Defines how long the user needs to scroll to finish animation */
+        }
+        canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+    <!-- GSAP Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div id="canvas-container">
+        <canvas id="hero-lightpass"></canvas>
+    </div>
+    
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const canvas = document.getElementById("hero-lightpass");
+        const context = canvas.getContext("2d");
+
+        const frameCount = 300;
+        const currentFrame = index => (
+            `frames final/ezgif-frame-${(index + 1).toString().padStart(3, '0')}.jpg`
+        );
+
+        const images = [];
+        const frames = { frame: 0 };
+
+        // Preload all 300 images
+        for (let i = 0; i < frameCount; i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+            images.push(img);
+        }
+
+        // Render function: draw image filling the canvas
+        function render() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            const img = images[frames.frame];
+            if (img && img.complete) {
+                // Mimic background-size: cover
+                const hRatio = canvas.width / img.width;
+                const vRatio = canvas.height / img.height;
+                const ratio = Math.max(hRatio, vRatio);
+                const centerShift_x = (canvas.width - img.width * ratio) / 2;
+                const centerShift_y = (canvas.height - img.height * ratio) / 2;
+                context.drawImage(img, 0, 0, img.width, img.height,
+                    centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
+            }
+        }
+
+        images[0].onload = () => {
+            // Initial resize & render after first image loads
+            resizeCanvas();
+            render();
+        };
+
+        // Create the GSAP scroll animation
+        gsap.to(frames, {
+            frame: frameCount - 1,
+            snap: "frame",
+            ease: "none",
+            scrollTrigger: {
+                trigger: "body",
+                start: "top top",
+                end: "bottom bottom",
+                scrub: 1, // Smooth scrubbing effect
+            },
+            onUpdate: render // Render the canvas on every update
+        });
+
+        // Handle window resizing
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            render();
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+    </script>
+</body>
+</html>

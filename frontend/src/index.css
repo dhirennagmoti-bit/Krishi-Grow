@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-agri-50: #F4F9F5;
+  --color-agri-100: #EAF4ED;
+  --color-agri-200: #D5E9DC;
+  --color-agri-300: #A9D3B6;
+  --color-agri-400: #73B48A;
+  --color-agri-500: #439363;
+  --color-agri-600: #1F6B45;
+  --color-agri-700: #185637;
+  --color-agri-800: #14452E;
+  --color-agri-900: #103926;
+
+  --color-charcoal: #17201A;
+  --color-mutedText: #68736B;
+  --color-bgLight: #F8FAF8;
+  --color-borderLight: #DCE4DE;
+}
+
+body {
+  background-color: #F8FAF8;
+  color: #17201A;
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F4F9F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A9D3B6;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1F6B45;
+}
+
+/* Custom animations */
+@keyframes flowDash {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+.animate-flow-dash {
+  stroke-dasharray: 8 8;
+  animation: flowDash 1.2s linear infinite;
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(220, 228, 222, 0.8);
+}
