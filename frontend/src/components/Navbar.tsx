@@ -68,14 +68,9 @@ export const Navbar: React.FC = () => {
             <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-lg group-hover:bg-emerald-500 transition-colors">
               <Sprout className="w-6 h-6" />
             </div>
-            <div className="flex flex-col text-left">
-              <span className="font-black text-lg md:text-xl text-white tracking-tight leading-none">
-                Krishi Grow
-              </span>
-              <span className="text-[10px] font-semibold text-emerald-400 tracking-wider uppercase">
-                {user.role === 'BUYER' ? 'Supply Chain Suite' : 'Agri Value Chain'}
-              </span>
-            </div>
+            <span className="font-black text-lg md:text-xl text-white tracking-tight leading-none">
+              Krishi Grow
+            </span>
           </button>
         </div>
 
@@ -131,17 +126,7 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Language Selector */}
-          <button
-            onClick={() => {
-              const next = language === 'EN' ? 'HI' : language === 'HI' ? 'MR' : 'EN';
-              setLanguage(next);
-            }}
-            className="flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-neutral-300 hover:text-white bg-white/5 hover:bg-white/10 rounded-xl border border-white/10 transition-colors cursor-pointer"
-          >
-            <Globe className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="font-bold">{language}</span>
-          </button>
+
 
           {/* Notifications */}
           <div className="relative" onClick={e => e.stopPropagation()}>
