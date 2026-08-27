@@ -1,14 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot, X, Send, Sparkles, Lightbulb, Key, Check } from 'lucide-react';
+import { Bot, X, Send, Sparkles, Lightbulb } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import { queryGeminiAgriAI, getGeminiApiKey, setCustomGeminiApiKey } from '../services/gemini';
+import { queryGeminiAgriAI } from '../services/gemini';
 
 export const AIAssistantModal: React.FC = () => {
   const { isAIModalOpen, setIsAIModalOpen } = useApp();
   const [prompt, setPrompt] = useState('');
-  const [showKeyConfig, setShowKeyConfig] = useState(false);
-  const [customKeyInput, setCustomKeyInput] = useState('');
-  const [hasApiKey, setHasApiKey] = useState(false);
   const [messages, setMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string }>>([
     {
       sender: 'ai',
@@ -18,10 +15,6 @@ export const AIAssistantModal: React.FC = () => {
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setHasApiKey(Boolean(getGeminiApiKey()));
-  }, [isAIModalOpen, showKeyConfig]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -84,75 +77,22 @@ export const AIAssistantModal: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-bold text-sm text-white tracking-tight">AgriAI Advisor</h3>
-                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold border ${
-                  hasApiKey 
-                    ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' 
-                    : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                }`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${hasApiKey ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-                  {hasApiKey ? 'Live Gemini AI' : 'Offline Mode'}
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live AI
                 </span>
               </div>
               <p className="text-[11px] text-neutral-400">Krishi Grow Agricultural Intelligence</p>
             </div>
           </div>
-          <div className="flex items-center gap-1">
-            <button
-              onClick={() => setShowKeyConfig(prev => !prev)}
-              className={`p-2 rounded-xl transition-colors cursor-pointer ${
-                showKeyConfig ? 'bg-emerald-600/30 text-emerald-400' : 'text-neutral-400 hover:text-white hover:bg-white/10'
-              }`}
-              title="Configure Gemini API Key"
-            >
-              <Key className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setIsAIModalOpen(false)}
-              className="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-              title="Close Assistant"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+          <button
+            onClick={() => setIsAIModalOpen(false)}
+            className="p-2 rounded-xl text-neutral-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+            title="Close Assistant"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
-
-        {/* Collapsible Key Configuration Panel */}
-        {showKeyConfig && (
-          <div className="p-3 bg-black/80 border-b border-emerald-500/20 text-xs space-y-2 animate-in slide-in-from-top-2">
-            <div className="flex items-center justify-between text-neutral-300 font-semibold text-[11px]">
-              <span>Gemini API Key Configuration</span>
-              <span className={hasApiKey ? 'text-emerald-400' : 'text-amber-400'}>
-                {hasApiKey ? '✓ Key Active' : '⚠ No Key Found'}
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <input
-                type="password"
-                placeholder="Paste Gemini API Key (starts with AIzaSy...)"
-                value={customKeyInput}
-                onChange={(e) => setCustomKeyInput(e.target.value)}
-                className="flex-1 px-3 py-1.5 text-xs bg-white/10 text-white placeholder-neutral-500 rounded-lg border border-white/20 focus:outline-none focus:border-emerald-400"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  if (customKeyInput.trim()) {
-                    setCustomGeminiApiKey(customKeyInput.trim());
-                    setHasApiKey(true);
-                    setCustomKeyInput('');
-                    setShowKeyConfig(false);
-                  }
-                }}
-                className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg transition-colors flex items-center gap-1 cursor-pointer text-xs"
-              >
-                <Check className="w-3.5 h-3.5" /> Save
-              </button>
-            </div>
-            <p className="text-[10px] text-neutral-400 leading-tight">
-              On Vercel, add <strong>VITE_GEMINI_API_KEY</strong> in Project Settings & redeploy. Or paste it here for this browser session.
-            </p>
-          </div>
-        )}
 
         {/* Message Body */}
         <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-[#0a0d0b]">
