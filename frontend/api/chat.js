@@ -39,7 +39,7 @@ export default async function handler(req, res) {
 
     if (!apiKey) {
       return res.status(500).json({
-        error: 'GEMINI_API_KEY is not set in Vercel Environment Variables. Please add GEMINI_API_KEY or VITE_GEMINI_API_KEY to your Vercel Project Settings and redeploy.'
+        error: 'GEMINI_API_KEY is not set in Vercel Environment Variables.'
       });
     }
 
@@ -52,7 +52,45 @@ Your expertise covers:
 
 Provide helpful, clear, professional responses formatted with bullet points and bold highlights when appropriate. Keep answers concise, actionable, and encouraging for Indian farmers and buyers.`;
 
-    // Construct alternating contents starting with user
+    // 1. Fetch available models for this specific API key dynamically
+    let candidateModels = [];
+    try {
+      const listRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`
+      );
+      if (listRes.ok) {
+        const listData = await listRes.json();
+        if (Array.isArray(listData.models)) {
+          candidateModels = listData.models
+            .filter((m) => m.supportedGenerationMethods?.includes('generateContent'))
+            .map((m) => m.name.replace(/^models\//, ''));
+        }
+      }
+    } catch (e) {
+      console.warn('ModelService.ListModels error:', e);
+    }
+
+    // Default candidates if list query fails
+    if (candidateModels.length === 0) {
+      candidateModels = [
+        'gemini-1.5-flash-latest',
+        'gemini-1.5-flash',
+        'gemini-2.0-flash',
+        'gemini-2.0-flash-exp',
+        'gemini-pro',
+        'gemini-1.5-flash-8b',
+        'gemini-1.5-pro-latest'
+      ];
+    } else {
+      // Prioritize flash models first for fast responses
+      candidateModels.sort((a, b) => {
+        if (a.includes('flash') && !b.includes('flash')) return -1;
+        if (!a.includes('flash') && b.includes('flash')) return 1;
+        return 0;
+      });
+    }
+
+    // Prepare contents
     const formattedContents = [];
     let expectingUser = true;
 
@@ -71,35 +109,39 @@ Provide helpful, clear, professional responses formatted with bullet points and 
     }
 
     if (expectingUser) {
-      formattedContents.push({ role: 'user', parts: [{ text: `${systemInstruction}\n\nUser Question: ${prompt.trim()}` }] });
+      formattedContents.push({
+        role: 'user',
+        parts: [{ text: `${systemInstruction}\n\nUser Question: ${prompt.trim()}` }]
+      });
     } else {
       formattedContents[formattedContents.length - 1].parts[0].text += `\n\n${prompt.trim()}`;
     }
 
-    // Try models: gemini-1.5-flash, gemini-2.0-flash, gemini-1.5-pro
-    const models = ['gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-1.5-pro'];
     let lastError = null;
 
-    for (const model of models) {
-      try {
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ contents: formattedContents }),
+    // Try candidate models in order
+    for (const model of candidateModels.slice(0, 5)) {
+      for (const apiVersion of ['v1beta', 'v1']) {
+        try {
+          const response = await fetch(
+            `https://generativelanguage.googleapis.com/${apiVersion}/models/${model}:generateContent?key=${apiKey}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ contents: formattedContents }),
+            }
+          );
+
+          const data = await response.json();
+
+          if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
+            return res.status(200).json({ text: data.candidates[0].content.parts[0].text });
           }
-        );
 
-        const data = await response.json();
-
-        if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
-          return res.status(200).json({ text: data.candidates[0].content.parts[0].text });
+          lastError = data.error?.message || JSON.stringify(data);
+        } catch (err) {
+          lastError = err.message;
         }
-
-        lastError = data.error?.message || JSON.stringify(data);
-      } catch (err) {
-        lastError = err.message;
       }
     }
 
