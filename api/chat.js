@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   try {
     const { prompt, chatHistory = [] } = req.body || {};
 
-    if (!prompt || typeof prompt !== 'string') {
+    if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
       return res.status(400).json({ error: 'Prompt is required' });
     }
 
@@ -30,9 +30,9 @@ export default async function handler(req, res) {
       process.env.VITE_GOOGLE_API_KEY;
 
     if (!apiKey) {
-      console.warn('Server GEMINI_API_KEY environment variable is not set.');
+      console.warn('Server GEMINI_API_KEY environment variable is missing.');
       return res.status(500).json({
-        error: 'Gemini API key is not configured on the server environment.'
+        error: 'Gemini API key is not configured on the Vercel server environment.'
       });
     }
 
@@ -45,38 +45,72 @@ Your expertise covers:
 
 Provide helpful, clear, professional responses formatted with bullet points and bold highlights when appropriate. Keep answers concise, actionable, and encouraging for Indian farmers and buyers.`;
 
-    const contents = [
-      ...chatHistory.slice(-6).map(m => ({
-        role: m.sender === 'user' ? 'user' : 'model',
-        parts: [{ text: m.text }]
-      })),
-      {
-        role: 'user',
-        parts: [{ text: `${systemInstruction}\n\nUser Question: ${prompt}` }]
+    // Ensure strictly alternating user/model sequence starting with user
+    const sanitizedContents = [];
+    let expectingUser = true;
+
+    for (const msg of chatHistory) {
+      const text = typeof msg.text === 'string' ? msg.text.trim() : '';
+      if (!text) continue;
+      const isUser = msg.sender === 'user' || msg.role === 'user';
+
+      if (expectingUser && isUser) {
+        sanitizedContents.push({ role: 'user', parts: [{ text }] });
+        expectingUser = false;
+      } else if (!expectingUser && !isUser) {
+        sanitizedContents.push({ role: 'model', parts: [{ text }] });
+        expectingUser = true;
       }
-    ];
-
-    // Try gemini-1.5-flash
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents }),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('Gemini API returned error:', data);
-      return res.status(response.status).json({
-        error: data.error?.message || 'Failed to generate content from Gemini AI'
-      });
     }
 
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    return res.status(200).json({ text });
+    // Append current prompt as the latest user turn
+    if (expectingUser) {
+      sanitizedContents.push({ role: 'user', parts: [{ text: prompt.trim() }] });
+    } else {
+      sanitizedContents[sanitizedContents.length - 1].parts[0].text += `\n${prompt.trim()}`;
+    }
+
+    // Try models: gemini-1.5-flash, then gemini-2.0-flash
+    const modelsToTry = ['gemini-1.5-flash', 'gemini-2.0-flash'];
+    let lastError = null;
+
+    for (const modelName of modelsToTry) {
+      try {
+        const response = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              system_instruction: {
+                parts: [{ text: systemInstruction }]
+              },
+              contents: sanitizedContents,
+              generationConfig: {
+                temperature: 0.7,
+              }
+            }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
+          const text = data.candidates[0].content.parts[0].text;
+          return res.status(200).json({ text });
+        }
+
+        lastError = data.error?.message || 'Empty response from Gemini';
+        console.warn(`Model ${modelName} returned error:`, data);
+      } catch (err) {
+        lastError = err.message;
+        console.warn(`Fetch error with model ${modelName}:`, err);
+      }
+    }
+
+    return res.status(500).json({
+      error: `Gemini API Error: ${lastError || 'Unknown error'}`
+    });
   } catch (error) {
     console.error('Error in /api/chat handler:', error);
     return res.status(500).json({ error: error.message || 'Internal server error' });

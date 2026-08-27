@@ -9,25 +9,37 @@ export async function queryGeminiAgriAI(
   userPrompt: string,
   chatHistory: Array<{ sender: 'user' | 'ai'; text: string }> = []
 ): Promise<string> {
-  // 1. Primary: Call backend API endpoint (/api/chat)
+  const cleanPrompt = userPrompt.trim();
+  if (!cleanPrompt) return '';
+
+  // 1. Primary: Call serverless backend endpoint (/api/chat)
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        prompt: userPrompt,
-        chatHistory: chatHistory.slice(-6)
+        prompt: cleanPrompt,
+        chatHistory: chatHistory.slice(-8)
       })
     });
 
     if (res.ok) {
       const data = await res.json();
-      if (data.text && data.text.trim()) {
-        return data.text;
+      if (data.text && typeof data.text === 'string' && data.text.trim()) {
+        return data.text.trim();
+      }
+    } else {
+      const errData = await res.json().catch(() => ({}));
+      console.warn('/api/chat non-ok response:', errData);
+      if (errData.error && typeof errData.error === 'string') {
+        // If it's a specific Gemini message or quota, return helpful info
+        if (errData.error.includes('API key') || errData.error.includes('GEMINI_API_KEY')) {
+          return `⚠️ **Gemini API Key missing on Server:** Please ensure \`GEMINI_API_KEY\` is added in your Vercel Project Settings > Environment Variables, then redeploy.`;
+        }
       }
     }
   } catch (backendErr) {
-    console.warn('Backend /api/chat error, checking client fallback:', backendErr);
+    console.warn('Backend /api/chat network error, checking client fallback:', backendErr);
   }
 
   // 2. Secondary: Client-side Gemini call if key is available in build
@@ -48,18 +60,34 @@ Provide helpful, clear, professional responses formatted with bullet points and 
 
   if (clientKey) {
     try {
-      const ai = new GoogleGenAI({ apiKey: clientKey });
-      const contents = [
-        ...chatHistory.slice(-6).map(m => ({
-          role: m.sender === 'user' ? 'user' : 'model',
-          parts: [{ text: m.text }]
-        })),
-        { role: 'user', parts: [{ text: userPrompt }] }
-      ];
+      // Format alternating turns strictly starting with user
+      const sanitizedContents: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = [];
+      let expectingUser = true;
 
+      for (const msg of chatHistory) {
+        const text = typeof msg.text === 'string' ? msg.text.trim() : '';
+        if (!text) continue;
+        const isUser = msg.sender === 'user';
+
+        if (expectingUser && isUser) {
+          sanitizedContents.push({ role: 'user', parts: [{ text }] });
+          expectingUser = false;
+        } else if (!expectingUser && !isUser) {
+          sanitizedContents.push({ role: 'model', parts: [{ text }] });
+          expectingUser = true;
+        }
+      }
+
+      if (expectingUser) {
+        sanitizedContents.push({ role: 'user', parts: [{ text: cleanPrompt }] });
+      } else {
+        sanitizedContents[sanitizedContents.length - 1].parts[0].text += `\n${cleanPrompt}`;
+      }
+
+      const ai = new GoogleGenAI({ apiKey: clientKey });
       const response = await ai.models.generateContent({
         model: 'gemini-1.5-flash',
-        contents: contents as any,
+        contents: sanitizedContents as any,
         config: {
           systemInstruction,
           temperature: 0.7,
@@ -76,13 +104,8 @@ Provide helpful, clear, professional responses formatted with bullet points and 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              contents: [
-                ...chatHistory.slice(-4).map(m => ({
-                  role: m.sender === 'user' ? 'user' : 'model',
-                  parts: [{ text: m.text }]
-                })),
-                { role: 'user', parts: [{ text: `${systemInstruction}\n\nUser Question: ${userPrompt}` }] }
-              ],
+              system_instruction: { parts: [{ text: systemInstruction }] },
+              contents: [{ role: 'user', parts: [{ text: cleanPrompt }] }],
             }),
           }
         );
@@ -97,8 +120,8 @@ Provide helpful, clear, professional responses formatted with bullet points and 
     }
   }
 
-  // 3. Fallback domain response
-  const lower = userPrompt.toLowerCase();
+  // 3. Contextual domain assistance
+  const lower = cleanPrompt.toLowerCase();
   if (lower.includes('onion') || lower.includes('storage') || lower.includes('lasalgaon')) {
     return `**🧅 AgriAI Recommendation for Onion Management:**\n\n• **Current Mandi Trend:** Lasalgaon modal price is ₹3,350/Quintal (+6.2% weekly gain).\n• **Storage Strategy:** If quality is Grade A (Garwa crop), holding in scientific ventilated chawls or cold storage for 4-6 weeks can yield an estimated +18-24% price realization.\n• **Value Addition:** Explore solar dehydration for onion flakes/powder with 38% gross margin.\n• **Logistics:** Use our Transport Calculator for direct truckload freight to Vashi Navi Mumbai (₹2.80/kg).`;
   }
@@ -124,7 +147,7 @@ Provide helpful, clear, professional responses formatted with bullet points and 
     return `**🛡️ Integrated Pest & Disease Guidance:**\n\n• **Fungal Blight/Spot:** Spray Copper Oxychloride 50 WP @ 2.5g/L water or Mancozeb 75 WP @ 2g/L.\n• **Sucking Pests (Aphids/Thrips):** Apply Imidacloprid 17.8% SL @ 0.5ml/L or Azadirachtin (Neem Oil 10,000 ppm) @ 2ml/L.\n• **Safety:** Always spray in early morning or late afternoon with appropriate protective wear.`;
   }
 
-  return `**🌾 AgriAI Agricultural Advisory:**\n\nThank you for asking about **${userPrompt}**!\n\n• **Cultivation & Nutrition:** Maintain balanced NPK application (120:60:60) with micronutrient foliar spray (Zinc + Boron) for optimal crop health and yield.\n• **Mandi Price Monitoring:** Check our Live Mandi Rates tab for real-time prices across all 36 Maharashtra districts before dispatching.\n• **Direct Value-Chain Sourcing:** You can list your harvested stock directly on Krishi Grow to connect with verified food processors and aggregators with 0% middleman fees.`;
+  return `**🌾 AgriAI Advisory:**\n\nFor **${cleanPrompt}**:\n• **Agronomic Care:** Maintain balanced NPK nutrition (120:60:60) with micronutrient foliar spray (Zinc + Boron).\n• **Mandi Price Monitoring:** Check our Live Mandi Rates tab for real-time prices across all 36 Maharashtra districts.\n• **Direct Sourcing:** List harvested stock directly on Krishi Grow to connect with verified processors with 0% middleman fees.`;
 }
 
 /**
@@ -134,7 +157,6 @@ export async function recommendPesticidesWithGemini(
   cropName: string,
   userNotes?: string
 ): Promise<AIDiagnosticResult> {
-  // 1. Try Backend /api/diagnose
   try {
     const res = await fetch('/api/diagnose', {
       method: 'POST',
@@ -157,7 +179,6 @@ export async function recommendPesticidesWithGemini(
     console.warn('Backend /api/diagnose error:', err);
   }
 
-  // 2. Fallback agronomy data
   return {
     diseaseName: `${cropName} Blight / Pest Complex`,
     confidencePercent: 90,
@@ -187,7 +208,6 @@ export async function diagnoseCropImageWithGemini(
   userNotes?: string,
   mimeType: string = 'image/jpeg'
 ): Promise<AIDiagnosticResult> {
-  // 1. Try Backend /api/diagnose
   try {
     const res = await fetch('/api/diagnose', {
       method: 'POST',
@@ -215,7 +235,6 @@ export async function diagnoseCropImageWithGemini(
     console.warn('Backend /api/diagnose vision error:', err);
   }
 
-  // Fallback to text diagnosis
   return recommendPesticidesWithGemini(cropName, userNotes);
 }
 
