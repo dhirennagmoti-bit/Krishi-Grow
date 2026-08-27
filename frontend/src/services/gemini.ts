@@ -1,8 +1,56 @@
 import { GoogleGenAI } from '@google/genai';
 import type { AIDiagnosticResult } from '../types';
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
-const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY || 'AIzaSyPublicKrishiGrowDemoKey' });
+/**
+ * Retrieves the Gemini API Key from Vite env, process.env, or browser localStorage.
+ */
+export function getGeminiApiKey(): string {
+  const envKey =
+    import.meta.env.VITE_GEMINI_API_KEY ||
+    import.meta.env.GEMINI_API_KEY ||
+    import.meta.env.VITE_GOOGLE_API_KEY ||
+    import.meta.env.GOOGLE_API_KEY ||
+    (typeof process !== 'undefined'
+      ? (process.env?.VITE_GEMINI_API_KEY || process.env?.GEMINI_API_KEY || process.env?.GOOGLE_API_KEY)
+      : '') ||
+    '';
+
+  if (envKey && typeof envKey === 'string' && envKey.trim().length > 0) {
+    return envKey.trim();
+  }
+
+  // Fallback to browser localStorage if configured
+  if (typeof window !== 'undefined') {
+    const stored = localStorage.getItem('KRISHI_GEMINI_API_KEY');
+    if (stored && stored.trim().length > 0) {
+      return stored.trim();
+    }
+  }
+
+  return '';
+}
+
+/**
+ * Saves a user-provided Gemini API key to localStorage for instant client-side testing.
+ */
+export function setCustomGeminiApiKey(key: string): void {
+  if (typeof window !== 'undefined') {
+    if (key.trim()) {
+      localStorage.setItem('KRISHI_GEMINI_API_KEY', key.trim());
+    } else {
+      localStorage.removeItem('KRISHI_GEMINI_API_KEY');
+    }
+  }
+}
+
+/**
+ * Creates an instance of GoogleGenAI using the active API key.
+ */
+function getAIClient(): GoogleGenAI | null {
+  const key = getGeminiApiKey();
+  if (!key) return null;
+  return new GoogleGenAI({ apiKey: key });
+}
 
 /**
  * Chatbot advisor function: Calls Gemini AI for live conversational answers.
@@ -11,6 +59,8 @@ export async function queryGeminiAgriAI(
   userPrompt: string,
   chatHistory: Array<{ sender: 'user' | 'ai'; text: string }> = []
 ): Promise<string> {
+  const apiKey = getGeminiApiKey();
+
   const systemInstruction = `You are AgriAI, an expert Indian agricultural value-chain and farming advisor assistant on Krishi Grow platform.
 Your expertise covers:
 1. Crop cultivation, plant health, disease management, and specific chemical or organic pesticide/fungicide recommendations with exact dosages (e.g. Copper Oxychloride 50 WP @ 2.5g/L water, Mancozeb, Imidacloprid, Neem oil).
@@ -20,11 +70,13 @@ Your expertise covers:
 
 Provide helpful, clear, professional responses formatted with bullet points and bold highlights when appropriate. Keep answers concise, actionable, and encouraging for Indian farmers and buyers.`;
 
-  // 1. Try Gemini GenAI SDK if API Key is available
-  if (GEMINI_API_KEY) {
+  // 1. If API Key is available, make live AI calls
+  if (apiKey) {
+    // Attempt 1: Google GenAI SDK with gemini-1.5-flash
     try {
+      const ai = new GoogleGenAI({ apiKey });
       const contents = [
-        ...chatHistory.slice(-4).map(m => ({
+        ...chatHistory.slice(-6).map(m => ({
           role: m.sender === 'user' ? 'user' : 'model',
           parts: [{ text: m.text }]
         })),
@@ -32,7 +84,7 @@ Provide helpful, clear, professional responses formatted with bullet points and 
       ];
 
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-1.5-flash',
         contents: contents as any,
         config: {
           systemInstruction,
@@ -40,33 +92,46 @@ Provide helpful, clear, professional responses formatted with bullet points and 
         }
       });
 
-      if (response.text) return response.text;
-    } catch (error: any) {
-      console.warn('Gemini SDK call fallback, trying REST:', error);
-      // Try direct REST call to gemini-1.5-flash
-      try {
-        const restRes = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: `${systemInstruction}\n\nUser Question: ${userPrompt}` }] }],
-            }),
-          }
-        );
-        if (restRes.ok) {
-          const restData = await restRes.json();
-          const generatedText = restData.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (generatedText) return generatedText;
-        }
-      } catch (restErr) {
-        console.warn('Gemini REST call fallback:', restErr);
+      if (response.text && response.text.trim()) {
+        return response.text;
       }
+    } catch (error: any) {
+      console.warn('Gemini SDK call failed, attempting direct REST fallback:', error);
+    }
+
+    // Attempt 2: Direct REST call to gemini-1.5-flash
+    try {
+      const restRes = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [
+              ...chatHistory.slice(-4).map(m => ({
+                role: m.sender === 'user' ? 'user' : 'model',
+                parts: [{ text: m.text }]
+              })),
+              { role: 'user', parts: [{ text: `${systemInstruction}\n\nUser Question: ${userPrompt}` }] }
+            ],
+          }),
+        }
+      );
+
+      if (restRes.ok) {
+        const restData = await restRes.json();
+        const generatedText = restData.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (generatedText) return generatedText;
+      } else {
+        const errJson = await restRes.json().catch(() => ({}));
+        console.warn('Gemini REST API error response:', errJson);
+      }
+    } catch (restErr) {
+      console.warn('Gemini REST call error:', restErr);
     }
   }
 
-  // Dynamic intelligent domain intelligence for instant zero-latency responses
+  // 2. If no API key is provided or live API is unreachable, provide smart domain fallbacks
   const lower = userPrompt.toLowerCase();
   if (lower.includes('onion') || lower.includes('storage') || lower.includes('lasalgaon')) {
     return `**🧅 AgriAI Recommendation for Onion Management:**\n\n• **Current Mandi Trend:** Lasalgaon modal price is ₹3,350/Quintal (+6.2% weekly gain).\n• **Storage Strategy:** If quality is Grade A (Garwa crop), holding in scientific ventilated chawls or cold storage for 4-6 weeks can yield an estimated +18-24% price realization.\n• **Value Addition:** Explore solar dehydration for onion flakes/powder with 38% gross margin.\n• **Logistics:** Use our Transport Calculator for direct truckload freight to Vashi Navi Mumbai (₹2.80/kg).`;
@@ -93,7 +158,12 @@ Provide helpful, clear, professional responses formatted with bullet points and 
     return `**🛡️ Integrated Pest & Disease Guidance:**\n\n• **Fungal Blight/Spot:** Spray Copper Oxychloride 50 WP @ 2.5g/L water or Mancozeb 75 WP @ 2g/L.\n• **Sucking Pests (Aphids/Thrips):** Apply Imidacloprid 17.8% SL @ 0.5ml/L or Azadirachtin (Neem Oil 10,000 ppm) @ 2ml/L.\n• **Safety:** Always spray in early morning or late afternoon with appropriate protective wear.`;
   }
 
-  return `**🌾 AgriAI Agricultural Advisory:**\n\nThank you for asking! For **${userPrompt}**:\n\n• **Cultivation & Nutrition:** Maintain balanced NPK application (120:60:60) with micronutrient foliar spray (Zinc + Boron) for optimal crop health and yield.\n• **Mandi Price Monitoring:** Check our Live Mandi Rates tab for real-time prices across all 36 Maharashtra districts before dispatching.\n• **Direct Value-Chain Sourcing:** You can list your harvested stock directly on Krishi Grow to connect with verified food processors and aggregators with 0% middleman fees.`;
+  // Informative response when no API key is active
+  if (!apiKey) {
+    return `**🌾 AgriAI Advisory Notice:**\n\nI am currently running in **Offline Advisory Mode** because a live Gemini API key was not detected in this browser session.\n\n**To enable Live AI answers for any question:**\n1. In your **Vercel Project Settings**, go to **Environment Variables**.\n2. Add **\`VITE_GEMINI_API_KEY\`** (Value: your Google AI Studio API key).\n3. Trigger a **Redeploy** on Vercel so the frontend builds with your key.\n\n*Or click the 🔑 key icon in the chat header to enter your API key directly for this session!*`;
+  }
+
+  return `**🌾 AgriAI Agricultural Advisory:**\n\nThank you for asking about **${userPrompt}**!\n\n• **Cultivation & Nutrition:** Maintain balanced NPK application (120:60:60) with micronutrient foliar spray (Zinc + Boron) for optimal crop health and yield.\n• **Mandi Price Monitoring:** Check our Live Mandi Rates tab for real-time prices across all 36 Maharashtra districts before dispatching.\n• **Direct Value-Chain Sourcing:** You can list your harvested stock directly on Krishi Grow to connect with verified food processors and aggregators with 0% middleman fees.`;
 }
 
 /**
@@ -103,8 +173,12 @@ export async function recommendPesticidesWithGemini(
   cropName: string,
   userNotes?: string
 ): Promise<AIDiagnosticResult> {
-  try {
-    const prompt = `Perform a comprehensive agronomic diagnosis for ${cropName} crop.${userNotes ? ` Additional notes/symptoms observed by farmer: "${userNotes}".` : ''}
+  const apiKey = getGeminiApiKey();
+
+  if (apiKey) {
+    try {
+      const ai = new GoogleGenAI({ apiKey });
+      const prompt = `Perform a comprehensive agronomic diagnosis for ${cropName} crop.${userNotes ? ` Additional notes/symptoms observed by farmer: "${userNotes}".` : ''}
 
 You MUST return ONLY a raw JSON object matching this exact schema:
 {
@@ -127,47 +201,49 @@ You MUST return ONLY a raw JSON object matching this exact schema:
   ]
 }`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        temperature: 0.2,
-        responseMimeType: 'application/json',
-      }
-    });
+      const response = await ai.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: prompt,
+        config: {
+          temperature: 0.2,
+          responseMimeType: 'application/json',
+        }
+      });
 
-    const jsonText = response.text || '{}';
-    const parsed = JSON.parse(jsonText);
+      const jsonText = response.text || '{}';
+      const parsed = JSON.parse(jsonText);
 
-    return {
-      diseaseName: parsed.diseaseName || `${cropName} Health Analysis`,
-      confidencePercent: Number(parsed.confidencePercent) || 92,
-      severity: (['MILD', 'MODERATE', 'SEVERE'].includes(parsed.severity) ? parsed.severity : 'MODERATE') as any,
-      symptoms: Array.isArray(parsed.symptoms) && parsed.symptoms.length > 0 ? parsed.symptoms : ['Foliar spot lesions observed on leaf surfaces', 'Mild chlorosis surrounding affected tissues'],
-      treatmentPlan: Array.isArray(parsed.treatmentPlan) && parsed.treatmentPlan.length > 0 ? parsed.treatmentPlan : [`Apply Copper Oxychloride 50 WP @ 2.5g/L water`, `Spray Mancozeb 75 WP @ 2g/L water with sticker`],
-      preventiveMeasures: Array.isArray(parsed.preventiveMeasures) && parsed.preventiveMeasures.length > 0 ? parsed.preventiveMeasures : ['Maintain adequate crop spacing for aeration', 'Avoid overhead sprinkler watering during high humidity'],
-    };
-  } catch (error: any) {
-    console.error('Error calling Gemini for pesticide recommendation:', error);
-    return {
-      diseaseName: `${cropName} Blight / Pest Complex`,
-      confidencePercent: 90,
-      severity: 'MODERATE',
-      symptoms: [
-        'Concentric dark spots and yellow chlorotic halos on foliage',
-        'Early leaf senescence and wilting'
-      ],
-      treatmentPlan: [
-        'Apply Copper Oxychloride 50 WP @ 2.5g / Litre of water',
-        'Spray Mancozeb 75 WP @ 2g / Litre water with spreader sticker',
-        'Maintain 10-12 day spray interval during humid weather'
-      ],
-      preventiveMeasures: [
-        'Ensure proper row spacing for sunlight penetration',
-        'Use drip irrigation instead of overhead watering'
-      ]
-    };
+      return {
+        diseaseName: parsed.diseaseName || `${cropName} Health Analysis`,
+        confidencePercent: Number(parsed.confidencePercent) || 92,
+        severity: (['MILD', 'MODERATE', 'SEVERE'].includes(parsed.severity) ? parsed.severity : 'MODERATE') as any,
+        symptoms: Array.isArray(parsed.symptoms) && parsed.symptoms.length > 0 ? parsed.symptoms : ['Foliar spot lesions observed on leaf surfaces', 'Mild chlorosis surrounding affected tissues'],
+        treatmentPlan: Array.isArray(parsed.treatmentPlan) && parsed.treatmentPlan.length > 0 ? parsed.treatmentPlan : [`Apply Copper Oxychloride 50 WP @ 2.5g/L water`, `Spray Mancozeb 75 WP @ 2g/L water with sticker`],
+        preventiveMeasures: Array.isArray(parsed.preventiveMeasures) && parsed.preventiveMeasures.length > 0 ? parsed.preventiveMeasures : ['Maintain adequate crop spacing for aeration', 'Avoid overhead sprinkler watering during high humidity'],
+      };
+    } catch (error: any) {
+      console.warn('Error calling Gemini for pesticide recommendation, using agronomy fallback:', error);
+    }
   }
+
+  return {
+    diseaseName: `${cropName} Blight / Pest Complex`,
+    confidencePercent: 90,
+    severity: 'MODERATE',
+    symptoms: [
+      'Concentric dark spots and yellow chlorotic halos on foliage',
+      'Early leaf senescence and wilting'
+    ],
+    treatmentPlan: [
+      'Apply Copper Oxychloride 50 WP @ 2.5g / Litre of water',
+      'Spray Mancozeb 75 WP @ 2g / Litre water with spreader sticker',
+      'Maintain 10-12 day spray interval during humid weather'
+    ],
+    preventiveMeasures: [
+      'Ensure proper row spacing for sunlight penetration',
+      'Use drip irrigation instead of overhead watering'
+    ]
+  };
 }
 
 /**
@@ -179,11 +255,14 @@ export async function diagnoseCropImageWithGemini(
   userNotes?: string,
   mimeType: string = 'image/jpeg'
 ): Promise<AIDiagnosticResult> {
-  try {
-    const cleanBase64 = imageBase64.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, '');
-    const actualMime = imageBase64.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,/)?.[1] || mimeType || 'image/jpeg';
+  const apiKey = getGeminiApiKey();
 
-    const prompt = `You are AgriAI, an expert Indian agricultural scientist and plant pathologist.
+  if (apiKey) {
+    try {
+      const cleanBase64 = imageBase64.replace(/^data:image\/[a-zA-Z0-9+.-]+;base64,/, '');
+      const actualMime = imageBase64.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,/)?.[1] || mimeType || 'image/jpeg';
+
+      const prompt = `You are AgriAI, an expert Indian agricultural scientist and plant pathologist.
 Analyze this photo of a ${cropName} crop leaf / plant / fruit.
 ${userNotes ? `Additional farmer observations: "${userNotes}".` : ''}
 
@@ -208,46 +287,49 @@ You MUST return ONLY a raw JSON object matching this schema:
   ]
 }`;
 
-    const contents = [
-      {
-        role: 'user',
-        parts: [
-          { text: prompt },
-          {
-            inlineData: {
-              mimeType: actualMime,
-              data: cleanBase64
+      const ai = new GoogleGenAI({ apiKey });
+      const contents = [
+        {
+          role: 'user',
+          parts: [
+            { text: prompt },
+            {
+              inlineData: {
+                mimeType: actualMime,
+                data: cleanBase64
+              }
             }
-          }
-        ]
-      }
-    ];
+          ]
+        }
+      ];
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: contents as any,
-      config: {
-        temperature: 0.2,
-        responseMimeType: 'application/json',
-      }
-    });
+      const response = await ai.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: contents as any,
+        config: {
+          temperature: 0.2,
+          responseMimeType: 'application/json',
+        }
+      });
 
-    const jsonText = response.text || '{}';
-    const parsed = JSON.parse(jsonText);
+      const jsonText = response.text || '{}';
+      const parsed = JSON.parse(jsonText);
 
-    return {
-      diseaseName: parsed.diseaseName || `${cropName} Diagnostic Analysis`,
-      confidencePercent: Number(parsed.confidencePercent) || 91,
-      severity: (['MILD', 'MODERATE', 'SEVERE'].includes(parsed.severity) ? parsed.severity : 'MODERATE') as any,
-      symptoms: Array.isArray(parsed.symptoms) && parsed.symptoms.length > 0 ? parsed.symptoms : ['Visual foliar chlorosis and discoloration', 'Irregular lesion margins on leaf blade'],
-      treatmentPlan: Array.isArray(parsed.treatmentPlan) && parsed.treatmentPlan.length > 0 ? parsed.treatmentPlan : ['Apply label-registered crop protection product as per PPQS/CIB&RC guidelines', 'Adopt biological and cultural IPM controls prior to chemical sprays'],
-      preventiveMeasures: Array.isArray(parsed.preventiveMeasures) && parsed.preventiveMeasures.length > 0 ? parsed.preventiveMeasures : ['Maintain adequate drainage to prevent excess humidity', 'Use certified disease-free seeds and balanced NPK nutrition'],
-    };
-  } catch (error: any) {
-    console.error('Error in Gemini image diagnosis:', error);
-    // Fallback to text diagnosis if vision API fails
-    return recommendPesticidesWithGemini(cropName, userNotes);
+      return {
+        diseaseName: parsed.diseaseName || `${cropName} Diagnostic Analysis`,
+        confidencePercent: Number(parsed.confidencePercent) || 91,
+        severity: (['MILD', 'MODERATE', 'SEVERE'].includes(parsed.severity) ? parsed.severity : 'MODERATE') as any,
+        symptoms: Array.isArray(parsed.symptoms) && parsed.symptoms.length > 0 ? parsed.symptoms : ['Visual foliar chlorosis and discoloration', 'Irregular lesion margins on leaf blade'],
+        treatmentPlan: Array.isArray(parsed.treatmentPlan) && parsed.treatmentPlan.length > 0 ? parsed.treatmentPlan : ['Apply label-registered crop protection product as per PPQS/CIB&RC guidelines', 'Adopt biological and cultural IPM controls prior to chemical sprays'],
+        preventiveMeasures: Array.isArray(parsed.preventiveMeasures) && parsed.preventiveMeasures.length > 0 ? parsed.preventiveMeasures : ['Maintain adequate drainage to prevent excess humidity', 'Use certified disease-free seeds and balanced NPK nutrition'],
+      };
+    } catch (error: any) {
+      console.warn('Error in Gemini image diagnosis:', error);
+    }
   }
+
+  // Fallback to text diagnosis if vision API fails
+  return recommendPesticidesWithGemini(cropName, userNotes);
 }
 
 export interface GeminiProductRecommendation {
@@ -258,8 +340,12 @@ export interface GeminiProductRecommendation {
 }
 
 export async function getGeminiPesticides(cropName: string): Promise<GeminiProductRecommendation[]> {
-  try {
-    const prompt = `Act as an expert Indian agricultural advisor. Recommend the top 3 best and most effective chemical or organic pesticides/fungicides for ${cropName}. 
+  const apiKey = getGeminiApiKey();
+
+  if (apiKey) {
+    try {
+      const ai = new GoogleGenAI({ apiKey });
+      const prompt = `Act as an expert Indian agricultural advisor. Recommend the top 3 best and most effective chemical or organic pesticides/fungicides for ${cropName}. 
 You MUST return ONLY a raw JSON array matching this exact schema:
 [
   {
@@ -270,47 +356,53 @@ You MUST return ONLY a raw JSON array matching this exact schema:
   }
 ]`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        temperature: 0.3,
-        responseMimeType: 'application/json',
-      }
-    });
+      const response = await ai.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: prompt,
+        config: {
+          temperature: 0.3,
+          responseMimeType: 'application/json',
+        }
+      });
 
-    const jsonText = response.text || '[]';
-    const parsed = JSON.parse(jsonText);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error: any) {
-    console.error('Error calling Gemini for pesticides:', error);
-    // Fallback static data
-    return [
-      {
-        productName: "Copper Oxychloride 50 WP",
-        purpose: "Fungal Diseases",
-        description: "Excellent broad-spectrum fungicide to control blight and leaf spots.",
-        estimatedPrice: "₹250 / 500g"
-      },
-      {
-        productName: "Imidacloprid 17.8% SL",
-        purpose: "Aphids & Whiteflies",
-        description: "Highly effective systemic insecticide for sucking pests.",
-        estimatedPrice: "₹350 / 250ml"
-      },
-      {
-        productName: "Neem Oil 10000 PPM",
-        purpose: "Organic Pest Deterrent",
-        description: "Organic biopesticide suitable for preventing early stage infestations.",
-        estimatedPrice: "₹280 / Litre"
-      }
-    ];
+      const jsonText = response.text || '[]';
+      const parsed = JSON.parse(jsonText);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error: any) {
+      console.warn('Error calling Gemini for pesticides:', error);
+    }
   }
+
+  // Fallback static data
+  return [
+    {
+      productName: "Copper Oxychloride 50 WP",
+      purpose: "Fungal Diseases",
+      description: "Excellent broad-spectrum fungicide to control blight and leaf spots.",
+      estimatedPrice: "₹250 / 500g"
+    },
+    {
+      productName: "Imidacloprid 17.8% SL",
+      purpose: "Aphids & Whiteflies",
+      description: "Highly effective systemic insecticide for sucking pests.",
+      estimatedPrice: "₹350 / 250ml"
+    },
+    {
+      productName: "Neem Oil 10000 PPM",
+      purpose: "Organic Pest Deterrent",
+      description: "Organic biopesticide suitable for preventing early stage infestations.",
+      estimatedPrice: "₹280 / Litre"
+    }
+  ];
 }
 
 export async function getGeminiSeeds(cropName: string): Promise<GeminiProductRecommendation[]> {
-  try {
-    const prompt = `Act as an expert Indian agricultural advisor. Recommend the top 3 best yielding and climate-resilient seed varieties for ${cropName} in India.
+  const apiKey = getGeminiApiKey();
+
+  if (apiKey) {
+    try {
+      const ai = new GoogleGenAI({ apiKey });
+      const prompt = `Act as an expert Indian agricultural advisor. Recommend the top 3 best yielding and climate-resilient seed varieties for ${cropName} in India.
 You MUST return ONLY a raw JSON array matching this exact schema:
 [
   {
@@ -321,40 +413,42 @@ You MUST return ONLY a raw JSON array matching this exact schema:
   }
 ]`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-3.6-flash',
-      contents: prompt,
-      config: {
-        temperature: 0.3,
-        responseMimeType: 'application/json',
-      }
-    });
+      const response = await ai.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: prompt,
+        config: {
+          temperature: 0.3,
+          responseMimeType: 'application/json',
+        }
+      });
 
-    const jsonText = response.text || '[]';
-    const parsed = JSON.parse(jsonText);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error: any) {
-    console.error('Error calling Gemini for seeds:', error);
-    // Fallback static data
-    return [
-      {
-        productName: "High-Yield Hybrid V1",
-        purpose: "20-25 tonnes/acre",
-        description: "Excellent disease resistance and highly suitable for both rabi and kharif seasons.",
-        estimatedPrice: "₹850 / kg"
-      },
-      {
-        productName: "Drought Tolerant Prime",
-        purpose: "15-18 tonnes/acre",
-        description: "Specifically bred to perform well in low rainfall regions.",
-        estimatedPrice: "₹650 / kg"
-      },
-      {
-        productName: "Premium Quality Export",
-        purpose: "18-20 tonnes/acre",
-        description: "Produces uniform export-quality harvest with extended shelf life.",
-        estimatedPrice: "₹1200 / kg"
-      }
-    ];
+      const jsonText = response.text || '[]';
+      const parsed = JSON.parse(jsonText);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error: any) {
+      console.warn('Error calling Gemini for seeds:', error);
+    }
   }
+
+  // Fallback static data
+  return [
+    {
+      productName: "High-Yield Hybrid V1",
+      purpose: "20-25 tonnes/acre",
+      description: "Excellent disease resistance and highly suitable for both rabi and kharif seasons.",
+      estimatedPrice: "₹850 / kg"
+    },
+    {
+      productName: "Drought Tolerant Prime",
+      purpose: "15-18 tonnes/acre",
+      description: "Specifically bred to perform well in low rainfall regions.",
+      estimatedPrice: "₹650 / kg"
+    },
+    {
+      productName: "Premium Quality Export",
+      purpose: "18-20 tonnes/acre",
+      description: "Produces uniform export-quality harvest with extended shelf life.",
+      estimatedPrice: "₹1200 / kg"
+    }
+  ];
 }
