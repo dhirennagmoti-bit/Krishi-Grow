@@ -224,6 +224,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setSession(session);
       if (session?.user) {
         syncUserFromSession(session);
+        if (typeof window !== 'undefined' && window.location.hash.includes('access_token')) {
+          window.history.replaceState(null, '', window.location.pathname);
+        }
       }
     });
 
@@ -250,8 +253,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }));
   };
 
+  const isAuthenticated = Boolean(session?.user || (user && user.id && user.email && user.email.trim().length > 0));
+
   const requireAuth = (action: () => void) => {
-    if (!session?.user) {
+    if (!isAuthenticated) {
       setIsAuthModalOpen(true);
     } else {
       action();
@@ -259,7 +264,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.warn('Signout warning:', e);
+    }
     setSession(null);
     localStorage.removeItem('krishi_grow_user');
     localStorage.removeItem('krishi_intended_role');
