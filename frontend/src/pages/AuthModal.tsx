@@ -387,6 +387,8 @@ export const AuthModal: React.FC = () => {
                     <span>Try as Buyer</span>
                   </button>
                 </div>
+              </div>
+
               <form onSubmit={handleSignIn} className="space-y-3 pt-1">
                 <div>
                   <label className="block text-xs font-bold text-neutral-300 mb-1.5">Email Address</label>
