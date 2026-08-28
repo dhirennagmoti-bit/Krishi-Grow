@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Sprout, Bell, Globe, Bot, ScanLine, Menu, X, ArrowRight, LogOut, User as UserIcon,
-  LogIn, UserPlus
+  LogIn, UserPlus, Building2, Factory, Store, ChevronDown
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -16,6 +16,7 @@ export const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isDemoMenuOpen, setIsDemoMenuOpen] = useState(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
@@ -25,12 +26,13 @@ export const Navbar: React.FC = () => {
     const handleClickOutside = () => {
       setIsNotifOpen(false);
       setIsUserMenuOpen(false);
+      setIsDemoMenuOpen(false);
     };
-    if (isNotifOpen || isUserMenuOpen) {
+    if (isNotifOpen || isUserMenuOpen || isDemoMenuOpen) {
       document.addEventListener('click', handleClickOutside);
     }
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [isNotifOpen, isUserMenuOpen]);
+  }, [isNotifOpen, isUserMenuOpen, isDemoMenuOpen]);
 
   // Farmer Navigation Items
   const farmerNavItems = [
@@ -229,13 +231,88 @@ export const Navbar: React.FC = () => {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => loginAsDemo('FARMER')}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-500/20 to-emerald-500/20 border border-amber-400/40 text-amber-300 hover:text-white text-xs font-bold rounded-xl hover:bg-amber-500/30 transition-all cursor-pointer shadow-sm"
-                title="Instant Demo Access — No Sign Up Required"
-              >
-                <span>⚡ Try Demo</span>
-              </button>
+              {/* Demo Menu Dropdown */}
+              <div className="relative">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsDemoMenuOpen(!isDemoMenuOpen);
+                  }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-500/20 to-emerald-500/20 border border-amber-400/40 text-amber-300 hover:text-white text-xs font-bold rounded-xl hover:bg-amber-500/30 transition-all cursor-pointer shadow-sm"
+                  title="Explore Platform as Demo User"
+                >
+                  <span>⚡ Try Demo</span>
+                  <ChevronDown className="w-3 h-3 text-amber-300" />
+                </button>
+
+                <AnimatePresence>
+                  {isDemoMenuOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 mt-2 w-64 bg-[#141418] border border-white/15 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-2xl"
+                    >
+                      <p className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                        Select Demo Experience
+                      </p>
+
+                      {/* Farmer Demo Option */}
+                      <button
+                        onClick={() => {
+                          loginAsDemo('FARMER');
+                          setIsDemoMenuOpen(false);
+                        }}
+                        className="flex items-start gap-2.5 w-full p-2.5 hover:bg-emerald-950/40 rounded-xl transition-all text-left cursor-pointer group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-emerald-600/30 text-emerald-400 flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                          <Sprout className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-white group-hover:text-emerald-300">🌾 Demo Farmer</p>
+                          <p className="text-[10px] text-neutral-400 leading-tight">Ramesh Patil (15 Acres, Crops, Mandi)</p>
+                        </div>
+                      </button>
+
+                      {/* Buyer Aggregator Option */}
+                      <button
+                        onClick={() => {
+                          loginAsDemo('BUYER', 'AGGREGATOR');
+                          setIsDemoMenuOpen(false);
+                        }}
+                        className="flex items-start gap-2.5 w-full p-2.5 hover:bg-purple-950/40 rounded-xl transition-all text-left cursor-pointer group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-purple-600/30 text-purple-400 flex items-center justify-center shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                          <Building2 className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-white group-hover:text-purple-300">🏢 Demo Aggregator</p>
+                          <p className="text-[10px] text-neutral-400 leading-tight">MahaAgri FPC (Collection, Slips)</p>
+                        </div>
+                      </button>
+
+                      {/* Buyer Processor Option */}
+                      <button
+                        onClick={() => {
+                          loginAsDemo('BUYER', 'PROCESSOR');
+                          setIsDemoMenuOpen(false);
+                        }}
+                        className="flex items-start gap-2.5 w-full p-2.5 hover:bg-cyan-950/40 rounded-xl transition-all text-left cursor-pointer group"
+                      >
+                        <div className="w-8 h-8 rounded-lg bg-cyan-600/30 text-cyan-400 flex items-center justify-center shrink-0 group-hover:bg-cyan-600 group-hover:text-white transition-colors">
+                          <Factory className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-white group-hover:text-cyan-300">🏭 Demo Processor</p>
+                          <p className="text-[10px] text-neutral-400 leading-tight">Kisan Agro Processing Plant</p>
+                        </div>
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               <button
                 onClick={() => setIsAuthModalOpen(true)}
                 className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 text-white text-xs font-bold rounded-xl hover:bg-white/20 transition-all cursor-pointer"
@@ -287,13 +364,30 @@ export const Navbar: React.FC = () => {
               </button>
             ))}
             {!isAuthenticated && (
-              <button
-                onClick={() => { setIsAuthModalOpen(true); setIsMobileMenuOpen(false); }}
-                className="w-full mt-2 px-3 py-2.5 bg-emerald-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <UserPlus className="w-4 h-4" />
-                <span>Sign In / Register</span>
-              </button>
+              <div className="pt-3 border-t border-white/10 space-y-2">
+                <p className="text-[10px] uppercase font-bold text-neutral-400 px-1">Instant Demo Options</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => { loginAsDemo('FARMER'); setIsMobileMenuOpen(false); }}
+                    className="px-3 py-2 bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>🌾 Demo Farmer</span>
+                  </button>
+                  <button
+                    onClick={() => { loginAsDemo('BUYER', 'AGGREGATOR'); setIsMobileMenuOpen(false); }}
+                    className="px-3 py-2 bg-purple-600/30 border border-purple-500/40 text-purple-300 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <span>🏢 Demo Buyer</span>
+                  </button>
+                </div>
+                <button
+                  onClick={() => { setIsAuthModalOpen(true); setIsMobileMenuOpen(false); }}
+                  className="w-full mt-1 px-3 py-2.5 bg-emerald-600 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <UserPlus className="w-4 h-4" />
+                  <span>Sign In / Register</span>
+                </button>
+              </div>
             )}
           </motion.div>
         )}
