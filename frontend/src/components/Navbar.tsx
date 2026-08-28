@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export const Navbar: React.FC = () => {
   const {
-    user, isAuthenticated, logout, requireAuth, notifications, markNotificationsRead,
+    user, isAuthenticated, logout, requireAuth, loginAsDemo, notifications, markNotificationsRead,
     language, setLanguage, setIsAuthModalOpen,
     activeTab, setActiveTab, switchBuyerType
   } = useApp();
@@ -229,6 +229,13 @@ export const Navbar: React.FC = () => {
             </div>
           ) : (
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => loginAsDemo('FARMER')}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-500/20 to-emerald-500/20 border border-amber-400/40 text-amber-300 hover:text-white text-xs font-bold rounded-xl hover:bg-amber-500/30 transition-all cursor-pointer shadow-sm"
+                title="Instant Demo Access — No Sign Up Required"
+              >
+                <span>⚡ Try Demo</span>
+              </button>
               <button
                 onClick={() => setIsAuthModalOpen(true)}
                 className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 text-white text-xs font-bold rounded-xl hover:bg-white/20 transition-all cursor-pointer"

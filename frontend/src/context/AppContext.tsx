@@ -33,6 +33,7 @@ interface AppContextType {
   isAuthenticated: boolean;
   logout: () => Promise<void>;
   requireAuth: (action: () => void) => void;
+  loginAsDemo: (demoRole?: UserRole, demoBuyerType?: BuyerType) => void;
   crops: CropRecord[];
   addCrop: (crop: Omit<CropRecord, 'id' | 'createdAt' | 'daysRemaining' | 'status'>) => Promise<void>;
   deleteCrop: (id: string) => Promise<void>;
@@ -260,6 +261,47 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       setIsAuthModalOpen(true);
     } else {
       action();
+    }
+  };
+
+  const loginAsDemo = (demoRole: UserRole = 'FARMER', demoBuyerType: BuyerType = 'AGGREGATOR') => {
+    const demoEmail = demoRole === 'FARMER'
+      ? 'demo.farmer@krishigrow.in'
+      : `demo.${demoBuyerType.toLowerCase()}@krishigrow.in`;
+
+    const demoName = demoRole === 'FARMER'
+      ? 'Ramesh Patil (Demo Farmer)'
+      : demoBuyerType === 'PROCESSOR'
+      ? 'Kisan Agro Processing Ltd'
+      : demoBuyerType === 'WHOLESALER'
+      ? 'Bharat Mandi Wholesale Traders'
+      : 'MahaAgri Aggregators FPC';
+
+    const demoUserData: User = {
+      id: demoRole === 'FARMER' ? 'farmer_demo_1' : `buyer_demo_${demoBuyerType.toLowerCase()}`,
+      name: demoName,
+      role: demoRole,
+      buyerType: demoRole === 'BUYER' ? demoBuyerType : undefined,
+      district: 'Nashik',
+      state: 'Maharashtra',
+      email: demoEmail,
+      phone: '+91 98220 00001',
+      farmSizeAcres: demoRole === 'FARMER' ? 15 : undefined,
+      businessName: demoRole === 'BUYER' ? demoName : undefined,
+    };
+
+    setUser(demoUserData);
+    localStorage.setItem('krishi_grow_user', JSON.stringify(demoUserData));
+    setIsAuthModalOpen(false);
+
+    if (demoRole === 'FARMER') {
+      setActiveTab('farmer-dashboard');
+    } else if (demoBuyerType === 'PROCESSOR') {
+      setActiveTab('processor-dashboard');
+    } else if (demoBuyerType === 'WHOLESALER') {
+      setActiveTab('wholesaler-dashboard');
+    } else {
+      setActiveTab('buyer-dashboard');
     }
   };
 
@@ -559,9 +601,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         user,
         setUser,
         session,
-        isAuthenticated: !!session?.user,
+        isAuthenticated,
         logout,
         requireAuth,
+        loginAsDemo,
         crops,
         addCrop,
         deleteCrop,

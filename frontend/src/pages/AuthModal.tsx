@@ -61,25 +61,30 @@ export const AuthModal: React.FC = () => {
   };
 
   // Demo login shortcut
-  const handleDemoLogin = async (demoRole: UserRole) => {
+  const handleDemoLogin = async (demoRole: UserRole, demoBuyerType: BuyerType = 'AGGREGATOR') => {
     setLoading(true);
     setErrorMsg(null);
 
-    const demoEmail = demoRole === 'FARMER' ? 'demo.farmer@krishigrow.in' : 'demo.aggregator@krishigrow.in';
+    const demoEmail = demoRole === 'FARMER' ? 'demo.farmer@krishigrow.in' : `demo.${demoBuyerType.toLowerCase()}@krishigrow.in`;
     const demoPass = 'KrishiDemo@2026';
+    const demoName = demoRole === 'FARMER' 
+      ? 'Demo Farmer (Ramesh Patil)' 
+      : demoBuyerType === 'PROCESSOR' 
+      ? 'Demo Processor (Kisan Agro Processing)' 
+      : 'Demo Aggregator (MahaAgri FPC)';
 
     try {
       const demoUserData: User = {
-        id: demoRole === 'FARMER' ? 'farmer_demo_1' : 'buyer_demo_1',
-        name: demoRole === 'FARMER' ? 'Demo Farmer (Ramesh Patil)' : 'Demo Aggregator (MahaAgri FPC)',
+        id: demoRole === 'FARMER' ? 'farmer_demo_1' : `buyer_demo_${demoBuyerType.toLowerCase()}`,
+        name: demoName,
         role: demoRole,
-        buyerType: demoRole === 'BUYER' ? ('AGGREGATOR' as BuyerType) : undefined,
+        buyerType: demoRole === 'BUYER' ? demoBuyerType : undefined,
         district: 'Nashik',
         state: 'Maharashtra',
         email: demoEmail,
         phone: '+91 98220 00001',
         farmSizeAcres: demoRole === 'FARMER' ? 15 : undefined,
-        businessName: demoRole === 'BUYER' ? 'MahaAgri Aggregators FPC' : undefined,
+        businessName: demoRole === 'BUYER' ? demoName : undefined,
       };
 
       try {
@@ -94,7 +99,14 @@ export const AuthModal: React.FC = () => {
       setUser(demoUserData);
       saveRegisteredUser(demoEmail, demoUserData, demoPass);
       setIsAuthModalOpen(false);
-      setActiveTab(demoRole === 'FARMER' ? 'farmer-dashboard' : 'buyer-dashboard');
+
+      if (demoRole === 'FARMER') {
+        setActiveTab('farmer-dashboard');
+      } else if (demoBuyerType === 'PROCESSOR') {
+        setActiveTab('processor-dashboard');
+      } else {
+        setActiveTab('buyer-dashboard');
+      }
     } catch (err: any) {
       setErrorMsg('Demo access failed. Please try again.');
     } finally {
@@ -167,7 +179,7 @@ export const AuthModal: React.FC = () => {
         return;
       }
 
-      // 4. Auto-activate profile for seamless login
+      // 4. Auto-activate profile for seamless login (Zero verification barrier)
       const autoUser: User = {
         id: `usr_${Date.now()}`,
         email: cleanEmail,
@@ -222,7 +234,7 @@ export const AuthModal: React.FC = () => {
     };
 
     try {
-      // 1. Try Supabase signUp
+      // 1. Try Supabase signUp (non-blocking)
       let supabaseUserId = `usr_${Date.now()}`;
       try {
         const { data, error } = await supabase.auth.signUp({
@@ -240,7 +252,7 @@ export const AuthModal: React.FC = () => {
         console.warn('Supabase signup error:', sbErr);
       }
 
-      // 2. Construct authenticated user profile immediately
+      // 2. Construct authenticated user profile immediately (Zero verification delay)
       const newUserData: User = {
         id: supabaseUserId,
         email: cleanEmail,
@@ -254,7 +266,7 @@ export const AuthModal: React.FC = () => {
         businessName: role === 'BUYER' ? (businessName || `${cleanName}'s Business`) : undefined,
       };
 
-      // 3. Save locally and activate user session
+      // 3. Save locally and activate user session directly
       setUser(newUserData);
       saveRegisteredUser(cleanEmail, newUserData, password);
 
@@ -279,14 +291,18 @@ export const AuthModal: React.FC = () => {
     setSuccessMsg(null);
 
     try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin,
-      });
-
-      if (error) throw error;
-      setSuccessMsg('A password reset link has been sent to your email. Please check your inbox (and spam folder) to reset your password.');
+      const cleanEmail = email.trim().toLowerCase();
+      const localUsers = getRegisteredUsers();
+      if (localUsers[cleanEmail]) {
+        localUsers[cleanEmail].password = password || 'KrishiGrow@2026';
+        localStorage.setItem('krishi_registered_users', JSON.stringify(localUsers));
+      }
+      setSuccessMsg('Password updated! You can now sign in directly.');
+      setTimeout(() => {
+        setShowForgot(false);
+      }, 1200);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Failed to send password reset email. Please try again.');
+      setErrorMsg('Failed to update password. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -316,8 +332,56 @@ export const AuthModal: React.FC = () => {
           </button>
         </div>
 
+        {/* Prominent Demo User Access Card */}
+        <div className="p-4 mx-6 mt-4 bg-gradient-to-r from-emerald-950/70 via-neutral-900/80 to-purple-950/70 border border-emerald-500/30 rounded-2xl">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="flex items-center gap-2">
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <p className="text-xs font-black text-white">⚡ Instant Demo Experience</p>
+            </div>
+            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
+              No Sign Up Needed
+            </span>
+          </div>
+          <p className="text-[11px] text-neutral-300 mb-3">
+            Explore the full interactive platform with preloaded data, mandi rates, and AI tools:
+          </p>
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              onClick={() => handleDemoLogin('FARMER')}
+              disabled={loading}
+              className="flex flex-col items-center justify-center gap-1.5 p-2.5 bg-emerald-600/30 hover:bg-emerald-600/60 text-emerald-300 text-xs font-bold rounded-xl border border-emerald-500/40 transition-all cursor-pointer disabled:opacity-50"
+            >
+              <Sprout className="w-4 h-4 text-emerald-400" />
+              <span>Demo Farmer</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDemoLogin('BUYER', 'AGGREGATOR')}
+              disabled={loading}
+              className="flex flex-col items-center justify-center gap-1.5 p-2.5 bg-purple-600/30 hover:bg-purple-600/60 text-purple-300 text-xs font-bold rounded-xl border border-purple-500/40 transition-all cursor-pointer disabled:opacity-50"
+            >
+              <Building2 className="w-4 h-4 text-purple-400" />
+              <span>Demo Aggregator</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleDemoLogin('BUYER', 'PROCESSOR')}
+              disabled={loading}
+              className="flex flex-col items-center justify-center gap-1.5 p-2.5 bg-cyan-600/30 hover:bg-cyan-600/60 text-cyan-300 text-xs font-bold rounded-xl border border-cyan-500/40 transition-all cursor-pointer disabled:opacity-50"
+            >
+              <Factory className="w-4 h-4 text-cyan-400" />
+              <span>Demo Processor</span>
+            </button>
+          </div>
+        </div>
+
         {/* Mode Tabs */}
-        <div className="flex border-b border-white/10 bg-black/20">
+        <div className="flex border-b border-white/10 bg-black/20 mt-4">
           <button
             type="button"
             onClick={() => { setMode('SIGN_IN'); resetForm(); }}
@@ -363,33 +427,8 @@ export const AuthModal: React.FC = () => {
           {/* ── SIGN IN FORM ── */}
           {mode === 'SIGN_IN' && !showForgot && (
             <div className="space-y-4">
-
-              {/* Demo Access Shortcuts */}
-              <div className="space-y-2">
-                <p className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider text-center">Quick Demo Access</p>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleDemoLogin('FARMER')}
-                    disabled={loading}
-                    className="flex items-center justify-center gap-2 px-3 py-2.5 bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 text-xs font-bold rounded-2xl border border-emerald-500/30 transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    <Sprout className="w-3.5 h-3.5" />
-                    <span>Try as Farmer</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleDemoLogin('BUYER')}
-                    disabled={loading}
-                    className="flex items-center justify-center gap-2 px-3 py-2.5 bg-purple-600/20 hover:bg-purple-600/40 text-purple-400 text-xs font-bold rounded-2xl border border-purple-500/30 transition-all cursor-pointer disabled:opacity-50"
-                  >
-                    <Building2 className="w-3.5 h-3.5" />
-                    <span>Try as Buyer</span>
-                  </button>
-                </div>
-              </div>
-
               <form onSubmit={handleSignIn} className="space-y-3 pt-1">
+
                 <div>
                   <label className="block text-xs font-bold text-neutral-300 mb-1.5">Email Address</label>
                   <div className="relative">
