@@ -4,7 +4,7 @@ import {
   CheckCircle2, Eye, EyeOff, Building2, Factory, Store
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
-import type { BuyerType, UserRole } from '../types';
+import type { BuyerType, UserRole, User } from '../types';
 import { supabase } from '../lib/supabase';
 
 export const AuthModal: React.FC = () => {
@@ -41,7 +41,7 @@ export const AuthModal: React.FC = () => {
   };
 
   // Local storage user database helper
-  const getRegisteredUsers = (): Record<string, { user: any; password?: string }> => {
+  const getRegisteredUsers = (): Record<string, { user: User; password?: string }> => {
     try {
       const stored = localStorage.getItem('krishi_registered_users');
       return stored ? JSON.parse(stored) : {};
@@ -50,7 +50,7 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  const saveRegisteredUser = (emailKey: string, userData: any, pass?: string) => {
+  const saveRegisteredUser = (emailKey: string, userData: User, pass?: string) => {
     try {
       const users = getRegisteredUsers();
       users[emailKey.toLowerCase().trim()] = { user: userData, password: pass };
@@ -69,11 +69,11 @@ export const AuthModal: React.FC = () => {
     const demoPass = 'KrishiDemo@2026';
 
     try {
-      const demoUserData = {
+      const demoUserData: User = {
         id: demoRole === 'FARMER' ? 'farmer_demo_1' : 'buyer_demo_1',
         name: demoRole === 'FARMER' ? 'Demo Farmer (Ramesh Patil)' : 'Demo Aggregator (MahaAgri FPC)',
         role: demoRole,
-        buyerType: demoRole === 'BUYER' ? 'AGGREGATOR' : undefined,
+        buyerType: demoRole === 'BUYER' ? ('AGGREGATOR' as BuyerType) : undefined,
         district: 'Nashik',
         state: 'Maharashtra',
         email: demoEmail,
@@ -116,7 +116,7 @@ export const AuthModal: React.FC = () => {
 
     try {
       // 1. Try Supabase Auth
-      let authenticatedUser: any = null;
+      let authenticatedUser: User | null = null;
       try {
         const { data, error } = await supabase.auth.signInWithPassword({
           email: cleanEmail,
@@ -131,7 +131,7 @@ export const AuthModal: React.FC = () => {
             email: data.user.email || cleanEmail,
             name: meta.name || cleanEmail.split('@')[0],
             role: targetRole,
-            buyerType: meta.buyerType,
+            buyerType: meta.buyerType as BuyerType | undefined,
             phone: meta.phone || '',
             district: meta.district || 'Nashik',
             state: meta.state || 'Maharashtra',
@@ -168,7 +168,7 @@ export const AuthModal: React.FC = () => {
       }
 
       // 4. Auto-activate profile for seamless login
-      const autoUser = {
+      const autoUser: User = {
         id: `usr_${Date.now()}`,
         email: cleanEmail,
         name: cleanEmail.split('@')[0].replace(/[._-]/g, ' '),
@@ -241,7 +241,7 @@ export const AuthModal: React.FC = () => {
       }
 
       // 2. Construct authenticated user profile immediately
-      const newUserData = {
+      const newUserData: User = {
         id: supabaseUserId,
         email: cleanEmail,
         name: cleanName,
