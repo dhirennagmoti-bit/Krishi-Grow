@@ -559,5 +559,8 @@
   "district": {},
   "grades": {
     "Grade_A_Medium-Large": "Grade A Medium-Large"
+  },
+  "govSchemes": {
+    "docs": {}
   }
 }

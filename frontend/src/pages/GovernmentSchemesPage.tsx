@@ -74,26 +74,26 @@ export const GovernmentSchemesPage: React.FC = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/5">
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">
-                  {s.agency}
+                  {t(`govSchemes.${s.id}.agency`, s.agency)}
                 </span>
-                <h3 className="text-xl font-medium text-white mt-3">{s.name}</h3>
+                <h3 className="text-xl font-medium text-white mt-3">{t(`govSchemes.${s.id}.name`, s.name)}</h3>
               </div>
               <div className="text-left md:text-right">
                 <span className="text-xs text-neutral-400 block mb-1">{t('governmentSchemes.maxSubsidy')}</span>
-                <span className="text-lg font-medium font-mono text-blue-400">{s.maxSubsidyAmount}</span>
+                <span className="text-lg font-medium font-mono text-blue-400">{t(`govSchemes.${s.id}.maxSubsidyAmount`, s.maxSubsidyAmount)}</span>
               </div>
             </div>
 
-            <p className="text-sm text-neutral-300 font-normal leading-relaxed">{s.description}</p>
+            <p className="text-sm text-neutral-300 font-normal leading-relaxed">{t(`govSchemes.${s.id}.description`, s.description)}</p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/5 p-6 rounded-xl border border-white/5 text-sm">
               <div className="space-y-1">
                 <span className="font-medium text-white block">{t('governmentSchemes.eligibilityCriteria')}</span>
-                <p className="text-neutral-400 font-normal leading-relaxed">{s.eligibility}</p>
+                <p className="text-neutral-400 font-normal leading-relaxed">{t(`govSchemes.${s.id}.eligibility`, s.eligibility)}</p>
               </div>
               <div className="space-y-1">
                 <span className="font-medium text-white block">{t('governmentSchemes.subsidyBenefit')}</span>
-                <p className="text-emerald-400 font-normal leading-relaxed">{s.subsidyBenefit}</p>
+                <p className="text-emerald-400 font-normal leading-relaxed">{t(`govSchemes.${s.id}.subsidyBenefit`, s.subsidyBenefit)}</p>
               </div>
             </div>
 
@@ -104,7 +104,7 @@ export const GovernmentSchemesPage: React.FC = () => {
                 {s.requiredDocuments.map((doc, i) => (
                   <span key={i} className="text-xs bg-white/5 text-neutral-300 font-medium px-3 py-1.5 rounded-xl flex items-center gap-2 border border-white/10">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    <span>{doc}</span>
+                    <span>{t(`govSchemes.docs.${doc.replace(/\s+/g, '_')}`, doc)}</span>
                   </span>
                 ))}
               </div>
