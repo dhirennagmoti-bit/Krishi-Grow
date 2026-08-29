@@ -615,7 +615,85 @@
     "Grade_A_Medium-Large": "Grade A Medium-Large"
   },
   "govSchemes": {
-    "docs": {}
+    "docs": {
+      "Aadhaar_Card": "Aadhaar Card",
+      "Land_Record_(7/12_&_8A)": "Land Record (7/12 & 8A)",
+      "Bank_Account_Details": "Bank Account Details",
+      "Land_Record": "Land Record",
+      "Sowing_Certificate": "Sowing Certificate",
+      "Project_DPR": "Project DPR",
+      "Bank_Details": "Bank Details",
+      "FSSAI_Registration_Draft": "FSSAI Registration Draft",
+      "PAN_Card": "PAN Card",
+      "Quotation_for_Machinery": "Quotation for Machinery",
+      "Land_Record_(7/12)": "Land Record (7/12)",
+      "Bank_Passbook": "Bank Passbook",
+      "7/12_Extract": "7/12 Extract",
+      "8A_Extract": "8A Extract",
+      "Farmer_Registration": "Farmer Registration",
+      "FPO_Registration": "FPO Registration",
+      "Business_Plan": "Business Plan",
+      "Audit_Reports": "Audit Reports",
+      "7/12_&_8A_Extract": "7/12 & 8A Extract",
+      "Aadhaar": "Aadhaar",
+      "Quotation_from_authorized_dealer": "Quotation from authorized dealer"
+    },
+    "sch_03": {
+      "name": "Agriculture Infrastructure Fund (AIF)",
+      "agency": "Ministry of Agriculture & Farmers Welfare",
+      "description": "Supports agricultural infrastructure and post-harvest activities such as storage, logistics and other value-chain infrastructure.",
+      "eligibility": "Farmers, FPOs, Agri-entrepreneurs, Startups",
+      "subsidyBenefit": "3% Interest Subvention per annum up to ₹2 Crore",
+      "maxSubsidyAmount": "₹2,00,00,000"
+    },
+    "sch_04": {
+      "name": "PM Formalisation of Micro Food Processing (PMFME)",
+      "agency": "Ministry of Food Processing Industries (MoFPI)",
+      "description": "Supports formalisation and development of micro food-processing enterprises. Useful for converting agricultural produce into value-added products.",
+      "eligibility": "Food processors, farmers, FPOs, SHGs",
+      "subsidyBenefit": "35% Credit-linked capital subsidy",
+      "maxSubsidyAmount": "₹10,00,000"
+    },
+    "sch_05": {
+      "name": "PM-KUSUM",
+      "agency": "Ministry of New and Renewable Energy",
+      "description": "Supports agricultural solarisation, including standalone solar pumps and solarisation of eligible agricultural pumps.",
+      "eligibility": "Farmers and eligible agricultural landholders",
+      "subsidyBenefit": "Up to 60% subsidy on solar pumps",
+      "maxSubsidyAmount": "60% of cost"
+    },
+    "sch_06": {
+      "name": "MahaDBT Farmer Portal",
+      "agency": "Govt of Maharashtra",
+      "description": "Provides access to multiple Maharashtra agriculture schemes, including micro-irrigation, farm mechanization, horticulture, and rainfed agriculture.",
+      "eligibility": "Maharashtra farmers",
+      "subsidyBenefit": "Various State Subsidies & Direct Benefit Transfers",
+      "maxSubsidyAmount": "Varies"
+    },
+    "sch_07": {
+      "name": "National Agriculture Market (e-NAM)",
+      "agency": "Ministry of Agriculture",
+      "description": "A pan-India electronic agricultural market platform designed to connect agricultural markets and improve price discovery.",
+      "eligibility": "Farmers, traders, buyers, FPOs",
+      "subsidyBenefit": "Market linkage and transparent price discovery",
+      "maxSubsidyAmount": "N/A"
+    },
+    "sch_08": {
+      "name": "Small Farmers Agribusiness Consortium (SFAC)",
+      "agency": "Ministry of Agriculture",
+      "description": "Works on farmer collectivisation and agribusiness development, including support related to Farmer Producer Organisations (FPOs).",
+      "eligibility": "FPOs, farmer organisations and agribusiness ecosystem",
+      "subsidyBenefit": "Equity grant and credit guarantee for FPOs",
+      "maxSubsidyAmount": "Up to ₹15 Lakhs (Equity Grant)"
+    },
+    "sch_09": {
+      "name": "PMKSY — Per Drop More Crop",
+      "agency": "MahaDBT / GoI",
+      "description": "Supports micro-irrigation (drip/sprinkler) and efficient use of water for agriculture.",
+      "eligibility": "Farmers with cultivable land",
+      "subsidyBenefit": "Up to 55% subsidy for small/marginal farmers, 45% for others",
+      "maxSubsidyAmount": "Varies"
+    }
   },
   "common": {
     "problems": "Problems",
