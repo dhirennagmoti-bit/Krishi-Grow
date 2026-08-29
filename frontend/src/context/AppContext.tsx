@@ -68,6 +68,8 @@ interface AppContextType {
   setIsScannerModalOpen: (v: boolean) => void;
   isAIModalOpen: boolean;
   setIsAIModalOpen: (v: boolean) => void;
+  isVoiceModalOpen: boolean;
+  setIsVoiceModalOpen: (v: boolean) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
 
@@ -155,6 +157,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isScannerModalOpen, setIsScannerModalOpen] = useState(false);
   const [isAIModalOpen, setIsAIModalOpen] = useState(false);
+  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('landing');
 
   // Supply chain states
@@ -774,6 +777,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setIsScannerModalOpen,
         isAIModalOpen,
         setIsAIModalOpen,
+        isVoiceModalOpen,
+        setIsVoiceModalOpen,
         activeTab,
         setActiveTab,
 
