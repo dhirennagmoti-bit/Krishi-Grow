@@ -321,15 +321,15 @@ export const MarketPricesPage: React.FC = () => {
                   <tr key={m.id} className="hover:bg-white/5 transition-colors">
                     <td className="py-3.5 px-4 font-bold text-white flex items-center gap-2">
                       <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                      <span>{m.marketName}</span>
+                      <span>{t(`apmc.${m.marketName.replace(/\s+/g, '_')}`, m.marketName)}</span>
                     </td>
                     <td className="py-3.5 px-4">
-                      <div className="text-white font-medium">{m.taluka}</div>
-                      <div className="text-xs text-neutral-400">{m.district}, {t('marketPrices.mh')}</div>
+                      <div className="text-white font-medium">{t(`taluka.${m.taluka.replace(/\s+/g, '_')}`, m.taluka)}</div>
+                      <div className="text-xs text-neutral-400">{t(`district.${m.district.replace(/\s+/g, '_')}`, m.district)}, {t('marketPrices.mh')}</div>
                     </td>
                     <td className="py-3.5 px-4">
-                      <div className="text-neutral-200">{m.variety}</div>
-                      <div className="text-xs text-emerald-400">{m.grade}</div>
+                      <div className="text-neutral-200">{t(`varieties.${m.variety.replace(/\s+/g, '_')}`, m.variety)}</div>
+                      <div className="text-xs text-emerald-400">{t(`grades.${m.grade.replace(/\s+/g, '_')}`, m.grade)}</div>
                     </td>
                     <td className="py-3.5 px-4 font-mono text-neutral-300">₹{m.minPrice.toLocaleString()}</td>
                     <td className="py-3.5 px-4 font-mono text-neutral-300">₹{m.maxPrice.toLocaleString()}</td>

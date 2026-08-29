@@ -551,6 +551,39 @@
     "JS 335": "जेएस 335",
     "Lok 1": "लोक 1",
     "Alphonso": "हापुस",
-    "Salem": "सेलम"
+    "Salem": "सेलम",
+    "Nashik_Red_Garwa_/_F1": "नासिक रेड गरवा / एफ1"
+  },
+  "apmc": {
+    "Sangamner_APMC": "संगमनेर एपीएमसी",
+    "Shirdi_Rahata_APMC": "शिर्डी राहाता एपीएमसी",
+    "Kopargaon_APMC": "कोपरगांव एपीएमसी",
+    "Akola_APMC": "अकोला एपीएमसी",
+    "Balapur_APMC": "बालापुर एपीएमसी",
+    "Murtizapur_APMC": "मूर्तिजापूर एपीएमसी",
+    "Amravati_APMC": "अमरावती एपीएमसी",
+    "Achalpur_APMC": "अचलपुर एपीएमसी",
+    "Morshi_APMC": "मोर्शी एपीएमसी",
+    "Ahmednagar_APMC": "अहमदनगर एपीएमसी"
+  },
+  "taluka": {
+    "Sangamner": "संगमनेर",
+    "Rahata": "राहाता",
+    "Kopargaon": "कोपरगांव",
+    "Akola": "अकोला",
+    "Balapur": "बालापुर",
+    "Murtizapur": "मूर्तिजापूर",
+    "Amravati": "अमरावती",
+    "Achalpur": "अचलपुर",
+    "Morshi": "मोर्शी",
+    "Ahmednagar": "अहमदनगर"
+  },
+  "district": {
+    "Ahmednagar": "अहमदनगर",
+    "Akola": "अकोला",
+    "Amravati": "अमरावती"
+  },
+  "grades": {
+    "Grade_A_Medium-Large": "ग्रेड ए (मध्यम-बड़ा)"
   }
 }
