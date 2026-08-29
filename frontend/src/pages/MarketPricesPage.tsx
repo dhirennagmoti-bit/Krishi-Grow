@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   TrendingUp, ArrowUpRight, ArrowDownRight, Minus, Search, MapPin,
   ChevronDown, Building2, Package, Calendar, Filter, Sparkles
@@ -12,6 +13,7 @@ import {
 import { priceTrendHistorical } from '../data/mockData';
 
 export const MarketPricesPage: React.FC = () => {
+  const { t } = useTranslation();
   const [selectedCrop, setSelectedCrop] = useState<string>('Red Onion');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState<string>('ALL');
@@ -106,21 +108,21 @@ export const MarketPricesPage: React.FC = () => {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white">Maharashtra Mandi Rates Directory</h2>
+                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white">{t('marketPrices.headerTitle')}</h2>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  Live APMC Feeds
+                  {t('marketPrices.liveFeeds')}
                 </span>
               </div>
               <p className="text-xs text-neutral-400 mt-1 font-light">
-                Complete multi-district place-by-place price analytics & daily arrivals across Maharashtra APMC yards.
+                {t('marketPrices.headerSubtitle')}
               </p>
             </div>
           </div>
 
           {/* Select Crop with Down Arrow */}
           <div className="flex items-center gap-3 bg-white/5 p-2 rounded-2xl border border-white/10">
-            <span className="text-xs font-bold text-neutral-300 pl-2">Select Crop:</span>
+            <span className="text-xs font-bold text-neutral-300 pl-2">{t('marketPrices.selectCrop')}</span>
             <div className="relative">
               <select
                 value={selectedCrop}
@@ -146,39 +148,39 @@ export const MarketPricesPage: React.FC = () => {
         {/* Selected Crop Summary Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-6 pt-6 border-t border-white/10">
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-            <span className="text-[11px] text-neutral-400 font-medium block">State Avg Modal Price</span>
+            <span className="text-[11px] text-neutral-400 font-medium block">{t('marketPrices.stateAvgPrice')}</span>
             <div className="text-xl md:text-2xl font-black text-emerald-400 font-mono mt-1">
-              ₹{stats.avg.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">/ Qtl</span>
+              ₹{stats.avg.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">{t('marketPrices.qtl')}</span>
             </div>
-            <span className="text-[10px] text-neutral-500 mt-0.5 block">Across {cropRecords.length} Maharashtra APMCs</span>
+            <span className="text-[10px] text-neutral-500 mt-0.5 block">{t('marketPrices.acrossAPMCs', { count: cropRecords.length })}</span>
           </div>
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-            <span className="text-[11px] text-neutral-400 font-medium block">Highest Mandi Rate</span>
+            <span className="text-[11px] text-neutral-400 font-medium block">{t('marketPrices.highestRate')}</span>
             <div className="text-xl md:text-2xl font-black text-cyan-400 font-mono mt-1">
-              ₹{stats.max.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">/ Qtl</span>
+              ₹{stats.max.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">{t('marketPrices.qtl')}</span>
             </div>
             <span className="text-[10px] text-neutral-400 truncate block mt-0.5" title={stats.topMarket}>
-              📍 {stats.topMarket || 'Primary Mandis'}
+              📍 {stats.topMarket || t('marketPrices.primaryMandis')}
             </span>
           </div>
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-            <span className="text-[11px] text-neutral-400 font-medium block">Lowest Mandi Rate</span>
+            <span className="text-[11px] text-neutral-400 font-medium block">{t('marketPrices.lowestRate')}</span>
             <div className="text-xl md:text-2xl font-black text-amber-300 font-mono mt-1">
-              ₹{stats.min.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">/ Qtl</span>
+              ₹{stats.min.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">{t('marketPrices.qtl')}</span>
             </div>
             <span className="text-[10px] text-neutral-400 truncate block mt-0.5" title={stats.lowMarket}>
-              📍 {stats.lowMarket || 'Farm-gate APMC'}
+              📍 {stats.lowMarket || t('marketPrices.farmGateAPMC')}
             </span>
           </div>
 
           <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-            <span className="text-[11px] text-neutral-400 font-medium block">Total Daily Arrivals</span>
+            <span className="text-[11px] text-neutral-400 font-medium block">{t('marketPrices.totalArrivals')}</span>
             <div className="text-xl md:text-2xl font-black text-purple-400 font-mono mt-1">
-              {stats.totalArrivals.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">Qtl</span>
+              {stats.totalArrivals.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">{t('marketPrices.qtlLabel')}</span>
             </div>
-            <span className="text-[10px] text-neutral-500 mt-0.5 block">{(stats.totalArrivals / 10).toFixed(0)} Tonnes Volume Today</span>
+            <span className="text-[10px] text-neutral-500 mt-0.5 block">{t('marketPrices.volumeToday', { count: (stats.totalArrivals / 10).toFixed(0) })}</span>
           </div>
         </div>
       </div>
@@ -189,11 +191,11 @@ export const MarketPricesPage: React.FC = () => {
           <div>
             <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              7-Day Benchmark APMC Price Trend — {selectedCrop} (₹ / Quintal)
+              {t('marketPrices.trendTitle')} — {selectedCrop} (₹ {t('marketPrices.qtl')})
             </h3>
-            <p className="text-[11px] text-neutral-500">Live rate comparison of key terminal mandis in Maharashtra</p>
+            <p className="text-[11px] text-neutral-500">{t('marketPrices.trendSubtitle')}</p>
           </div>
-          <span className="text-xs text-emerald-400 font-mono font-medium">Daily Rate Update: 08:00 AM IST</span>
+          <span className="text-xs text-emerald-400 font-mono font-medium">{t('marketPrices.dailyUpdate')}</span>
         </div>
 
         <div className="h-64 w-full pt-2">
@@ -234,13 +236,13 @@ export const MarketPricesPage: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span>All Maharashtra Places Trading</span>
+              <span>{t('marketPrices.allPlaces')}</span>
               <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-xs border border-emerald-500/30">
-                {selectedCrop} ({filteredPrices.length} Locations)
+                {selectedCrop} ({t('marketPrices.locationsCount', { count: filteredPrices.length })})
               </span>
             </h3>
             <p className="text-xs text-neutral-400 mt-0.5">
-              Showing exact Mandi prices across all 36 Maharashtra districts for {selectedCrop}.
+              {t('marketPrices.showingExact', { crop: selectedCrop })}
             </p>
           </div>
 
@@ -248,7 +250,7 @@ export const MarketPricesPage: React.FC = () => {
             <Search className="w-4 h-4 text-neutral-400 absolute left-3 top-3" />
             <input
               type="text"
-              placeholder="Search market, taluka or district..."
+              placeholder={t('marketPrices.searchPlaceholder')}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-9 pr-4 py-2.5 text-xs bg-white/5 border border-white/10 text-white rounded-xl focus:border-emerald-500 focus:outline-none w-72 transition-all placeholder-neutral-500"
@@ -259,7 +261,7 @@ export const MarketPricesPage: React.FC = () => {
         {/* District Fast-Filter Pills */}
         <div className="space-y-1.5">
           <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
-            <Filter className="w-3 h-3 text-emerald-400" /> Filter by District:
+            <Filter className="w-3 h-3 text-emerald-400" /> {t('marketPrices.filterDistrict')}
           </span>
           <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
             {districtList.map(dist => (
@@ -273,7 +275,7 @@ export const MarketPricesPage: React.FC = () => {
                     : 'bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white border-white/10'
                 }`}
               >
-                {dist === 'ALL' ? 'All Maharashtra (36 Districts)' : dist}
+                {dist === 'ALL' ? t('marketPrices.allDistricts') : dist}
               </button>
             ))}
           </div>
@@ -284,21 +286,21 @@ export const MarketPricesPage: React.FC = () => {
           <table className="w-full text-left text-xs">
             <thead className="bg-white/5 text-neutral-400 font-bold border-b border-white/10">
               <tr>
-                <th className="py-3.5 px-4">APMC Market</th>
-                <th className="py-3.5 px-4">Taluka & District</th>
-                <th className="py-3.5 px-4">Variety & Grade</th>
-                <th className="py-3.5 px-4">Min Price</th>
-                <th className="py-3.5 px-4">Max Price</th>
-                <th className="py-3.5 px-4">Modal Price</th>
-                <th className="py-3.5 px-4">Daily Arrivals</th>
-                <th className="py-3.5 px-4">Trend</th>
+                <th className="py-3.5 px-4">{t('marketPrices.tableMarket')}</th>
+                <th className="py-3.5 px-4">{t('marketPrices.tableTaluka')}</th>
+                <th className="py-3.5 px-4">{t('marketPrices.tableVariety')}</th>
+                <th className="py-3.5 px-4">{t('marketPrices.tableMin')}</th>
+                <th className="py-3.5 px-4">{t('marketPrices.tableMax')}</th>
+                <th className="py-3.5 px-4">{t('marketPrices.tableModal')}</th>
+                <th className="py-3.5 px-4">{t('marketPrices.tableArrivals')}</th>
+                <th className="py-3.5 px-4">{t('marketPrices.tableTrend')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-neutral-300">
               {filteredPrices.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-8 text-center text-neutral-500">
-                    No market locations found matching "{searchTerm}". Try a different district or search query.
+                    {t('marketPrices.noMarketFound', { searchTerm })}
                   </td>
                 </tr>
               ) : (
@@ -310,7 +312,7 @@ export const MarketPricesPage: React.FC = () => {
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="text-white font-medium">{m.taluka}</div>
-                      <div className="text-[11px] text-neutral-400">{m.district}, MH</div>
+                      <div className="text-[11px] text-neutral-400">{m.district}, {t('marketPrices.mh')}</div>
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="text-neutral-200">{m.variety}</div>
@@ -319,24 +321,24 @@ export const MarketPricesPage: React.FC = () => {
                     <td className="py-3.5 px-4 font-mono text-neutral-300">₹{m.minPrice.toLocaleString()}</td>
                     <td className="py-3.5 px-4 font-mono text-neutral-300">₹{m.maxPrice.toLocaleString()}</td>
                     <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
-                      ₹{m.modalPrice.toLocaleString()} <span className="text-[10px] font-normal text-neutral-400">/ Qtl</span>
+                      ₹{m.modalPrice.toLocaleString()} <span className="text-[10px] font-normal text-neutral-400">{t('marketPrices.qtl')}</span>
                     </td>
                     <td className="py-3.5 px-4 font-mono">
                       <span className="font-bold text-white">{m.arrivalsQuintal.toLocaleString()}</span>{' '}
-                      <span className="text-neutral-500 text-[10px]">Qtl</span>
+                      <span className="text-neutral-500 text-[10px]">{t('marketPrices.qtlLabel')}</span>
                     </td>
                     <td className="py-3.5 px-4">
                       {m.trend === 'UP' ? (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold text-[10px]">
-                          <ArrowUpRight className="w-3 h-3" /> UP
+                          <ArrowUpRight className="w-3 h-3" /> {t('marketPrices.up')}
                         </span>
                       ) : m.trend === 'DOWN' ? (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold text-[10px]">
-                          <ArrowDownRight className="w-3 h-3" /> DOWN
+                          <ArrowDownRight className="w-3 h-3" /> {t('marketPrices.down')}
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-neutral-400 font-bold text-[10px]">
-                          <Minus className="w-3 h-3" /> STABLE
+                          <Minus className="w-3 h-3" /> {t('marketPrices.stable')}
                         </span>
                       )}
                     </td>

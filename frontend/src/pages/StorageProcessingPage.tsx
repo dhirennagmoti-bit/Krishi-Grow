@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Warehouse, Factory, MapPin, Phone, CheckCircle2, ShieldCheck,
   Search, Users, Briefcase, Sprout, Star, Mail, ArrowRight,
@@ -20,6 +21,7 @@ interface SearchResult {
 }
 
 export const StorageProcessingPage: React.FC = () => {
+  const { t } = useTranslation();
   const {
     setActiveTab: setGlobalActiveTab,
     user, buyerReqs, aggregatorFarmers, wholesalerCustomers, crops
@@ -155,15 +157,15 @@ export const StorageProcessingPage: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-2xl font-extrabold text-white">
-                  Cold Storage & Food Processing Hub
+                  {t('storage.title', 'Cold Storage & Food Processing Hub')}
                 </h2>
                 <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-indigo-600/20 text-indigo-300 border border-indigo-500/30">
                   <ShieldCheck className="w-3 h-3" />
-                  WDRA & FSSAI Verified
+                  {t('storage.verified', 'WDRA & FSSAI Verified')}
                 </span>
               </div>
               <p className="text-xs text-gray-300 mt-1">
-                Search facilities, farmers, aggregators, processors & wholesalers — all in one place.
+                {t('storage.subtitle', 'Search facilities, farmers, aggregators, processors & wholesalers — all in one place.')}
               </p>
             </div>
           </div>
@@ -197,7 +199,7 @@ export const StorageProcessingPage: React.FC = () => {
               }`}
             >
               <Warehouse className="w-4 h-4" />
-              <span>Cold Storages ({storageFacilities.length})</span>
+              <span>{t('storage.coldStorages', 'Cold Storages')} ({storageFacilities.length})</span>
             </button>
 
             <button
@@ -209,7 +211,7 @@ export const StorageProcessingPage: React.FC = () => {
               }`}
             >
               <Factory className="w-4 h-4" />
-              <span>Processing Plants ({processingFacilities.length})</span>
+              <span>{t('storage.processingPlants', 'Processing Plants')} ({processingFacilities.length})</span>
             </button>
           </div>
 
@@ -248,9 +250,9 @@ export const StorageProcessingPage: React.FC = () => {
                 <Users className="w-5 h-5 text-cyan-400" />
               </div>
               <div>
-                <h3 className="font-bold text-base text-white">People & Business Matches</h3>
+                <h3 className="font-bold text-base text-white">{t('storage.peopleDirectory', 'People & Business Matches')}</h3>
                 <p className="text-[11px] text-gray-400">
-                  {user.role === 'FARMER' ? 'Buyers, aggregators & processors matching your search' : 'Farmers & suppliers matching your search'}
+                  {user.role === 'FARMER' ? t('storage.peopleDirectoryDesc1', 'Buyers, aggregators & processors matching your search') : t('storage.peopleDirectoryDesc2', 'Farmers & suppliers matching your search')}
                 </p>
               </div>
             </div>
@@ -439,7 +441,7 @@ export const StorageProcessingPage: React.FC = () => {
                     onClick={() => handleInquiry(f.name)}
                     className="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold text-center border border-emerald-500/40 transition-colors cursor-pointer shadow-sm shadow-emerald-950"
                   >
-                    Book Space
+                    {t('storage.bookSpace', 'Book Space')}
                   </button>
                 </div>
               </div>
@@ -520,7 +522,7 @@ export const StorageProcessingPage: React.FC = () => {
                   onClick={() => handleInquiry(p.name)}
                   className="py-2.5 px-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold text-center border border-purple-500/40 transition-colors cursor-pointer shadow-sm shadow-purple-950"
                 >
-                  Send Inquiry
+                  {t('storage.sendInquiry', 'Send Inquiry')}
                 </button>
               </div>
             </div>

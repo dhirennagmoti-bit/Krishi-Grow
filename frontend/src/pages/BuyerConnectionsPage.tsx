@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Users, CheckCircle2, MapPin, Building2, ArrowRight, Warehouse, Factory,
   Send, Mail, Phone, Clock, ShieldCheck, Sparkles, Filter, X, Eye,
@@ -11,6 +12,7 @@ import type { ConnectionRequest, BuyerRequirement, StorageFacility, CropRecord }
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const BuyerConnectionsPage: React.FC = () => {
+  const { t } = useTranslation();
   const {
     user, buyerReqs, connectionRequests, requestConnection,
     updateConnectionStatus, requireAuth, crops
@@ -146,15 +148,15 @@ export const BuyerConnectionsPage: React.FC = () => {
               </div>
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-purple-400">
-                  Direct Trade & Cold Chain Network
+                  {t('buyers.directTrade', 'Direct Trade & Cold Chain Network')}
                 </span>
                 <h1 className="text-2xl md:text-3xl font-black text-white">
-                  Buyer & Farmer Connection Hub
+                  {t('buyers.connectionHub', 'Buyer & Farmer Connection Hub')}
                 </h1>
               </div>
             </div>
             <p className="text-neutral-400 text-sm mt-2 max-w-2xl">
-              Bidirectional matchmaking between Farmers, Aggregators, Food Processors, Wholesalers, and Cold Storage Owners with instant automated email notifications.
+              {t('buyers.description', 'Bidirectional matchmaking between Farmers, Aggregators, Food Processors, Wholesalers, and Cold Storage Owners with instant automated email notifications.')}
             </p>
           </div>
 
@@ -185,7 +187,7 @@ export const BuyerConnectionsPage: React.FC = () => {
             }`}
           >
             <Building2 className="w-4 h-4" />
-            <span>Verified Buyers ({buyerReqs.length})</span>
+            <span>{t('buyers.verifiedBuyers', 'Verified Buyers')} ({buyerReqs.length})</span>
           </button>
 
           <button
@@ -197,7 +199,7 @@ export const BuyerConnectionsPage: React.FC = () => {
             }`}
           >
             <Warehouse className="w-4 h-4" />
-            <span>Cold Storages & Silos ({storageFacilities.length})</span>
+            <span>{t('buyers.coldStorages', 'Cold Storages & Silos')} ({storageFacilities.length})</span>
           </button>
 
           <button
@@ -209,7 +211,7 @@ export const BuyerConnectionsPage: React.FC = () => {
             }`}
           >
             <Sprout className="w-4 h-4" />
-            <span>Active Farmers ({crops.length})</span>
+            <span>{t('buyers.activeFarmers', 'Active Farmers')} ({crops.length})</span>
           </button>
 
           <button
@@ -221,7 +223,7 @@ export const BuyerConnectionsPage: React.FC = () => {
             }`}
           >
             <Mail className="w-4 h-4" />
-            <span>My Connections & Trades ({connectionRequests.length})</span>
+            <span>{t('buyers.myConnections', 'My Connections & Trades')} ({connectionRequests.length})</span>
           </button>
         </div>
       </div>

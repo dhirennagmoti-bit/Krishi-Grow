@@ -6,9 +6,11 @@ import { useApp } from '../context/AppContext';
 import { ValueChainFlow } from '../components/ValueChainFlow';
 import FoldText from '../components/ui/FoldText';
 import { LandingElasticFeatures } from '../components/ui/landing-elastic-features';
+import { useTranslation } from 'react-i18next';
 
 export const LandingPage: React.FC = () => {
   const { setActiveTab, setIsAuthModalOpen, setIsAIModalOpen } = useApp();
+  const { t } = useTranslation();
 
   const farmerBenefits = [
     'Direct access to verified aggregators & bulk processing plants',
@@ -38,12 +40,12 @@ export const LandingPage: React.FC = () => {
           <div className="w-full p-8 md:p-12 space-y-6 z-10">
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight leading-tight flex flex-col gap-2">
               <FoldText
-                text="Connect crops to"
+                text={t('landing.heroLine1')}
                 splitBy="word"
                 trigger="mount"
               />
               <FoldText
-                text="better markets & processing."
+                text={t('landing.heroLine2')}
                 splitBy="word"
                 trigger="mount"
                 className="text-transparent bg-clip-text bg-gradient-to-r from-agri-300 via-emerald-200 to-amber-300"
@@ -51,7 +53,7 @@ export const LandingPage: React.FC = () => {
             </h1>
 
             <p className="text-sm sm:text-base text-gray-200 leading-relaxed">
-              <FoldText text="Optimize your harvest with data-backed decisions and connect directly with verified buyers." trigger="scroll" splitBy="word" />
+              <FoldText text={t('landing.heroSub')} trigger="scroll" splitBy="word" />
             </p>
 
             <div className="flex flex-wrap items-center gap-4 pt-2">
@@ -61,7 +63,7 @@ export const LandingPage: React.FC = () => {
                 }}
                 className="px-6 py-3.5 bg-agri-500 hover:bg-agri-400 text-white font-bold text-sm rounded-xl shadow-lg hover:shadow-agri-500/30 transition-all flex items-center gap-2 group border border-agri-400/50"
               >
-                <span><FoldText text="Get Started Now" trigger="scroll" splitBy="word" /></span>
+                <span><FoldText text={t('landing.getStarted')} trigger="scroll" splitBy="word" /></span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
@@ -69,7 +71,7 @@ export const LandingPage: React.FC = () => {
                 onClick={() => setActiveTab('solutions')}
                 className="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-bold text-sm rounded-xl border border-white/20 backdrop-blur-xs transition-all flex items-center gap-2"
               >
-                <span><FoldText text="Explore Solutions" trigger="scroll" splitBy="word" /></span>
+                <span><FoldText text={t('landing.exploreSolutions')} trigger="scroll" splitBy="word" /></span>
               </button>
             </div>
           </div>
@@ -85,13 +87,13 @@ export const LandingPage: React.FC = () => {
       <section className="space-y-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/10 shadow-2xl p-6 md:p-8">
         <div className="text-left max-w-2xl">
           <span className="text-xs font-bold uppercase tracking-wider text-agri-300 bg-white/10 px-3 py-1 rounded-full border border-white/10">
-            <FoldText text="Comprehensive Suite" trigger="scroll" splitBy="word" />
+            <FoldText text={t('landing.suite')} trigger="scroll" splitBy="word" />
           </span>
           <h2 className="text-2xl md:text-3xl font-extrabold text-white mt-4">
-            <FoldText text="Built for Farmers, Processors & Aggregators" trigger="scroll" splitBy="word" />
+            <FoldText text={t('landing.builtFor')} trigger="scroll" splitBy="word" />
           </h2>
           <p className="text-sm text-gray-300 mt-2">
-            <FoldText text="Eliminate post-harvest distress sales with data-backed decisions and direct value chain access." trigger="scroll" splitBy="word" />
+            <FoldText text={t('landing.eliminateDistress')} trigger="scroll" splitBy="word" />
           </p>
         </div>
 
@@ -105,11 +107,11 @@ export const LandingPage: React.FC = () => {
           {/* Farmer Column */}
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-agri-300 text-xs font-bold rounded-full border border-white/10">
-              <Sprout className="w-4 h-4 text-agri-400" /> <FoldText text="FOR FARMERS" trigger="scroll" splitBy="word" />
+              <Sprout className="w-4 h-4 text-agri-400" /> <FoldText text={t('landing.forFarmers')} trigger="scroll" splitBy="word" />
             </div>
-            <h3 className="text-2xl font-bold text-white"><FoldText text="Maximize Crop Realization" trigger="scroll" splitBy="word" /></h3>
+            <h3 className="text-2xl font-bold text-white"><FoldText text={t('landing.maximizeRealization')} trigger="scroll" splitBy="word" /></h3>
             <p className="text-sm text-gray-300">
-              <FoldText text="Stop suffering from distress sales during peak harvest. Transform raw produce into high-value market channels." trigger="scroll" splitBy="word" />
+              <FoldText text={t('landing.stopSuffering')} trigger="scroll" splitBy="word" />
             </p>
             <ul className="space-y-3 pt-2">
               {farmerBenefits.map((b, i) => (
@@ -123,18 +125,18 @@ export const LandingPage: React.FC = () => {
               onClick={() => setIsAuthModalOpen(true)}
               className="mt-6 px-6 py-3 bg-agri-500 text-white text-sm font-bold rounded-xl hover:bg-agri-400 transition-colors shadow-lg border border-agri-400/50"
             >
-              <FoldText text="Register as Farmer" trigger="scroll" splitBy="word" />
+              <FoldText text={t('landing.registerFarmer')} trigger="scroll" splitBy="word" />
             </button>
           </div>
 
           {/* Buyer Column */}
           <div className="space-y-4 pt-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-purple-300 text-xs font-bold rounded-full border border-white/10">
-              <Users className="w-4 h-4 text-purple-400" /> <FoldText text="FOR BUYERS & PROCESSORS" trigger="scroll" splitBy="word" />
+              <Users className="w-4 h-4 text-purple-400" /> <FoldText text={t('landing.forBuyers')} trigger="scroll" splitBy="word" />
             </div>
-            <h3 className="text-2xl font-bold text-white"><FoldText text="Direct Farm-Gate Procurement" trigger="scroll" splitBy="word" /></h3>
+            <h3 className="text-2xl font-bold text-white"><FoldText text={t('landing.directProcurement')} trigger="scroll" splitBy="word" /></h3>
             <p className="text-sm text-gray-300">
-              <FoldText text="Source graded agricultural raw materials directly from verified farm clusters with complete quality transparency." trigger="scroll" splitBy="word" />
+              <FoldText text={t('landing.sourceGraded')} trigger="scroll" splitBy="word" />
             </p>
             <ul className="space-y-3 pt-2">
               {buyerBenefits.map((b, i) => (
@@ -148,7 +150,7 @@ export const LandingPage: React.FC = () => {
               onClick={() => setIsAuthModalOpen(true)}
               className="mt-6 px-6 py-3 bg-white/20 backdrop-blur-md text-white text-sm font-bold rounded-xl hover:bg-white/30 transition-colors shadow-lg border border-white/20"
             >
-              <FoldText text="Register as Buyer" trigger="scroll" splitBy="word" />
+              <FoldText text={t('landing.registerBuyer')} trigger="scroll" splitBy="word" />
             </button>
           </div>
         </div>
@@ -162,9 +164,9 @@ export const LandingPage: React.FC = () => {
             <Bot className="w-8 h-8 text-amber-300" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-white"><FoldText text="Have questions about your harvest?" trigger="scroll" splitBy="word" /></h3>
+            <h3 className="text-xl font-bold text-white"><FoldText text={t('landing.haveQuestions')} trigger="scroll" splitBy="word" /></h3>
             <p className="text-xs text-gray-300 mt-1">
-              <FoldText text="Ask AgriAI assistant for instant advice on prices, transport, and disease treatment plans." trigger="scroll" splitBy="word" />
+              <FoldText text={t('landing.askAgriAI')} trigger="scroll" splitBy="word" />
             </p>
           </div>
         </div>
@@ -173,7 +175,7 @@ export const LandingPage: React.FC = () => {
           onClick={() => setIsAIModalOpen(true)}
           className="relative z-10 px-6 py-3 bg-amber-500/80 backdrop-blur-md text-white font-bold text-xs rounded-xl hover:bg-amber-400 transition-colors shadow-lg border border-amber-400/50 whitespace-nowrap"
         >
-          <FoldText text="Chat with AgriAI" trigger="scroll" splitBy="word" />
+          <FoldText text={t('landing.chatAgriAI')} trigger="scroll" splitBy="word" />
         </button>
       </section>
     </div>

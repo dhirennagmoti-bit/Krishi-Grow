@@ -1,6 +1,7 @@
 import { cn } from "../../lib/utils";
 import { ArrowUpRight, Sprout, Warehouse, Clock, TrendingUp, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface ElasticStatProps {
   id: string;
@@ -29,43 +30,45 @@ export function ElasticDashboardStats({
   buyerMatchesCount,
   onBuyerMatchClick
 }: Props) {
+  const { t } = useTranslation();
+  
   const items: ElasticStatProps[] = [
     {
       id: "01",
-      category: "Active Crops",
-      title: `${cropsCount} Batches`,
-      subtitle: "All Listed in Value Chain",
+      category: t('elasticStats.activeCrops'),
+      title: t('elasticStats.batches', { count: cropsCount }),
+      subtitle: t('elasticStats.allListedInValueChain'),
       src: "https://loremflickr.com/1000/800/crops,farm?random=1",
       alt: "Active Crops",
       icon: <Sprout className="w-5 h-5" />,
     },
     {
       id: "02",
-      category: "Total Inventory",
-      title: `${totalQuantity} Tonnes`,
-      subtitle: "Across Vegetables & Cash Crops",
+      category: t('elasticStats.totalInventory'),
+      title: t('elasticStats.tonnes', { count: totalQuantity }),
+      subtitle: t('elasticStats.acrossVegetablesCashCrops'),
       src: "https://loremflickr.com/1000/800/warehouse,inventory?random=2",
       alt: "Total Inventory",
       icon: <Warehouse className="w-5 h-5" />,
     },
     {
       id: "03",
-      category: "Shelf Life Alert",
-      title: `${shelfLifeAlerts} Crops Near Limit`,
-      subtitle: "Tomato (10 days remaining)",
+      category: t('elasticStats.shelfLifeAlert'),
+      title: t('elasticStats.cropsNearLimit', { count: shelfLifeAlerts }),
+      subtitle: t('elasticStats.tomato10Days'),
       src: "https://loremflickr.com/1000/800/tomatoes,farm?random=3",
       alt: "Shelf Life Alert",
       icon: <Clock className="w-5 h-5" />,
     },
     {
       id: "04",
-      category: "Buyer Matches",
-      title: `${buyerMatchesCount} High Matches`,
-      subtitle: "View 96% Match Buyer",
+      category: t('elasticStats.buyerMatches'),
+      title: t('elasticStats.highMatches', { count: buyerMatchesCount }),
+      subtitle: t('elasticStats.view96MatchBuyer'),
       src: "https://loremflickr.com/1000/800/handshake,business?random=4",
       alt: "Buyer Matches",
       icon: <TrendingUp className="w-5 h-5" />,
-      action: "View",
+      action: t('elasticStats.view'),
       onClickAction: onBuyerMatchClick
     },
   ];

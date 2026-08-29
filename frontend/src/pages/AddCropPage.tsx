@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Sprout, CheckCircle2, ArrowRight, ArrowLeft, MapPin, TrendingUp, Truck, ShieldCheck
 } from 'lucide-react';
@@ -10,6 +11,7 @@ import { CropGridSelector } from '../components/CropGridSelector';
 import { getCropImage, CROP_CATALOG } from '../data/cropCatalog';
 
 export const AddCropPage: React.FC = () => {
+  const { t } = useTranslation();
   const { user, addCrop, setActiveTab, requireAuth } = useApp();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [showAllCrops, setShowAllCrops] = useState(false);
@@ -120,7 +122,11 @@ export const AddCropPage: React.FC = () => {
   };
 
   const wizardSteps = [
-    'Choose Crop', 'Choose Variety', 'Choose Grade', 'Choose Shelf Life', 'Where to Sell'
+    t('addCrop.step1', 'Choose Crop'), 
+    t('addCrop.step2', 'Choose Variety'), 
+    t('addCrop.step3', 'Choose Grade'), 
+    t('addCrop.step4', 'Choose Shelf Life'), 
+    t('addCrop.step5', 'Where to Sell')
   ];
 
   // Algorithmic Recommendation Calculation
@@ -180,7 +186,7 @@ export const AddCropPage: React.FC = () => {
             <Sprout className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
-            <h2 className="text-2xl font-medium tracking-tight text-white">Sell Optimizer (5-Step Wizard)</h2>
+            <h2 className="text-2xl font-medium tracking-tight text-white">{t('addCrop.title')}</h2>
             <p className="text-sm text-neutral-400 mt-1 font-light">
               Step {currentStep} of 5 — {wizardSteps[currentStep - 1]}
             </p>
@@ -208,7 +214,7 @@ export const AddCropPage: React.FC = () => {
         {/* Step 1: Crop Selection */}
         {currentStep === 1 && (
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-white">Step 1 — Select Crop</h3>
+            <h3 className="text-lg font-medium text-white">Step 1 — {t('addCrop.step1', 'Select Crop')}</h3>
             <CropGridSelector
               selectedCrop={cropName}
               onSelectCrop={(name) => setCropName(name)}
@@ -219,9 +225,9 @@ export const AddCropPage: React.FC = () => {
         {/* Step 2: Variety */}
         {currentStep === 2 && (
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-white">Step 2 — Crop Variety</h3>
+            <h3 className="text-lg font-medium text-white">Step 2 — {t('addCrop.step2', 'Crop Variety')}</h3>
             <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Select Known Variety</label>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">{t('addCrop.variety', 'Select Known Variety')}</label>
               <select
                 value={variety}
                 onChange={(e) => setVariety(e.target.value)}
@@ -238,9 +244,9 @@ export const AddCropPage: React.FC = () => {
         {/* Step 3: Quality & Grade */}
         {currentStep === 3 && (
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-white">Step 3 — Choose Grade</h3>
+            <h3 className="text-lg font-medium text-white">Step 3 — {t('addCrop.step3', 'Choose Grade')}</h3>
             <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-3">Quality Grade</label>
+              <label className="block text-sm font-medium text-neutral-400 mb-3">{t('addCrop.grade', 'Quality Grade')}</label>
               <div className="flex gap-4">
                 {(['A+', 'A', 'B', 'C'] as QualityGrade[]).map((g) => (
                   <button
@@ -262,9 +268,9 @@ export const AddCropPage: React.FC = () => {
         {/* Step 4: Shelf Life */}
         {currentStep === 4 && (
           <div className="space-y-6">
-            <h3 className="text-lg font-medium text-white">Step 4 — Choose Shelf Life</h3>
+            <h3 className="text-lg font-medium text-white">Step 4 — {t('addCrop.step4', 'Choose Shelf Life')}</h3>
             <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Estimated Shelf Life (Days Remaining)</label>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">{t('addCrop.estimatedShelfLife', 'Estimated Shelf Life (Days Remaining)')}</label>
               <input
                 type="number"
                 value={shelfLifeDays}
@@ -283,7 +289,7 @@ export const AddCropPage: React.FC = () => {
           <div className="space-y-8">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-medium tracking-tight text-white">Step 5 — Where to Sell</h3>
+                <h3 className="text-xl font-medium tracking-tight text-white">Step 5 — {t('addCrop.step5', 'Where to Sell')}</h3>
                 <p className="text-sm text-neutral-400 mt-1 font-light">Based on {district} location, 1 Tonne load, {cropName} (Grade {grade}).</p>
               </div>
             </div>
@@ -356,7 +362,7 @@ export const AddCropPage: React.FC = () => {
               onClick={handleSave}
               className="px-8 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-xl shadow-sm flex items-center gap-2 transition-colors"
             >
-              <span>Save Crop Record</span>
+              <span>{t('addCrop.submit', 'Save Crop Record')}</span>
             </button>
           )}
         </div>

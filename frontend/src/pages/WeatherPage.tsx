@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   CloudSun, Droplets, Wind, AlertTriangle, ShieldCheck,
   Thermometer, Eye, Gauge, RefreshCw, MapPin, Loader2, Cloud,
@@ -133,6 +134,7 @@ const getMockWeather = (location: string): WeatherData => ({
 });
 
 export const WeatherPage: React.FC = () => {
+  const { t } = useTranslation();
   const { user } = useApp();
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -289,11 +291,11 @@ export const WeatherPage: React.FC = () => {
             <CloudSun className="w-7 h-7 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-white">Micro-Weather & Crop Risk Advisory</h2>
+            <h2 className="text-xl font-black text-white">{t('weather.title')}</h2>
             <p className="text-xs text-neutral-400 mt-0.5">
-              Live agricultural forecast powered by OpenWeatherMap
+              {t('weather.subtitle')}
               {weather && (
-                <span className="ml-2 text-emerald-400">• Updated {lastUpdated.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
+                <span className="ml-2 text-emerald-400">• {t('weather.updatedAt', { time: lastUpdated.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) })}</span>
               )}
             </p>
           </div>
@@ -307,7 +309,7 @@ export const WeatherPage: React.FC = () => {
               type="text"
               value={inputCity}
               onChange={e => setInputCity(e.target.value)}
-              placeholder="Enter district/city..."
+              placeholder={t('weather.searchPlaceholder')}
               className="pl-8 pr-3 py-2 text-xs bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:border-blue-500 outline-none w-44 transition-colors"
             />
           </div>
@@ -316,7 +318,7 @@ export const WeatherPage: React.FC = () => {
             className="px-3 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center gap-1.5"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            <span>Check</span>
+            <span>{t('weather.check')}</span>
           </button>
         </form>
       </div>
@@ -325,14 +327,14 @@ export const WeatherPage: React.FC = () => {
       {error && (
         <div className="bg-amber-950/40 border border-amber-500/30 text-amber-300 text-xs rounded-2xl px-4 py-3 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 shrink-0" />
-          <span>{error} Showing approximate data.</span>
+          <span>{error} {t('weather.errorMsg')}</span>
         </div>
       )}
 
       {loading ? (
         <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-16 flex flex-col items-center justify-center gap-4">
           <Loader2 className="w-10 h-10 text-blue-400 animate-spin" />
-          <p className="text-neutral-400 text-sm">Fetching live weather data...</p>
+          <p className="text-neutral-400 text-sm">{t('weather.fetching')}</p>
         </div>
       ) : weather ? (
         <>
@@ -353,16 +355,16 @@ export const WeatherPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="text-blue-200 font-semibold mt-1">{weather.condition}</div>
-                <div className="text-neutral-400 text-xs mt-0.5">Feels like {weather.feelsLike}°C</div>
+                <div className="text-neutral-400 text-xs mt-0.5">{t('weather.feelsLike', { temp: weather.feelsLike })}</div>
               </div>
 
               {/* Stats Grid */}
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { Icon: Droplets, label: 'Humidity', value: `${weather.humidity}%`, color: 'text-blue-300' },
-                  { Icon: Wind, label: 'Wind', value: `${weather.windSpeedKm} km/h`, color: 'text-cyan-300' },
-                  { Icon: Eye, label: 'Visibility', value: `${weather.visibility} km`, color: 'text-purple-300' },
-                  { Icon: Gauge, label: 'Pressure', value: `${weather.pressure} hPa`, color: 'text-amber-300' },
+                  { Icon: Droplets, label: t('weather.humidity'), value: `${weather.humidity}%`, color: 'text-blue-300' },
+                  { Icon: Wind, label: t('weather.wind'), value: `${weather.windSpeedKm} km/h`, color: 'text-cyan-300' },
+                  { Icon: Eye, label: t('weather.visibility'), value: `${weather.visibility} km`, color: 'text-purple-300' },
+                  { Icon: Gauge, label: t('weather.pressure'), value: `${weather.pressure} hPa`, color: 'text-amber-300' },
                 ].map(({ Icon, label, value, color }) => (
                   <div key={label} className="bg-white/10 backdrop-blur-md rounded-2xl p-3 text-center border border-white/10">
                     <Icon className={`w-5 h-5 mx-auto mb-1 ${color}`} />
@@ -376,7 +378,7 @@ export const WeatherPage: React.FC = () => {
             {/* Rain indicator */}
             <div className="mt-5 pt-4 border-t border-white/10">
               <div className="flex items-center justify-between mb-1.5">
-                <span className="text-xs text-blue-200 font-semibold">Today's Rain Probability</span>
+                <span className="text-xs text-blue-200 font-semibold">{t('weather.rainProbability')}</span>
                 <span className={`text-xs font-black font-mono ${weather.rainProbability >= 70 ? 'text-rose-400' : weather.rainProbability >= 40 ? 'text-amber-400' : 'text-emerald-400'}`}>
                   {weather.rainProbability}%
                 </span>
@@ -395,7 +397,7 @@ export const WeatherPage: React.FC = () => {
 
           {/* 7-Day Forecast */}
           <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6">
-            <h3 className="text-sm font-black text-white mb-4 uppercase tracking-wider">7-Day Forecast</h3>
+            <h3 className="text-sm font-black text-white mb-4 uppercase tracking-wider">{t('weather.forecastTitle')}</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
               {weather.forecast.map((f, i) => (
                 <div
@@ -422,8 +424,8 @@ export const WeatherPage: React.FC = () => {
           <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6">
             <div className="flex items-center gap-2 mb-4">
               <ShieldCheck className="w-5 h-5 text-emerald-400" />
-              <h3 className="text-sm font-black text-white uppercase tracking-wider">AI Crop Risk Advisory</h3>
-              <span className="text-[10px] text-neutral-400 ml-1">Based on live {weather.location} weather</span>
+              <h3 className="text-sm font-black text-white uppercase tracking-wider">{t('weather.advisoryTitle')}</h3>
+              <span className="text-[10px] text-neutral-400 ml-1">{t('weather.basedOn', { location: weather.location })}</span>
             </div>
             <div className="space-y-3">
               {weather.cropRisks.map((risk, i) => (
@@ -434,7 +436,7 @@ export const WeatherPage: React.FC = () => {
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-black text-white">{risk.crop}</span>
                     <span className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase ${riskBadge[risk.riskLevel]}`}>
-                      {risk.riskLevel} Risk
+                      {t('weather.risk', { level: risk.riskLevel })}
                     </span>
                   </div>
                   <p className="text-xs text-neutral-300 leading-relaxed mb-2">{risk.message}</p>

@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export const Navbar: React.FC = () => {
   const {
@@ -17,7 +18,15 @@ export const Navbar: React.FC = () => {
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isDemoMenuOpen, setIsDemoMenuOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  const { t, i18n } = useTranslation();
+
+  const changeLanguage = (langCode: string) => {
+    i18n.changeLanguage(langCode);
+    setIsLangOpen(false);
+  };
 
   const unreadCount = notifications.filter(n => !n.isRead).length;
 
@@ -27,32 +36,33 @@ export const Navbar: React.FC = () => {
       setIsNotifOpen(false);
       setIsUserMenuOpen(false);
       setIsDemoMenuOpen(false);
+      setIsLangOpen(false);
     };
-    if (isNotifOpen || isUserMenuOpen || isDemoMenuOpen) {
+    if (isNotifOpen || isUserMenuOpen || isDemoMenuOpen || isLangOpen) {
       document.addEventListener('click', handleClickOutside);
     }
     return () => document.removeEventListener('click', handleClickOutside);
-  }, [isNotifOpen, isUserMenuOpen, isDemoMenuOpen]);
+  }, [isNotifOpen, isUserMenuOpen, isDemoMenuOpen, isLangOpen]);
 
   // Farmer Navigation Items
   const farmerNavItems = [
-    { id: 'landing', label: 'Home', onClick: () => setActiveTab('landing') },
-    { id: 'farmer-dashboard', label: 'Dashboard', onClick: () => requireAuth(() => setActiveTab('farmer-dashboard')) },
-    { id: 'add-crop', label: '+ Add Crop', onClick: () => requireAuth(() => setActiveTab('add-crop')) },
-    { id: 'losses-prevention', label: 'Krishi Rakshak', onClick: () => setActiveTab('losses-prevention') },
-    { id: 'solutions', label: 'Solutions', onClick: () => setActiveTab('solutions') },
-    { id: 'market-prices', label: 'Mandi Prices', onClick: () => setActiveTab('market-prices') },
-    { id: 'schemes', label: 'Govt Schemes', onClick: () => setActiveTab('schemes') },
-    { id: 'weather', label: 'Weather', onClick: () => setActiveTab('weather') },
+    { id: 'landing', label: t('nav.home'), onClick: () => setActiveTab('landing') },
+    { id: 'farmer-dashboard', label: t('nav.dashboard'), onClick: () => requireAuth(() => setActiveTab('farmer-dashboard')) },
+    { id: 'add-crop', label: t('nav.addCrop'), onClick: () => requireAuth(() => setActiveTab('add-crop')) },
+    { id: 'losses-prevention', label: t('nav.krishiRakshak'), onClick: () => setActiveTab('losses-prevention') },
+    { id: 'solutions', label: t('nav.solutions'), onClick: () => setActiveTab('solutions') },
+    { id: 'market-prices', label: t('nav.mandiPrices'), onClick: () => setActiveTab('market-prices') },
+    { id: 'schemes', label: t('nav.govtSchemes'), onClick: () => setActiveTab('schemes') },
+    { id: 'weather', label: t('nav.weather'), onClick: () => setActiveTab('weather') },
   ];
 
   // Buyer Supply Chain Navigation Items
   const buyerNavItems = [
-    { id: 'buyer-dashboard', label: 'Aggregator Hub', onClick: () => { switchBuyerType('AGGREGATOR'); setActiveTab('buyer-dashboard'); } },
-    { id: 'processor-dashboard', label: 'Processor Plant', onClick: () => { switchBuyerType('PROCESSOR'); setActiveTab('processor-dashboard'); } },
-    { id: 'wholesaler-dashboard', label: 'Wholesaler Terminal', onClick: () => { switchBuyerType('WHOLESALER'); setActiveTab('wholesaler-dashboard'); } },
-    { id: 'find-farmers', label: 'Find Farmers', onClick: () => setActiveTab('find-farmers') },
-    { id: 'market-prices', label: 'Mandi Prices', onClick: () => setActiveTab('market-prices') },
+    { id: 'buyer-dashboard', label: t('nav.aggregatorHub'), onClick: () => { switchBuyerType('AGGREGATOR'); setActiveTab('buyer-dashboard'); } },
+    { id: 'processor-dashboard', label: t('nav.processorPlant'), onClick: () => { switchBuyerType('PROCESSOR'); setActiveTab('processor-dashboard'); } },
+    { id: 'wholesaler-dashboard', label: t('nav.wholesalerTerminal'), onClick: () => { switchBuyerType('WHOLESALER'); setActiveTab('wholesaler-dashboard'); } },
+    { id: 'find-farmers', label: t('nav.findFarmers'), onClick: () => setActiveTab('find-farmers') },
+    { id: 'market-prices', label: t('nav.mandiPrices'), onClick: () => setActiveTab('market-prices') },
   ];
 
   const currentNavItems = user.role === 'FARMER' ? farmerNavItems : buyerNavItems;
@@ -71,7 +81,7 @@ export const Navbar: React.FC = () => {
               <Sprout className="w-6 h-6" />
             </div>
             <span className="font-black text-lg md:text-xl text-white tracking-tight leading-none">
-              Krishi Grow
+              {t('nav.brand')}
             </span>
           </button>
         </div>
@@ -113,6 +123,54 @@ export const Navbar: React.FC = () => {
 
         {/* Right Controls */}
         <div className="flex items-center gap-2 md:gap-3">
+
+          {/* Language Switcher */}
+          <div className="relative" onClick={e => e.stopPropagation()}>
+            <button
+              onClick={() => {
+                setIsLangOpen(!isLangOpen);
+                setIsNotifOpen(false);
+                setIsUserMenuOpen(false);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-neutral-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors cursor-pointer text-xs font-bold"
+            >
+              <Globe className="w-4 h-4" />
+              <span className="hidden sm:inline uppercase">
+                {i18n.language === 'hi' ? 'हिन्दी' : i18n.language === 'mr' ? 'मराठी' : 'EN'}
+              </span>
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            
+            <AnimatePresence>
+              {isLangOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="absolute right-0 mt-2 w-32 bg-[#121214] backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/15 p-2 z-50"
+                >
+                  <button
+                    onClick={() => changeLanguage('en')}
+                    className="w-full text-left px-3 py-2 text-xs font-bold text-neutral-300 hover:text-white hover:bg-white/10 rounded-xl cursor-pointer"
+                  >
+                    English
+                  </button>
+                  <button
+                    onClick={() => changeLanguage('hi')}
+                    className="w-full text-left px-3 py-2 text-xs font-bold text-neutral-300 hover:text-white hover:bg-white/10 rounded-xl cursor-pointer"
+                  >
+                    हिन्दी
+                  </button>
+                  <button
+                    onClick={() => changeLanguage('mr')}
+                    className="w-full text-left px-3 py-2 text-xs font-bold text-neutral-300 hover:text-white hover:bg-white/10 rounded-xl cursor-pointer"
+                  >
+                    मराठी
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           {/* Role badge (read-only — no toggle) */}
           <div
@@ -157,8 +215,8 @@ export const Navbar: React.FC = () => {
                   className="absolute right-0 mt-2 w-80 bg-[#121214] backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/15 p-4 z-50"
                 >
                   <div className="flex items-center justify-between pb-3 border-b border-white/10">
-                    <span className="font-bold text-sm text-white">Notifications</span>
-                    <span className="text-xs text-neutral-400 font-mono">{notifications.length} Total</span>
+                    <span className="font-bold text-sm text-white">{t('nav.notifications')}</span>
+                    <span className="text-xs text-neutral-400 font-mono">{notifications.length} {t('nav.total')}</span>
                   </div>
                   <div className="space-y-3 mt-3 max-h-64 overflow-y-auto pr-1">
                     {notifications.map(n => (
@@ -208,14 +266,14 @@ export const Navbar: React.FC = () => {
                       className="flex items-center gap-2 w-full px-3 py-2 text-xs font-medium text-neutral-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors cursor-pointer"
                     >
                       <UserIcon className="w-3.5 h-3.5" />
-                      <span>My Profile</span>
+                      <span>{t('nav.myProfile')}</span>
                     </button>
                     <button
                       onClick={() => { setActiveTab('customer-support'); setIsUserMenuOpen(false); }}
                       className="flex items-center gap-2 w-full px-3 py-2 text-xs font-medium text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/30 rounded-xl transition-colors cursor-pointer"
                     >
                       <span className="w-3.5 h-3.5 text-center font-bold">🎧</span>
-                      <span>Customer Support</span>
+                      <span>{t('nav.customerSupport')}</span>
                     </button>
                     <button
                       onClick={() => {
@@ -225,11 +283,11 @@ export const Navbar: React.FC = () => {
                       className="flex items-center gap-2 w-full px-3 py-2 text-xs font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 rounded-xl transition-colors cursor-pointer"
                     >
                       <LogOut className="w-3.5 h-3.5" />
-                      <span>Sign Out</span>
+                      <span>{t('nav.signOut')}</span>
                     </button>
                     <div className="border-t border-white/10 mt-1 pt-1">
                       <p className="px-3 py-1.5 text-[9px] text-neutral-500">
-                        To switch role (Farmer ↔ Buyer), sign out and log in with a different account.
+                        {t('nav.switchRoleHelp')}
                       </p>
                     </div>
                   </motion.div>
@@ -246,9 +304,9 @@ export const Navbar: React.FC = () => {
                     setIsDemoMenuOpen(!isDemoMenuOpen);
                   }}
                   className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-amber-500/20 to-emerald-500/20 border border-amber-400/40 text-amber-300 hover:text-white text-xs font-bold rounded-xl hover:bg-amber-500/30 transition-all cursor-pointer shadow-sm"
-                  title="Explore Platform as Demo User"
+                  title={t('nav.tryDemo')}
                 >
-                  <span>⚡ Try Demo</span>
+                  <span>⚡ {t('nav.tryDemo')}</span>
                   <ChevronDown className="w-3 h-3 text-amber-300" />
                 </button>
 
@@ -262,7 +320,7 @@ export const Navbar: React.FC = () => {
                       className="absolute right-0 mt-2 w-64 bg-[#141418] border border-white/15 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-2xl"
                     >
                       <p className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                        Select Demo Experience
+                        {t('nav.selectDemo')}
                       </p>
 
                       {/* Farmer Demo Option */}
@@ -277,8 +335,8 @@ export const Navbar: React.FC = () => {
                           <Sprout className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-white group-hover:text-emerald-300">🌾 Demo Farmer</p>
-                          <p className="text-[10px] text-neutral-400 leading-tight">Ramesh Patil (15 Acres, Crops, Mandi)</p>
+                          <p className="text-xs font-bold text-white group-hover:text-emerald-300">🌾 {t('nav.demoFarmer')}</p>
+                          <p className="text-[10px] text-neutral-400 leading-tight">{t('nav.demoFarmerDesc')}</p>
                         </div>
                       </button>
 
@@ -294,8 +352,8 @@ export const Navbar: React.FC = () => {
                           <Building2 className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-white group-hover:text-purple-300">🏢 Demo Aggregator</p>
-                          <p className="text-[10px] text-neutral-400 leading-tight">MahaAgri FPC (Collection, Slips)</p>
+                          <p className="text-xs font-bold text-white group-hover:text-purple-300">🏢 {t('nav.demoAggregator')}</p>
+                          <p className="text-[10px] text-neutral-400 leading-tight">{t('nav.demoAggregatorDesc')}</p>
                         </div>
                       </button>
 
@@ -311,8 +369,8 @@ export const Navbar: React.FC = () => {
                           <Factory className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-white group-hover:text-cyan-300">🏭 Demo Processor</p>
-                          <p className="text-[10px] text-neutral-400 leading-tight">Kisan Agro Processing Plant</p>
+                          <p className="text-xs font-bold text-white group-hover:text-cyan-300">🏭 {t('nav.demoProcessor')}</p>
+                          <p className="text-[10px] text-neutral-400 leading-tight">{t('nav.demoProcessorDesc')}</p>
                         </div>
                       </button>
                     </motion.div>
@@ -325,14 +383,14 @@ export const Navbar: React.FC = () => {
                 className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-white/10 border border-white/15 text-white text-xs font-bold rounded-xl hover:bg-white/20 transition-all cursor-pointer"
               >
                 <LogIn className="w-3.5 h-3.5" />
-                <span>Sign In</span>
+                <span>{t('nav.signIn')}</span>
               </button>
               <button
                 onClick={() => setIsAuthModalOpen(true)}
                 className="flex items-center gap-2 px-3.5 py-1.5 bg-emerald-600 text-white text-xs font-bold rounded-xl hover:bg-emerald-500 shadow-md transition-all cursor-pointer"
               >
                 <UserPlus className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Register</span>
+                <span className="hidden sm:inline">{t('nav.register')}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -372,19 +430,19 @@ export const Navbar: React.FC = () => {
             ))}
             {!isAuthenticated && (
               <div className="pt-3 border-t border-white/10 space-y-2">
-                <p className="text-[10px] uppercase font-bold text-neutral-400 px-1">Instant Demo Options</p>
+                <p className="text-[10px] uppercase font-bold text-neutral-400 px-1">{t('nav.instantDemo')}</p>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => { loginAsDemo('FARMER'); setIsMobileMenuOpen(false); }}
                     className="px-3 py-2 bg-emerald-600/30 border border-emerald-500/40 text-emerald-300 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <span>🌾 Demo Farmer</span>
+                    <span>🌾 {t('nav.demoFarmer')}</span>
                   </button>
                   <button
                     onClick={() => { loginAsDemo('BUYER', 'AGGREGATOR'); setIsMobileMenuOpen(false); }}
                     className="px-3 py-2 bg-purple-600/30 border border-purple-500/40 text-purple-300 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
                   >
-                    <span>🏢 Demo Buyer</span>
+                    <span>🏢 {t('nav.demoAggregator')}</span>
                   </button>
                 </div>
                 <button
@@ -392,7 +450,7 @@ export const Navbar: React.FC = () => {
                   className="w-full mt-1 px-3 py-2.5 bg-emerald-600 text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <UserPlus className="w-4 h-4" />
-                  <span>Sign In / Register</span>
+                  <span>{t('nav.signInRegister')}</span>
                 </button>
               </div>
             )}

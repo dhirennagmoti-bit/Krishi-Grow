@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useApp } from '../context/AppContext';
 import { AggregatorDashboard } from './aggregator/AggregatorDashboard';
 import { ProcessorDashboard } from './processor/ProcessorDashboard';
@@ -8,6 +9,7 @@ import type { BuyerType } from '../types';
 
 export const BuyerDashboard: React.FC = () => {
   const { user, switchBuyerType } = useApp();
+  const { t } = useTranslation();
   const currentBuyerType: BuyerType = user.buyerType || 'AGGREGATOR';
 
   return (
@@ -25,7 +27,7 @@ export const BuyerDashboard: React.FC = () => {
             }`}
           >
             <Users className="w-4 h-4" />
-            <span>1. Aggregator Hub</span>
+            <span>{t('buyerDashboard.aggregatorHub')}</span>
           </button>
 
           <button
@@ -37,7 +39,7 @@ export const BuyerDashboard: React.FC = () => {
             }`}
           >
             <Factory className="w-4 h-4" />
-            <span>2. Processor Plant</span>
+            <span>{t('buyerDashboard.processorPlant')}</span>
           </button>
 
           <button
@@ -49,13 +51,13 @@ export const BuyerDashboard: React.FC = () => {
             }`}
           >
             <Store className="w-4 h-4" />
-            <span>3. Wholesaler Terminal</span>
+            <span>{t('buyerDashboard.wholesalerTerminal')}</span>
           </button>
         </div>
 
         <div className="hidden lg:flex items-center gap-2 px-3 text-xs text-neutral-400 font-mono">
-          <span>Connected Value Chain:</span>
-          <span className="text-emerald-400 font-bold">Farmer → Aggregator → Processor / Wholesaler</span>
+          <span>{t('buyerDashboard.connectedValueChain')}</span>
+          <span className="text-emerald-400 font-bold">{t('buyerDashboard.valueChainFlow')}</span>
         </div>
       </div>
 

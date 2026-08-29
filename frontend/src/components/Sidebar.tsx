@@ -5,55 +5,57 @@ import {
   Headphones
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useTranslation } from 'react-i18next';
 
 export const Sidebar: React.FC = () => {
   const { user, activeTab, setActiveTab, setIsAuthModalOpen, setIsAIModalOpen, switchBuyerType, logout, isAuthenticated } = useApp();
+  const { t } = useTranslation();
 
   const farmerItems = [
-    { id: 'farmer-dashboard', label: 'Farmer Dashboard', icon: LayoutDashboard },
-    { id: 'my-crops', label: 'My Crops', icon: Sprout },
-    { id: 'add-crop', label: '+ Add Crop', icon: PlusCircle },
-    { id: 'transport', label: 'Transport Calculator', icon: Truck },
-    { id: 'solutions', label: 'Solutions Suite', icon: Wrench },
-    { id: 'market-prices', label: 'Market Prices', icon: TrendingUp },
-    { id: 'buyer-connections', label: 'Buyer Connections', icon: Users },
-    { id: 'schemes', label: 'Govt Schemes', icon: FileText },
-    { id: 'losses-prevention', label: 'Krishi Rakshak', icon: ShieldAlert },
-    { id: 'customer-support', label: 'Customer Support', icon: Headphones },
-    { id: 'profile', label: 'Profile Settings', icon: User },
+    { id: 'farmer-dashboard', label: t('sidebar.farmerHub'), icon: LayoutDashboard },
+    { id: 'my-crops', label: t('sidebar.myCrops'), icon: Sprout },
+    { id: 'add-crop', label: t('nav.addCrop'), icon: PlusCircle },
+    { id: 'transport', label: t('sidebar.transport'), icon: Truck },
+    { id: 'solutions', label: t('nav.solutions'), icon: Wrench },
+    { id: 'market-prices', label: t('nav.mandiPrices'), icon: TrendingUp },
+    { id: 'buyer-connections', label: t('sidebar.connections'), icon: Users },
+    { id: 'schemes', label: t('nav.govtSchemes'), icon: FileText },
+    { id: 'losses-prevention', label: t('sidebar.losses'), icon: ShieldAlert },
+    { id: 'customer-support', label: t('nav.customerSupport'), icon: Headphones },
+    { id: 'profile', label: t('nav.myProfile'), icon: User },
   ];
 
   // Aggregator Sidebar
   const aggregatorItems = [
-    { id: 'buyer-dashboard', label: 'Aggregator Command', icon: LayoutDashboard },
-    { id: 'aggregator-farmers', label: 'Farmer Network CRM', icon: Users },
-    { id: 'aggregator-collection', label: 'Harvest Collection', icon: Truck },
-    { id: 'aggregator-weighing-qc', label: 'Weighing & QC Lab', icon: Scale },
-    { id: 'aggregator-inventory-market', label: 'Warehouse & Selling', icon: Package },
-    { id: 'market-prices', label: 'APMC Market Prices', icon: TrendingUp },
-    { id: 'customer-support', label: 'Customer Support', icon: Headphones },
-    { id: 'profile', label: 'Profile Settings', icon: User },
+    { id: 'buyer-dashboard', label: t('sidebar.aggregatorOverview'), icon: LayoutDashboard },
+    { id: 'aggregator-farmers', label: t('sidebar.farmers'), icon: Users },
+    { id: 'aggregator-collection', label: t('sidebar.collection'), icon: Truck },
+    { id: 'aggregator-weighing-qc', label: t('sidebar.weighing'), icon: Scale },
+    { id: 'aggregator-inventory-market', label: t('sidebar.inventory'), icon: Package },
+    { id: 'market-prices', label: t('nav.mandiPrices'), icon: TrendingUp },
+    { id: 'customer-support', label: t('nav.customerSupport'), icon: Headphones },
+    { id: 'profile', label: t('nav.myProfile'), icon: User },
   ];
 
   // Processor Sidebar
   const processorItems = [
-    { id: 'processor-dashboard', label: 'Processor Command', icon: LayoutDashboard },
-    { id: 'processor-machines', label: 'Machine Telemetry & Pack', icon: Factory },
-    { id: 'processor-traceability', label: 'QR Trace & Zero Waste', icon: QrCode },
-    { id: 'find-farmers', label: 'Procure Agri Batches', icon: Search },
-    { id: 'market-prices', label: 'APMC Market Prices', icon: TrendingUp },
-    { id: 'customer-support', label: 'Customer Support', icon: Headphones },
-    { id: 'profile', label: 'Profile Settings', icon: User },
+    { id: 'processor-dashboard', label: t('sidebar.processorOverview'), icon: LayoutDashboard },
+    { id: 'processor-machines', label: t('sidebar.machines'), icon: Factory },
+    { id: 'processor-traceability', label: t('sidebar.traceability'), icon: QrCode },
+    { id: 'find-farmers', label: t('nav.findFarmers'), icon: Search },
+    { id: 'market-prices', label: t('nav.mandiPrices'), icon: TrendingUp },
+    { id: 'customer-support', label: t('nav.customerSupport'), icon: Headphones },
+    { id: 'profile', label: t('nav.myProfile'), icon: User },
   ];
 
   // Wholesaler Sidebar
   const wholesalerItems = [
-    { id: 'wholesaler-dashboard', label: 'Wholesale Command', icon: LayoutDashboard },
-    { id: 'wholesaler-marketplace', label: 'Bulk Lots & Sales Orders', icon: Store },
-    { id: 'wholesaler-customers', label: 'Client CRM & Dispatch', icon: Users },
-    { id: 'market-prices', label: 'APMC Market Prices', icon: TrendingUp },
-    { id: 'customer-support', label: 'Customer Support', icon: Headphones },
-    { id: 'profile', label: 'Profile Settings', icon: User },
+    { id: 'wholesaler-dashboard', label: t('sidebar.wholesalerOverview'), icon: LayoutDashboard },
+    { id: 'wholesaler-marketplace', label: t('sidebar.marketplace'), icon: Store },
+    { id: 'wholesaler-customers', label: t('sidebar.customers'), icon: Users },
+    { id: 'market-prices', label: t('nav.mandiPrices'), icon: TrendingUp },
+    { id: 'customer-support', label: t('nav.customerSupport'), icon: Headphones },
+    { id: 'profile', label: t('nav.myProfile'), icon: User },
   ];
 
   const currentItems = user.role === 'FARMER'
@@ -165,23 +167,23 @@ export const Sidebar: React.FC = () => {
           <button
             onClick={() => logout()}
             className="w-full flex items-center gap-3 p-2 text-xs text-rose-400 font-semibold hover:bg-rose-500/10 hover:text-rose-300 rounded-2xl transition-colors overflow-hidden whitespace-nowrap cursor-pointer"
-            title="Sign Out"
+            title={t('nav.signOut')}
           >
             <div className="w-10 h-10 shrink-0 flex items-center justify-center">
               <LogOut className="w-5 h-5 shrink-0" />
             </div>
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">Sign Out</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">{t('nav.signOut')}</span>
           </button>
         ) : (
           <button
             onClick={() => setIsAuthModalOpen(true)}
             className="w-full flex items-center gap-3 p-2 text-xs text-emerald-400 font-semibold hover:bg-emerald-500/10 hover:text-emerald-300 rounded-2xl transition-colors overflow-hidden whitespace-nowrap cursor-pointer"
-            title="Sign In"
+            title={t('nav.signInRegister')}
           >
             <div className="w-10 h-10 shrink-0 flex items-center justify-center">
               <LogOut className="w-5 h-5 shrink-0 rotate-180" />
             </div>
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">Sign In / Register</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">{t('nav.signInRegister')}</span>
           </button>
         )}
       </div>

@@ -6,9 +6,11 @@ import {
 import { useApp } from '../context/AppContext';
 import type { BuyerType, UserRole, User } from '../types';
 import { supabase } from '../lib/supabase';
+import { useTranslation } from 'react-i18next';
 
 export const AuthModal: React.FC = () => {
   const { isAuthModalOpen, setIsAuthModalOpen, user, setUser, setActiveTab } = useApp();
+  const { t } = useTranslation();
 
   const [mode, setMode] = useState<'SIGN_IN' | 'SIGN_UP'>('SIGN_IN');
   const [step, setStep] = useState<1 | 2>(1);
@@ -108,7 +110,7 @@ export const AuthModal: React.FC = () => {
         setActiveTab('buyer-dashboard');
       }
     } catch (err: any) {
-      setErrorMsg('Demo access failed. Please try again.');
+      setErrorMsg(t('authModal.errors.demoAccessFailed'));
     } finally {
       setLoading(false);
     }
@@ -119,7 +121,7 @@ export const AuthModal: React.FC = () => {
     e.preventDefault();
     const cleanEmail = email.trim().toLowerCase();
     if (!cleanEmail || !password) {
-      setErrorMsg('Please enter both email and password.');
+      setErrorMsg(t('authModal.errors.enterEmailPassword'));
       return;
     }
 
@@ -170,7 +172,7 @@ export const AuthModal: React.FC = () => {
 
       if (localRecord) {
         if (localRecord.password && localRecord.password !== password) {
-          setErrorMsg('Incorrect password. Please verify and try again.');
+          setErrorMsg(t('authModal.errors.incorrectPassword'));
           return;
         }
         setUser(localRecord.user);
@@ -199,7 +201,7 @@ export const AuthModal: React.FC = () => {
       setActiveTab(autoUser.role === 'FARMER' ? 'farmer-dashboard' : 'buyer-dashboard');
     } catch (err: any) {
       console.error('Sign in error:', err);
-      setErrorMsg(err.message || 'Sign in failed. Please try again.');
+      setErrorMsg(err.message || t('authModal.errors.signInFailed'));
     } finally {
       setLoading(false);
     }
@@ -211,11 +213,11 @@ export const AuthModal: React.FC = () => {
     const cleanName = name.trim();
 
     if (!cleanEmail || !password || !cleanName) {
-      setErrorMsg('Please fill in all required fields.');
+      setErrorMsg(t('authModal.errors.fillRequired'));
       return;
     }
     if (password.length < 6) {
-      setErrorMsg('Password must be at least 6 characters.');
+      setErrorMsg(t('authModal.errors.passwordLength'));
       return;
     }
 
@@ -274,7 +276,7 @@ export const AuthModal: React.FC = () => {
       setActiveTab(role === 'FARMER' ? 'farmer-dashboard' : 'buyer-dashboard');
     } catch (err: any) {
       console.error('Registration error:', err);
-      setErrorMsg(err.message || 'Registration failed. Please try again.');
+      setErrorMsg(err.message || t('authModal.errors.registrationFailed'));
     } finally {
       setLoading(false);
     }
@@ -283,7 +285,7 @@ export const AuthModal: React.FC = () => {
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) {
-      setErrorMsg('Please enter your email address.');
+      setErrorMsg(t('authModal.errors.enterEmailForgot'));
       return;
     }
     setLoading(true);
@@ -297,12 +299,12 @@ export const AuthModal: React.FC = () => {
         localUsers[cleanEmail].password = password || 'KrishiGrow@2026';
         localStorage.setItem('krishi_registered_users', JSON.stringify(localUsers));
       }
-      setSuccessMsg('Password updated! You can now sign in directly.');
+      setSuccessMsg(t('authModal.errors.passwordUpdated'));
       setTimeout(() => {
         setShowForgot(false);
       }, 1200);
     } catch (err: any) {
-      setErrorMsg('Failed to update password. Please try again.');
+      setErrorMsg(t('authModal.errors.failedUpdatePassword'));
     } finally {
       setLoading(false);
     }
@@ -320,8 +322,8 @@ export const AuthModal: React.FC = () => {
               <Sprout className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-black text-white text-base tracking-tight">Krishi Grow Platform</h3>
-              <p className="text-[10px] text-emerald-400 font-medium">Agri Value Chain & Supply Chain Suite</p>
+              <h3 className="font-black text-white text-base tracking-tight">{t('authModal.platformName')}</h3>
+              <p className="text-[10px] text-emerald-400 font-medium">{t('authModal.platformSub')}</p>
             </div>
           </div>
           <button
@@ -340,14 +342,14 @@ export const AuthModal: React.FC = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <p className="text-xs font-black text-white">⚡ Instant Demo Experience</p>
+              <p className="text-xs font-black text-white">{t('authModal.demoInstant')}</p>
             </div>
             <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
-              No Sign Up Needed
+              {t('authModal.noSignUpNeeded')}
             </span>
           </div>
           <p className="text-[11px] text-neutral-300 mb-3">
-            Explore the full interactive platform with preloaded data, mandi rates, and AI tools:
+            {t('authModal.exploreInteractive')}
           </p>
           <div className="grid grid-cols-3 gap-2">
             <button
@@ -357,7 +359,7 @@ export const AuthModal: React.FC = () => {
               className="flex flex-col items-center justify-center gap-1.5 p-2.5 bg-emerald-600/30 hover:bg-emerald-600/60 text-emerald-300 text-xs font-bold rounded-xl border border-emerald-500/40 transition-all cursor-pointer disabled:opacity-50"
             >
               <Sprout className="w-4 h-4 text-emerald-400" />
-              <span>Demo Farmer</span>
+              <span>{t('authModal.demoFarmer')}</span>
             </button>
             <button
               type="button"
@@ -366,7 +368,7 @@ export const AuthModal: React.FC = () => {
               className="flex flex-col items-center justify-center gap-1.5 p-2.5 bg-purple-600/30 hover:bg-purple-600/60 text-purple-300 text-xs font-bold rounded-xl border border-purple-500/40 transition-all cursor-pointer disabled:opacity-50"
             >
               <Building2 className="w-4 h-4 text-purple-400" />
-              <span>Demo Aggregator</span>
+              <span>{t('authModal.demoAggregator')}</span>
             </button>
             <button
               type="button"
@@ -375,7 +377,7 @@ export const AuthModal: React.FC = () => {
               className="flex flex-col items-center justify-center gap-1.5 p-2.5 bg-cyan-600/30 hover:bg-cyan-600/60 text-cyan-300 text-xs font-bold rounded-xl border border-cyan-500/40 transition-all cursor-pointer disabled:opacity-50"
             >
               <Factory className="w-4 h-4 text-cyan-400" />
-              <span>Demo Processor</span>
+              <span>{t('authModal.demoProcessor')}</span>
             </button>
           </div>
         </div>
@@ -391,7 +393,7 @@ export const AuthModal: React.FC = () => {
                 : 'border-transparent text-neutral-400 hover:text-neutral-200'
             }`}
           >
-            Sign In to Account
+            {t('authModal.signInAccount')}
           </button>
           <button
             type="button"
@@ -402,7 +404,7 @@ export const AuthModal: React.FC = () => {
                 : 'border-transparent text-neutral-400 hover:text-neutral-200'
             }`}
           >
-            Create New Account
+            {t('authModal.createNewAccount')}
           </button>
         </div>
 
@@ -430,7 +432,7 @@ export const AuthModal: React.FC = () => {
               <form onSubmit={handleSignIn} className="space-y-3 pt-1">
 
                 <div>
-                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">Email Address</label>
+                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.emailAddress')}</label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-neutral-500 absolute left-3 top-2.5" />
                     <input
@@ -445,7 +447,7 @@ export const AuthModal: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">Password</label>
+                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.password')}</label>
                   <div className="relative">
                     <Lock className="w-4 h-4 text-neutral-500 absolute left-3 top-2.5" />
                     <input
@@ -472,18 +474,18 @@ export const AuthModal: React.FC = () => {
                   className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" /> <span>Signing In...</span></>
+                    <><Loader2 className="w-4 h-4 animate-spin" /> <span>{t('authModal.signingIn')}</span></>
                   ) : (
-                    <span>Sign In with Email</span>
+                    <span>{t('authModal.signInWithEmail')}</span>
                   )}
                 </button>
                 <div className="text-right mt-2">
                   <button
                     type="button"
                     onClick={() => setShowForgot(true)}
-                    className="text-xs text-emerald-400 hover:underline"
+                    className="text-xs text-emerald-400 hover:underline cursor-pointer"
                   >
-                    Forgot password?
+                    {t('authModal.forgotPassword')}
                   </button>
                 </div>
               </form>
@@ -494,15 +496,15 @@ export const AuthModal: React.FC = () => {
           {mode === 'SIGN_IN' && showForgot && (
             <div className="space-y-4">
               <div className="text-center space-y-1">
-                <h4 className="text-base font-black text-white">Reset Your Password</h4>
+                <h4 className="text-base font-black text-white">{t('authModal.resetYourPassword')}</h4>
                 <p className="text-xs text-neutral-400">
-                  Enter your registered email address to receive a secure password reset link.
+                  {t('authModal.enterRegisteredEmail')}
                 </p>
               </div>
 
               <form onSubmit={handleForgotPassword} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">Registered Email Address</label>
+                  <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.registeredEmail')}</label>
                   <div className="relative">
                     <Mail className="w-4 h-4 text-neutral-500 absolute left-3 top-2.5" />
                     <input
@@ -522,9 +524,9 @@ export const AuthModal: React.FC = () => {
                   className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
-                    <><Loader2 className="w-4 h-4 animate-spin" /> <span>Sending Reset Link...</span></>
+                    <><Loader2 className="w-4 h-4 animate-spin" /> <span>{t('authModal.sendingResetLink')}</span></>
                   ) : (
-                    <span>Send Verification Email</span>
+                    <span>{t('authModal.sendVerificationEmail')}</span>
                   )}
                 </button>
 
@@ -534,7 +536,7 @@ export const AuthModal: React.FC = () => {
                     onClick={() => { setShowForgot(false); setErrorMsg(null); setSuccessMsg(null); }}
                     className="text-xs text-emerald-400 hover:underline cursor-pointer"
                   >
-                    ← Back to Sign In
+                    {t('authModal.backToSignIn')}
                   </button>
                 </div>
               </form>
@@ -547,8 +549,8 @@ export const AuthModal: React.FC = () => {
               {step === 1 ? (
                 <div className="space-y-5">
                   <div className="text-center space-y-1">
-                    <h4 className="text-lg font-black text-white">Choose Your Role</h4>
-                    <p className="text-xs text-neutral-400">Your role determines which features you can access on the platform.</p>
+                    <h4 className="text-lg font-black text-white">{t('authModal.chooseYourRole')}</h4>
+                    <p className="text-xs text-neutral-400">{t('authModal.roleDeterminesAccess')}</p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -566,13 +568,13 @@ export const AuthModal: React.FC = () => {
                       <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center mb-3">
                         <Sprout className="w-5 h-5" />
                       </div>
-                      <h5 className="font-black text-sm text-white">FARMER</h5>
+                      <h5 className="font-black text-sm text-white">{t('authModal.roleFarmer')}</h5>
                       <p className="text-[11px] text-neutral-400 mt-1 leading-relaxed">
-                        Manage crops, get AI diagnostics, calculate transport, connect directly to buyers.
+                        {t('authModal.farmerDesc')}
                       </p>
                       {role === 'FARMER' && (
                         <span className="inline-flex items-center gap-1 mt-2 text-[10px] text-emerald-400 font-bold">
-                          <CheckCircle2 className="w-3 h-3" /> Selected
+                          <CheckCircle2 className="w-3 h-3" /> {t('authModal.selected')}
                         </span>
                       )}
                     </button>
@@ -590,13 +592,13 @@ export const AuthModal: React.FC = () => {
                       <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center mb-3">
                         <Building2 className="w-5 h-5" />
                       </div>
-                      <h5 className="font-black text-sm text-white">BUYER / SUPPLY CHAIN</h5>
+                      <h5 className="font-black text-sm text-white">{t('authModal.roleBuyer')}</h5>
                       <p className="text-[11px] text-neutral-400 mt-1 leading-relaxed">
-                        Aggregator, Processor, or Wholesaler — access the full agricultural supply chain.
+                        {t('authModal.buyerDesc')}
                       </p>
                       {role === 'BUYER' && (
                         <span className="inline-flex items-center gap-1 mt-2 text-[10px] text-purple-400 font-bold">
-                          <CheckCircle2 className="w-3 h-3" /> Selected
+                          <CheckCircle2 className="w-3 h-3" /> {t('authModal.selected')}
                         </span>
                       )}
                     </button>
@@ -605,12 +607,12 @@ export const AuthModal: React.FC = () => {
                   {/* Buyer Sub-Type */}
                   {role === 'BUYER' && (
                     <div className="space-y-2">
-                      <label className="block text-xs font-bold text-neutral-300">Select Buyer Category</label>
+                      <label className="block text-xs font-bold text-neutral-300">{t('authModal.selectBuyerCategory')}</label>
                       <div className="grid grid-cols-3 gap-2">
                         {([
-                          { id: 'AGGREGATOR', label: 'Aggregator', Icon: Building2, color: 'emerald' },
-                          { id: 'PROCESSOR', label: 'Processor', Icon: Factory, color: 'cyan' },
-                          { id: 'WHOLESALER', label: 'Wholesaler', Icon: Store, color: 'purple' },
+                          { id: 'AGGREGATOR', label: t('authModal.aggregator'), Icon: Building2, color: 'emerald' },
+                          { id: 'PROCESSOR', label: t('authModal.processor'), Icon: Factory, color: 'cyan' },
+                          { id: 'WHOLESALER', label: t('authModal.wholesaler'), Icon: Store, color: 'purple' },
                         ] as const).map(({ id, label, Icon, color }) => (
                           <button
                             key={id}
@@ -635,7 +637,7 @@ export const AuthModal: React.FC = () => {
                     onClick={() => setStep(2)}
                     className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>Continue to Account Details</span>
+                    <span>{t('authModal.continueToAccountDetails')}</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -644,19 +646,19 @@ export const AuthModal: React.FC = () => {
                   <form onSubmit={handleSignUp} className="space-y-3 pt-1">
                     <div className="flex items-center justify-between pb-2 border-b border-white/10">
                       <span className={`text-xs font-bold uppercase ${role === 'FARMER' ? 'text-emerald-400' : 'text-purple-400'}`}>
-                        {role} Registration — {role === 'BUYER' ? buyerType : 'Cultivator'}
+                        {t('authModal.registrationRole', { role: role === 'FARMER' ? t('authModal.roleFarmer') : t('authModal.roleBuyer'), type: role === 'BUYER' ? t(`authModal.${buyerType.toLowerCase()}`) : t('authModal.cultivator') })}
                       </span>
                       <button
                         type="button"
                         onClick={() => setStep(1)}
                         className="text-xs text-neutral-400 hover:text-white cursor-pointer"
                       >
-                        ← Change Role
+                        {t('authModal.changeRole')}
                       </button>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-neutral-300 mb-1.5">Full Name</label>
+                      <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.fullName')}</label>
                       <input
                         type="text"
                         required
@@ -669,7 +671,7 @@ export const AuthModal: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">Email Address</label>
+                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.emailAddress')}</label>
                         <input
                           type="email"
                           required
@@ -680,7 +682,7 @@ export const AuthModal: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">Password (min 6 chars)</label>
+                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.passwordMin6')}</label>
                         <div className="relative">
                           <input
                             type={showPassword ? 'text' : 'password'}
@@ -703,7 +705,7 @@ export const AuthModal: React.FC = () => {
 
                     {role === 'BUYER' && (
                       <div>
-                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">Business / Organization Name</label>
+                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.businessName')}</label>
                         <input
                           type="text"
                           required
@@ -717,7 +719,7 @@ export const AuthModal: React.FC = () => {
 
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">Mobile Number</label>
+                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.mobileNumber')}</label>
                         <input
                           type="tel"
                           placeholder="+91 98XXX XXXXX"
@@ -727,7 +729,7 @@ export const AuthModal: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">District</label>
+                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.district')}</label>
                         <input
                           type="text"
                           required
@@ -741,7 +743,7 @@ export const AuthModal: React.FC = () => {
 
                     {role === 'FARMER' && (
                       <div>
-                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">Total Farm Size (Acres)</label>
+                        <label className="block text-xs font-bold text-neutral-300 mb-1.5">{t('authModal.farmSizeAcres')}</label>
                         <input
                           type="number"
                           min="0.5"
@@ -759,9 +761,9 @@ export const AuthModal: React.FC = () => {
                       className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {loading ? (
-                        <><Loader2 className="w-4 h-4 animate-spin" /> <span>Creating Account...</span></>
+                        <><Loader2 className="w-4 h-4 animate-spin" /> <span>{t('authModal.creatingAccount')}</span></>
                       ) : (
-                        <span>Complete Registration & Access Dashboard</span>
+                        <span>{t('authModal.completeRegistration')}</span>
                       )}
                     </button>
                   </form>
@@ -772,8 +774,7 @@ export const AuthModal: React.FC = () => {
 
           {/* Footer Note */}
           <p className="text-center text-[10px] text-neutral-500 leading-relaxed">
-            By continuing you agree to Krishi Grow's Terms of Service & Privacy Policy.
-            Your agricultural data is encrypted and secure.
+            {t('authModal.termsPrivacy')}
           </p>
         </div>
       </div>
