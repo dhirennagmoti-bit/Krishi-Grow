@@ -183,7 +183,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
 
                 {/* Crop Name */}
                 <span className={`text-xs font-bold leading-tight ${isSelected ? 'text-emerald-300' : 'text-white'}`}>
-                  {crop.name}
+                  {t(`crops.${crop.id}`, crop.name)}
                 </span>
 
                 {/* Major Problems Badge */}
@@ -191,7 +191,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
                   <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
                     isSelected ? 'bg-emerald-500 text-black' : 'bg-white/10 text-neutral-300'
                   }`}>
-                    {probCount} Problems
+                    {probCount} {t('common.problems', 'Problems')}
                   </span>
                 </div>
               </button>
@@ -213,7 +213,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-2xl font-black text-white">{selectedCrop.name} Crop Protection Overview</h3>
+                <h3 className="text-2xl font-black text-white">{t(`crops.${selectedCrop.id}`, selectedCrop.name)} {t('krishiRakshak.cropOverview', 'Crop Protection Overview')}</h3>
                 <span className="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-bold">
                   {selectedCrop.category}
                 </span>
@@ -307,7 +307,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
         <div className="flex items-center justify-between px-1">
           <h4 className="text-base font-bold text-white flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
-            Verified Protection Records ({filteredProblems.length} Found)
+            Verified Protection Records ({filteredProblems.length} {t('common.found', 'Found')})
           </h4>
           <span className="text-xs text-neutral-400">
             Source: CIB&RC / PPQS Major Uses Compendium

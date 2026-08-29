@@ -533,7 +533,8 @@
     "verifyDosageDesc": "Strictly follow product labels and pre-harvest intervals (PHI).",
     "selectCropTitle": "Select Crop to Access Protection Guide",
     "selectCropDesc": "Choose from 25 crops to view verified pests, fungal/bacterial diseases, weeds, and IPM solutions.",
-    "diagnoseAI": "Diagnose Leaf with AI Scanner"
+    "diagnoseAI": "Diagnose Leaf with AI Scanner",
+    "cropOverview": "Crop Protection Overview"
   },
   "crops": {
     "Tomato": "Tomato",
@@ -587,5 +588,9 @@
   },
   "govSchemes": {
     "docs": {}
+  },
+  "common": {
+    "problems": "Problems",
+    "found": "Found"
   }
 }
