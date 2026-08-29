@@ -65,7 +65,7 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-agri-600" />
-                <a href="mailto:support@krishigrow.in" className="hover:underline text-charcoal">support@krishigrow.in</a>
+                <a href="mailto:krishigrowsupportteam@gmail.com" className="hover:underline text-charcoal">krishigrowsupportteam@gmail.com</a>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-agri-600" />
