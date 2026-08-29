@@ -558,7 +558,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                     </h3>
                     <div className="flex items-center gap-2 mt-0.5">
                       <span className="text-xs font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/20">
-                        {crop.name} ({crop.variety})
+                        {t(`crops.${crop.name}`, crop.name)} ({crop.variety ? t(`varieties.${crop.variety}`, crop.variety) : ''})
                       </span>
                       <span className="text-xs font-bold text-cyan-300 bg-cyan-950 px-1.5 py-0.5 rounded">
                         Grade {crop.grade}

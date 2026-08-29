@@ -228,8 +228,8 @@ export const FarmerDashboard: React.FC = () => {
                           </div>
                         )}
                         <div>
-                          <div className="font-bold text-white">{crop.name}</div>
-                          <div className="text-xs text-neutral-400">{crop.variety || t('farmerDashboard.standardVariety')}</div>
+                          <div className="font-bold text-white">{t(`crops.${crop.name}`, crop.name)}</div>
+                          <div className="text-xs text-neutral-400">{crop.variety ? t(`varieties.${crop.variety}`, crop.variety) : t('farmerDashboard.standardVariety')}</div>
                         </div>
                       </div>
                     </td>

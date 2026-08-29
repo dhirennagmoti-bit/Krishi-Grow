@@ -1,6 +1,7 @@
 import React from 'react';
 import { CROP_CATALOG, type CropItem } from '../data/cropCatalog';
 import { Check } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface CropGridSelectorProps {
   selectedCrop: string;
@@ -13,14 +14,15 @@ export const CropGridSelector: React.FC<CropGridSelectorProps> = ({
   onSelectCrop,
   className = ''
 }) => {
+  const { t } = useTranslation();
   return (
     <div className={`space-y-3 ${className}`}>
       <div className="flex items-center justify-between px-1">
         <label className="text-xs font-bold uppercase tracking-wider text-gray-300">
-          Select Crop ({CROP_CATALOG.length} Available)
+          {t('common.selectCrop', 'Select Crop')} ({CROP_CATALOG.length} {t('common.available', 'Available')})
         </label>
         <span className="text-xs text-emerald-400 font-semibold">
-          Active: <strong className="text-white">{selectedCrop}</strong>
+          {t('common.active', 'Active')}: <strong className="text-white">{t(`crops.${selectedCrop}`, selectedCrop)}</strong>
         </span>
       </div>
 
@@ -74,7 +76,7 @@ export const CropGridSelector: React.FC<CropGridSelectorProps> = ({
               <span className={`text-xs font-bold tracking-wide text-center transition-colors line-clamp-1 ${
                 isSelected ? 'text-emerald-300' : 'text-gray-100 group-hover:text-white'
               }`}>
-                {crop.name}
+                {t(`crops.${crop.name}`, crop.name)}
               </span>
             </button>
           );

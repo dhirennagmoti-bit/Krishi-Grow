@@ -534,5 +534,23 @@
     "selectCropTitle": "Select Crop to Access Protection Guide",
     "selectCropDesc": "Choose from 25 crops to view verified pests, fungal/bacterial diseases, weeds, and IPM solutions.",
     "diagnoseAI": "Diagnose Leaf with AI Scanner"
+  },
+  "crops": {
+    "Tomato": "Tomato",
+    "Red Onion": "Red Onion",
+    "Cotton": "Cotton",
+    "Soybean": "Soybean",
+    "Wheat": "Wheat",
+    "Mango": "Mango",
+    "Turmeric": "Turmeric"
+  },
+  "varieties": {
+    "Abhinav Hybrid (Red)": "Abhinav Hybrid (Red)",
+    "Nashik Red F1": "Nashik Red F1",
+    "BT Cotton II": "BT Cotton II",
+    "JS 335": "JS 335",
+    "Lok 1": "Lok 1",
+    "Alphonso": "Alphonso",
+    "Salem": "Salem"
   }
 }
