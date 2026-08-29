@@ -6,20 +6,24 @@ import jakarta.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 
 public class RegisterRequest {
-    @NotBlank
+    @NotBlank(message = "Role is required")
+    @jakarta.validation.constraints.Pattern(regexp = "(?i)^(FARMER|BUYER|ADMIN)$", message = "Role must be FARMER, BUYER, or ADMIN")
     private String role; // "FARMER" or "BUYER"
     
-    @NotBlank
+    @NotBlank(message = "Name is required")
+    @jakarta.validation.constraints.Size(min = 2, max = 100, message = "Name must be between 2 and 100 characters")
     private String name;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email is required")
+    @Email(message = "Please provide a valid email address")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Phone number is required")
+    @jakarta.validation.constraints.Pattern(regexp = "^[0-9+ -]{10,15}$", message = "Please provide a valid phone number")
     private String phone;
 
-    @NotBlank
+    @NotBlank(message = "Password is required")
+    @jakarta.validation.constraints.Size(min = 8, max = 128, message = "Password must be at least 8 characters long")
     private String password;
 
     // Common location

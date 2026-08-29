@@ -211,6 +211,13 @@ export const Navbar: React.FC = () => {
                       <span>My Profile</span>
                     </button>
                     <button
+                      onClick={() => { setActiveTab('customer-support'); setIsUserMenuOpen(false); }}
+                      className="flex items-center gap-2 w-full px-3 py-2 text-xs font-medium text-emerald-400 hover:text-emerald-300 hover:bg-emerald-950/30 rounded-xl transition-colors cursor-pointer"
+                    >
+                      <span className="w-3.5 h-3.5 text-center font-bold">🎧</span>
+                      <span>Customer Support</span>
+                    </button>
+                    <button
                       onClick={() => {
                         logout();
                         setIsUserMenuOpen(false);

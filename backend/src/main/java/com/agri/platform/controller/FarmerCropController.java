@@ -4,7 +4,9 @@ import com.agri.platform.dto.FarmerCropRequest;
 import com.agri.platform.dto.MessageResponse;
 import com.agri.platform.entity.*;
 import com.agri.platform.repository.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/farmer-crops")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class FarmerCropController {
 
     @Autowired
@@ -30,18 +31,33 @@ public class FarmerCropController {
     private CropRepository cropRepository;
 
     @GetMapping
-    public ResponseEntity<List<FarmerCrop>> getMyCrops(Authentication authentication) {
+    public ResponseEntity<?> getMyCrops(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse("Unauthorized"));
+        }
         String username = authentication.getName();
-        User user = userRepository.findByEmail(username).orElseThrow();
+        User user = userRepository.findByEmail(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("User not found"));
+        }
         return ResponseEntity.ok(farmerCropRepository.findByFarmerId(user.getId()));
     }
 
     @PostMapping
-    public ResponseEntity<?> addCrop(@RequestBody FarmerCropRequest request, Authentication authentication) {
+    public ResponseEntity<?> addCrop(@Valid @RequestBody FarmerCropRequest request, Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse("Unauthorized"));
+        }
         String username = authentication.getName();
-        User user = userRepository.findByEmail(username).orElseThrow();
+        User user = userRepository.findByEmail(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("User not found"));
+        }
 
-        Crop crop = cropRepository.findById(request.getCropId()).orElseThrow(() -> new RuntimeException("Crop not found"));
+        Crop crop = cropRepository.findById(request.getCropId()).orElse(null);
+        if (crop == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Crop not found"));
+        }
 
         FarmerCrop farmerCrop = new FarmerCrop();
         farmerCrop.setFarmer(user);

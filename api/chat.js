@@ -1,11 +1,27 @@
 export default async function handler(req, res) {
-  // CORS configuration
+  // CORS configuration - dynamic origin validation
+  const origin = req.headers.origin || '';
+  const allowedOrigins = [
+    'https://krishigrow.in',
+    'https://krishi-grow.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173'
+  ];
+
+  const isAllowedOrigin = !origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app');
+
+  if (isAllowedOrigin && origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else if (!origin) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
   );
 
   if (req.method === 'OPTIONS') {
@@ -22,13 +38,21 @@ export default async function handler(req, res) {
       try {
         body = JSON.parse(body);
       } catch {
-        body = {};
+        return res.status(400).json({ error: 'Invalid JSON payload' });
       }
     }
     const { prompt, chatHistory = [] } = body || {};
 
     if (!prompt || typeof prompt !== 'string' || !prompt.trim()) {
       return res.status(400).json({ error: 'Prompt is required' });
+    }
+
+    if (prompt.length > 5000) {
+      return res.status(400).json({ error: 'Prompt exceeds maximum length of 5000 characters' });
+    }
+
+    if (!Array.isArray(chatHistory) || chatHistory.length > 20) {
+      return res.status(400).json({ error: 'Invalid chat history format or too many messages' });
     }
 
     const apiKey =
@@ -39,7 +63,7 @@ export default async function handler(req, res) {
 
     if (!apiKey) {
       return res.status(500).json({
-        error: 'GEMINI_API_KEY is not set in Vercel Environment Variables.'
+        error: 'AI service is temporarily unavailable. Please verify GEMINI_API_KEY in Vercel Environment Variables.'
       });
     }
 
@@ -66,8 +90,8 @@ Provide helpful, clear, professional responses formatted with bullet points and 
             .map((m) => m.name.replace(/^models\//, ''));
         }
       }
-    } catch (e) {
-      console.warn('ModelService.ListModels error:', e);
+    } catch {
+      // Ignore list error and fallback
     }
 
     // Default candidates if list query fails
@@ -94,7 +118,7 @@ Provide helpful, clear, professional responses formatted with bullet points and 
     const formattedContents = [];
     let expectingUser = true;
 
-    for (const msg of chatHistory) {
+    for (const msg of chatHistory.slice(-8)) {
       const text = typeof msg.text === 'string' ? msg.text.trim() : '';
       if (!text) continue;
       const isUser = msg.sender === 'user' || msg.role === 'user';
@@ -117,8 +141,6 @@ Provide helpful, clear, professional responses formatted with bullet points and 
       formattedContents[formattedContents.length - 1].parts[0].text += `\n\n${prompt.trim()}`;
     }
 
-    let lastError = null;
-
     // Try candidate models in order
     for (const model of candidateModels.slice(0, 5)) {
       for (const apiVersion of ['v1beta', 'v1']) {
@@ -137,18 +159,16 @@ Provide helpful, clear, professional responses formatted with bullet points and 
           if (response.ok && data.candidates?.[0]?.content?.parts?.[0]?.text) {
             return res.status(200).json({ text: data.candidates[0].content.parts[0].text });
           }
-
-          lastError = data.error?.message || JSON.stringify(data);
-        } catch (err) {
-          lastError = err.message;
+        } catch {
+          // Continue to next model fallback safely
         }
       }
     }
 
     return res.status(500).json({
-      error: `Gemini API call failed: ${lastError || 'Unknown error'}`
+      error: 'AI service was unable to generate a response at this time. Please try again.'
     });
   } catch (error) {
-    return res.status(500).json({ error: error.message || 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error while processing AI request' });
   }
 }

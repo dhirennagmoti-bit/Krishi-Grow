@@ -1,9 +1,8 @@
-import { GoogleGenAI } from '@google/genai';
 import type { AIDiagnosticResult } from '../types';
 
 /**
- * Chatbot advisor function: Calls backend /api/chat which uses your server's Gemini API key.
- * No hardcoded canned answers.
+ * Chatbot advisor function: Calls backend /api/chat which uses your server's Gemini API key securely.
+ * No API keys are leaked in client browser code.
  */
 export async function queryGeminiAgriAI(
   userPrompt: string,
@@ -12,7 +11,6 @@ export async function queryGeminiAgriAI(
   const cleanPrompt = userPrompt.trim();
   if (!cleanPrompt) return '';
 
-  // 1. Primary: Call backend endpoint (/api/chat)
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -32,41 +30,13 @@ export async function queryGeminiAgriAI(
       const errData = await res.json().catch(() => ({}));
       const msg = errData.error || `Server responded with status ${res.status}`;
       console.error('/api/chat error response:', msg);
-      return `⚠️ **AgriAI Error:** ${msg}`;
+      return `⚠️ **AgriAI Notice:** ${msg}`;
     }
   } catch (backendErr: any) {
-    console.warn('Backend /api/chat fetch failed, trying client key fallback:', backendErr);
+    console.warn('Backend /api/chat fetch failed:', backendErr);
   }
 
-  // 2. Client fallback (if client env key is embedded)
-  const clientKey =
-    import.meta.env.VITE_GEMINI_API_KEY ||
-    import.meta.env.GEMINI_API_KEY ||
-    import.meta.env.VITE_GOOGLE_API_KEY ||
-    (typeof process !== 'undefined' ? (process.env?.VITE_GEMINI_API_KEY || process.env?.GEMINI_API_KEY) : '');
-
-  if (clientKey) {
-    try {
-      const systemInstruction = `You are AgriAI, an expert Indian agricultural value-chain advisor on Krishi Grow platform. Provide concise, clear, and actionable answers with bullet points and bold highlights.`;
-      const ai = new GoogleGenAI({ apiKey: clientKey });
-      const response = await ai.models.generateContent({
-        model: 'gemini-1.5-flash',
-        contents: `${systemInstruction}\n\nUser Question: ${cleanPrompt}`,
-        config: {
-          temperature: 0.7,
-        }
-      });
-
-      if (response.text && response.text.trim()) {
-        return response.text.trim();
-      }
-    } catch (clientErr: any) {
-      console.error('Client Gemini call error:', clientErr);
-      return `⚠️ **AgriAI Error:** ${clientErr.message || 'Failed to call Gemini API'}`;
-    }
-  }
-
-  return `⚠️ **AgriAI Service Notice:** Unable to reach the AI server. Please make sure \`GEMINI_API_KEY\` is added in your Vercel Project Settings > Environment Variables, and that the project is redeployed.`;
+  return `⚠️ **AgriAI Service Notice:** Unable to reach the AI server. Please verify that \`GEMINI_API_KEY\` is added in your Vercel Project Settings > Environment Variables, and that the project is deployed.`;
 }
 
 /**

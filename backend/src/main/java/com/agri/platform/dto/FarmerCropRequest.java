@@ -1,15 +1,30 @@
 package com.agri.platform.dto;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public class FarmerCropRequest {
+    @NotNull(message = "Crop ID is required")
     private Long cropId;
+
     private Long varietyId;
     private Long gradeId;
+
+    @NotNull(message = "Quantity is mandatory")
+    @DecimalMin(value = "0.01", message = "Quantity must be greater than zero")
     private Double quantity;
+
     private LocalDate expectedHarvestDate;
+
+    @Size(max = 50, message = "Status cannot exceed 50 characters")
     private String status;
+
+    @Size(max = 200, message = "Location cannot exceed 200 characters")
     private String location;
+
+    @DecimalMin(value = "0.0", message = "Expected price cannot be negative")
     private Double expectedPrice;
 
     // Getters and Setters

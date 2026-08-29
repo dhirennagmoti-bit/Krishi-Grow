@@ -24,6 +24,7 @@ import { BuyerRequirementsPage } from './pages/BuyerRequirementsPage';
 import { FindFarmersPage } from './pages/FindFarmersPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { LossesPreventionPage } from './pages/LossesPreventionPage';
+import { CustomerSupportPage } from './pages/CustomerSupportPage';
 import { ScrollCanvasBackground } from './components/ScrollCanvasBackground';
 
 // Aggregator sub-pages
@@ -48,7 +49,7 @@ const FARMER_TABS = [
   'weather', 'storage-processing', 'schemes', 'products',
   'market-prices', 'buyer-connections', 'buyer-requirements',
   'losses-prevention', 'krishi-rakshak', 'pesticides', 'profile',
-  'find-farmers',
+  'find-farmers', 'customer-support'
 ];
 
 const BUYER_TABS = [
@@ -56,7 +57,7 @@ const BUYER_TABS = [
   'aggregator-weighing-qc', 'aggregator-inventory-market',
   'processor-dashboard', 'processor-machines', 'processor-traceability',
   'wholesaler-dashboard', 'wholesaler-marketplace', 'wholesaler-customers',
-  'find-farmers', 'market-prices',
+  'find-farmers', 'market-prices', 'customer-support'
 ];
 
 const MainContent: React.FC = () => {
@@ -106,6 +107,7 @@ const MainContent: React.FC = () => {
           {activeTab === 'profile' && <ProfilePage />}
 
           {/* ── Shared Tabs ── */}
+          {activeTab === 'customer-support' && <CustomerSupportPage />}
           {activeTab === 'market-prices' && <MarketPricesPage />}
           {activeTab === 'find-farmers' && <FindFarmersPage />}
 

@@ -1,11 +1,27 @@
 export default async function handler(req, res) {
-  // CORS configuration
+  // CORS configuration - dynamic origin validation
+  const origin = req.headers.origin || '';
+  const allowedOrigins = [
+    'https://krishigrow.in',
+    'https://krishi-grow.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://127.0.0.1:5173'
+  ];
+
+  const isAllowedOrigin = !origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app');
+
+  if (isAllowedOrigin && origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else if (!origin) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
   );
 
   if (req.method === 'OPTIONS') {
@@ -17,10 +33,34 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { cropName, userNotes, imageBase64, mimeType = 'image/jpeg' } = req.body || {};
+    let body = req.body;
+    if (typeof body === 'string') {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        return res.status(400).json({ error: 'Invalid JSON payload' });
+      }
+    }
 
-    if (!cropName) {
+    const { cropName, userNotes, imageBase64, mimeType = 'image/jpeg' } = body || {};
+
+    if (!cropName || typeof cropName !== 'string' || !cropName.trim()) {
       return res.status(400).json({ error: 'Crop name is required' });
+    }
+
+    if (cropName.length > 100) {
+      return res.status(400).json({ error: 'Crop name is too long' });
+    }
+
+    if (userNotes && typeof userNotes === 'string' && userNotes.length > 2000) {
+      return res.status(400).json({ error: 'User notes exceed maximum limit of 2000 characters' });
+    }
+
+    // Limit base64 image data payload size (approx 8MB max)
+    if (imageBase64) {
+      if (typeof imageBase64 !== 'string' || imageBase64.length > 10 * 1024 * 1024) {
+        return res.status(400).json({ error: 'Image payload exceeds maximum allowed size (8MB)' });
+      }
     }
 
     const apiKey =
@@ -31,7 +71,7 @@ export default async function handler(req, res) {
 
     if (!apiKey) {
       return res.status(500).json({
-        error: 'Gemini API key is not configured on the server environment.'
+        error: 'Diagnostic service is temporarily unavailable. Please configure GEMINI_API_KEY in Vercel Environment Variables.'
       });
     }
 
@@ -42,8 +82,8 @@ export default async function handler(req, res) {
       const actualMime = imageBase64.match(/^data:(image\/[a-zA-Z0-9+.-]+);base64,/)?.[1] || mimeType;
 
       const prompt = `You are AgriAI, an expert Indian agricultural scientist and plant pathologist.
-Analyze this photo of a ${cropName} crop leaf / plant / fruit.
-${userNotes ? `Additional farmer observations: "${userNotes}".` : ''}
+Analyze this photo of a ${cropName.trim()} crop leaf / plant / fruit.
+${userNotes ? `Additional farmer observations: "${userNotes.trim()}".` : ''}
 
 Provide a diagnostic assessment. If the leaf is healthy, state that it is Healthy. If affected, identify the exact pest/disease, severity, observed symptoms, IPM prevention, and verified treatment options.
 
@@ -81,7 +121,7 @@ You MUST return ONLY a raw JSON object matching this schema:
         }
       ];
     } else {
-      const prompt = `Perform a comprehensive agronomic diagnosis for ${cropName} crop.${userNotes ? ` Additional notes/symptoms observed by farmer: "${userNotes}".` : ''}
+      const prompt = `Perform a comprehensive agronomic diagnosis for ${cropName.trim()} crop.${userNotes ? ` Additional notes/symptoms observed by farmer: "${userNotes.trim()}".` : ''}
 
 You MUST return ONLY a raw JSON object matching this exact schema:
 {
@@ -130,9 +170,8 @@ You MUST return ONLY a raw JSON object matching this exact schema:
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Gemini API diagnosis error:', data);
-      return res.status(response.status).json({
-        error: data.error?.message || 'Error generating diagnosis from Gemini AI'
+      return res.status(500).json({
+        error: 'Diagnostic analysis failed to complete. Please try again with a clearer crop photo.'
       });
     }
 
@@ -144,7 +183,6 @@ You MUST return ONLY a raw JSON object matching this exact schema:
       return res.status(200).json({ raw: rawText });
     }
   } catch (error) {
-    console.error('Error in /api/diagnose handler:', error);
-    return res.status(500).json({ error: error.message || 'Internal server error' });
+    return res.status(500).json({ error: 'Internal server error while processing diagnosis' });
   }
 }

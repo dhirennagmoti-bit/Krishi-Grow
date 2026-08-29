@@ -53,13 +53,19 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-xs font-bold text-charcoal uppercase tracking-wider mb-3">Helpline & Support</h4>
             <div className="space-y-2 text-xs text-mutedText">
+              <button
+                onClick={() => setActiveTab('customer-support')}
+                className="w-full text-left px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 hover:bg-emerald-100 transition-colors flex items-center gap-1.5 cursor-pointer mb-2"
+              >
+                <span>🎧 Open Support Desk & Tickets</span>
+              </button>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-agri-600" />
-                <a href="tel:+9118002005544" className="font-semibold text-charcoal hover:underline">+91 1800-200-5544 (Toll Free)</a>
+                <a href="tel:18001801551" className="font-semibold text-charcoal hover:underline">1800-180-1551 (Kisan Toll Free)</a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-agri-600" />
-                <a href="mailto:support@krishigrow.com" className="hover:underline text-charcoal">support@krishigrow.com</a>
+                <a href="mailto:support@krishigrow.in" className="hover:underline text-charcoal">support@krishigrow.in</a>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-agri-600" />

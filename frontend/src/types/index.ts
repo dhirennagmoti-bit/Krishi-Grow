@@ -481,3 +481,62 @@ export interface SupplyChainDocument {
   status: string;
   metadata: Record<string, any>;
 }
+
+// ==========================================
+// CUSTOMER SUPPORT & AUTO-REPLY SYSTEM TYPES
+// ==========================================
+
+export type SupportCategory =
+  | 'PAYMENT_DISPUTE'
+  | 'CROP_QUALITY_DISPUTE'
+  | 'TRANSPORT_LOGISTICS'
+  | 'MANDI_PRICE_INQUIRY'
+  | 'GOVT_SUBSIDY_ASSISTANCE'
+  | 'BUYER_ORDER_FULFILLMENT'
+  | 'GST_INVOICE_BILLING'
+  | 'COLD_STORAGE_INQUIRY'
+  | 'ACCOUNT_TECHNICAL_HELP'
+  | 'GENERAL_INQUIRY';
+
+export type SupportUrgency = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL_URGENT';
+export type SupportStatus = 'OPEN' | 'AI_AUTO_RESOLVED' | 'UNDER_REVIEW' | 'RESOLVED' | 'CLOSED';
+
+export interface SupportReply {
+  id: string;
+  sender: 'USER' | 'AI_SUPPORT' | 'OFFICER';
+  senderName: string;
+  message: string;
+  timestamp: string;
+  attachments?: string[];
+}
+
+export interface SupportTicket {
+  id: string;
+  ticketNumber: string;
+  userId: string;
+  userName: string;
+  userRole: UserRole;
+  userEmail: string;
+  userPhone: string;
+  buyerType?: BuyerType;
+  category: SupportCategory;
+  urgency: SupportUrgency;
+  subject: string;
+  description: string;
+  lotOrOrderReference?: string;
+  status: SupportStatus;
+  createdAt: string;
+  updatedAt: string;
+  autoReplyEmailSent: boolean;
+  autoReplyEmailPreview?: {
+    subject: string;
+    recipient: string;
+    sentAt: string;
+    htmlContent: string;
+    plainText: string;
+  };
+  replies: SupportReply[];
+  assignedOfficerName?: string;
+  estimatedResolutionHours: number;
+}
+

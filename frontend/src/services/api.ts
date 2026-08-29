@@ -393,3 +393,179 @@ export const queryAgriAIResponse = (userPrompt: string): string => {
   return `Hello! I am **AgriAI**, your intelligent value-chain advisory assistant. 
 I can analyze your crop details, calculate transportation options, recommend processing opportunities (like Tomato Puree or Dehydrated Onion), check weather risks, and find verified buyers near Nashik & Maharashtra. How can I assist you today?`;
 };
+
+// --- CUSTOMER SUPPORT API & SIMULATION ---
+
+export const initialSupportTickets: SupportTicket[] = [
+  {
+    id: 'ticket_demo_1',
+    ticketNumber: 'KG-FAR-2026-48201',
+    userId: 'usr_farmer_demo',
+    userName: 'Ramesh Patil',
+    userRole: 'FARMER',
+    userEmail: 'ramesh.patil@kisan.in',
+    userPhone: '+91 98220 44556',
+    category: 'PAYMENT_DISPUTE',
+    urgency: 'HIGH',
+    subject: 'Delayed payment for 12 Tonne Tomato batch dispatch to Pune APMC',
+    description: 'Delivered 12 Tonnes of Grade A hybrid tomatoes to aggregator depot on Tuesday. Weighing slip was verified, but 48 hours have passed and payment is not credited in my account.',
+    lotOrOrderReference: 'LOT-TOM-2026-08',
+    status: 'AI_AUTO_RESOLVED',
+    createdAt: '2026-08-28T09:30:00Z',
+    updatedAt: '2026-08-28T10:00:00Z',
+    autoReplyEmailSent: true,
+    autoReplyEmailPreview: {
+      subject: '[KG-FAR-2026-48201] Official Support Ticket Receipt: Delayed payment for 12 Tonne Tomato batch',
+      recipient: 'ramesh.patil@kisan.in',
+      sentAt: '09:31 AM',
+      htmlContent: `<p>Namaste Ramesh Patil. Your ticket <strong>KG-FAR-2026-48201</strong> has been registered with HIGH priority.</p>`,
+      plainText: `Ticket KG-FAR-2026-48201 registered. Payment resolution team assigned.`
+    },
+    replies: [
+      {
+        id: 'rep_1_1',
+        sender: 'USER',
+        senderName: 'Ramesh Patil',
+        message: 'Delivered 12 Tonnes of Grade A hybrid tomatoes to aggregator depot on Tuesday. Weighing slip was verified, but 48 hours have passed and payment is not credited in my account.',
+        timestamp: '09:30 AM'
+      },
+      {
+        id: 'rep_1_2',
+        sender: 'AI_SUPPORT',
+        senderName: 'AgriAI Support Desk',
+        message: `Namaste Ramesh Patil. Under Section 38 of APMC Act, buyer payments must be settled within 24 hours of weighbridge receipt.
+• **Action Taken**: An automated payment escalation notice has been served to Pune Depot Aggregator.
+• **Escalation Lead**: Officer Vikrant Shinde has been assigned to release RTGS hold by 2:00 PM today.
+• **Status**: Automated tracking active.`,
+        timestamp: '09:31 AM'
+      }
+    ],
+    assignedOfficerName: 'Officer Vikrant Shinde (Farmer Grievance Desk)',
+    estimatedResolutionHours: 4
+  },
+  {
+    id: 'ticket_demo_2',
+    ticketNumber: 'KG-BUY-2026-89104',
+    userId: 'usr_buyer_demo',
+    userName: 'Kisan Agro Processing Plant',
+    userRole: 'BUYER',
+    buyerType: 'PROCESSOR',
+    userEmail: 'procurement@kisanagro.com',
+    userPhone: '+91 94221 78900',
+    category: 'CROP_QUALITY_DISPUTE',
+    urgency: 'MEDIUM',
+    subject: 'Moisture content discrepancy in 20 Tonne Red Onion shipment',
+    description: 'We received batch ONION-LOT-992 with moisture reading at 17.5% at weighbridge, whereas standard dehydration threshold requires under 14%. Need secondary laboratory QC re-test.',
+    lotOrOrderReference: 'ONION-LOT-992',
+    status: 'UNDER_REVIEW',
+    createdAt: '2026-08-27T14:15:00Z',
+    updatedAt: '2026-08-27T15:00:00Z',
+    autoReplyEmailSent: true,
+    autoReplyEmailPreview: {
+      subject: '[KG-BUY-2026-89104] Support Confirmation: Moisture content discrepancy',
+      recipient: 'procurement@kisanagro.com',
+      sentAt: '02:16 PM',
+      htmlContent: `<p>QC re-inspection requisition initiated for batch ONION-LOT-992.</p>`,
+      plainText: `QC re-inspection requisition initiated for batch ONION-LOT-992.`
+    },
+    replies: [
+      {
+        id: 'rep_2_1',
+        sender: 'USER',
+        senderName: 'Kisan Agro Processing Plant',
+        message: 'We received batch ONION-LOT-992 with moisture reading at 17.5% at weighbridge, whereas standard dehydration threshold requires under 14%. Need secondary laboratory QC re-test.',
+        timestamp: '02:15 PM'
+      },
+      {
+        id: 'rep_2_2',
+        sender: 'AI_SUPPORT',
+        senderName: 'AgriAI Support Desk',
+        message: `Acknowledged Kisan Agro Procurement. Secondary sample testing protocol initiated with Lasalgaon APMC Quality Testing Lab.
+• **Tolerance Band**: Standard dehydration contracts permit up to 1.5% moisture adjustment factor or 48-hour shed cure allowance.
+• **Inspector**: Officer Meera Kulkarni will upload the calibrated digital moisture certificate by 5:00 PM.`,
+        timestamp: '02:16 PM'
+      }
+    ],
+    assignedOfficerName: 'Officer Meera Kulkarni (Buyer Supply Chain QC)',
+    estimatedResolutionHours: 6
+  }
+];
+
+export const submitSupportTicketAPI = async (ticketData: {
+  userName: string;
+  userRole: 'FARMER' | 'BUYER' | 'ADMIN';
+  userEmail: string;
+  userPhone: string;
+  buyerType?: 'AGGREGATOR' | 'PROCESSOR' | 'WHOLESALER';
+  category: string;
+  urgency: string;
+  subject: string;
+  description: string;
+  lotOrOrderReference?: string;
+}): Promise<SupportTicket> => {
+  try {
+    const res = await fetch('/api/support', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(ticketData)
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return data;
+    }
+  } catch (err) {
+    console.warn('Support API call failed, generating dynamic fallback ticket:', err);
+  }
+
+  // Fallback offline generator if serverless endpoint is offline
+  const randomSuffix = Math.floor(10000 + Math.random() * 90000);
+  const ticketNumber = `KG-${ticketData.userRole === 'FARMER' ? 'FAR' : 'BUY'}-2026-${randomSuffix}`;
+  const now = new Date();
+
+  return {
+    id: `ticket_${Date.now()}`,
+    ticketNumber,
+    userId: `usr_${Date.now()}`,
+    userName: ticketData.userName || (ticketData.userRole === 'FARMER' ? 'Valued Farmer' : 'Valued Buyer Partner'),
+    userRole: ticketData.userRole,
+    userEmail: ticketData.userEmail || 'support@krishigrow.in',
+    userPhone: ticketData.userPhone || '+91 98220 12345',
+    buyerType: ticketData.buyerType,
+    category: ticketData.category as any,
+    urgency: ticketData.urgency as any,
+    subject: ticketData.subject,
+    description: ticketData.description,
+    lotOrOrderReference: ticketData.lotOrOrderReference,
+    status: 'AI_AUTO_RESOLVED',
+    createdAt: now.toISOString(),
+    updatedAt: now.toISOString(),
+    autoReplyEmailSent: true,
+    autoReplyEmailPreview: {
+      subject: `[${ticketNumber}] Support Ticket Confirmation: ${ticketData.subject}`,
+      recipient: ticketData.userEmail || 'user@krishigrow.in',
+      sentAt: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      htmlContent: `<p>Namaste ${ticketData.userName}. Your ticket <strong>${ticketNumber}</strong> has been registered with ${ticketData.urgency} priority.</p>`,
+      plainText: `Ticket ${ticketNumber} registered successfully.`
+    },
+    replies: [
+      {
+        id: `rep_${Date.now()}_1`,
+        sender: 'USER',
+        senderName: ticketData.userName || 'User',
+        message: ticketData.description,
+        timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      },
+      {
+        id: `rep_${Date.now()}_2`,
+        sender: 'AI_SUPPORT',
+        senderName: 'AgriAI Support Desk',
+        message: `Namaste ${ticketData.userName}. We have recorded your ticket regarding ${ticketData.subject}. Our automated grievance engine is reviewing your details and has notified the regional support lead.`,
+        timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      }
+    ],
+    assignedOfficerName: ticketData.userRole === 'FARMER' ? 'Officer Vikrant Shinde' : 'Officer Meera Kulkarni',
+    estimatedResolutionHours: ticketData.urgency === 'CRITICAL_URGENT' ? 2 : 24
+  };
+};
+

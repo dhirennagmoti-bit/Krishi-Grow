@@ -1,8 +1,8 @@
-import React from 'react';
 import {
   LayoutDashboard, Sprout, PlusCircle, Wrench, TrendingUp, Users,
   Bot, User, LogOut, FileText, Search, Truck, ShieldAlert,
-  Scale, Package, Factory, Gauge, QrCode, Trash2, Store, DollarSign
+  Scale, Package, Factory, Gauge, QrCode, Trash2, Store, DollarSign,
+  Headphones
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -19,6 +19,7 @@ export const Sidebar: React.FC = () => {
     { id: 'buyer-connections', label: 'Buyer Connections', icon: Users },
     { id: 'schemes', label: 'Govt Schemes', icon: FileText },
     { id: 'losses-prevention', label: 'Krishi Rakshak', icon: ShieldAlert },
+    { id: 'customer-support', label: 'Customer Support', icon: Headphones },
     { id: 'profile', label: 'Profile Settings', icon: User },
   ];
 
@@ -30,6 +31,7 @@ export const Sidebar: React.FC = () => {
     { id: 'aggregator-weighing-qc', label: 'Weighing & QC Lab', icon: Scale },
     { id: 'aggregator-inventory-market', label: 'Warehouse & Selling', icon: Package },
     { id: 'market-prices', label: 'APMC Market Prices', icon: TrendingUp },
+    { id: 'customer-support', label: 'Customer Support', icon: Headphones },
     { id: 'profile', label: 'Profile Settings', icon: User },
   ];
 
@@ -40,6 +42,7 @@ export const Sidebar: React.FC = () => {
     { id: 'processor-traceability', label: 'QR Trace & Zero Waste', icon: QrCode },
     { id: 'find-farmers', label: 'Procure Agri Batches', icon: Search },
     { id: 'market-prices', label: 'APMC Market Prices', icon: TrendingUp },
+    { id: 'customer-support', label: 'Customer Support', icon: Headphones },
     { id: 'profile', label: 'Profile Settings', icon: User },
   ];
 
@@ -49,6 +52,7 @@ export const Sidebar: React.FC = () => {
     { id: 'wholesaler-marketplace', label: 'Bulk Lots & Sales Orders', icon: Store },
     { id: 'wholesaler-customers', label: 'Client CRM & Dispatch', icon: Users },
     { id: 'market-prices', label: 'APMC Market Prices', icon: TrendingUp },
+    { id: 'customer-support', label: 'Customer Support', icon: Headphones },
     { id: 'profile', label: 'Profile Settings', icon: User },
   ];
 

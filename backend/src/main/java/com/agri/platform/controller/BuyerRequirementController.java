@@ -4,7 +4,9 @@ import com.agri.platform.dto.BuyerRequirementRequest;
 import com.agri.platform.dto.MessageResponse;
 import com.agri.platform.entity.*;
 import com.agri.platform.repository.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +15,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/buyer-requirements")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class BuyerRequirementController {
 
     @Autowired
@@ -32,21 +33,42 @@ public class BuyerRequirementController {
     private FarmerCropRepository farmerCropRepository;
 
     @GetMapping
-    public ResponseEntity<List<BuyerRequirement>> getMyRequirements(Authentication authentication) {
+    public ResponseEntity<?> getMyRequirements(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse("Unauthorized"));
+        }
         String username = authentication.getName();
-        User user = userRepository.findByEmail(username).orElseThrow();
-        BuyerProfile profile = buyerProfileRepository.findByUser(user).orElseThrow();
+        User user = userRepository.findByEmail(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("User not found"));
+        }
+        BuyerProfile profile = buyerProfileRepository.findByUser(user).orElse(null);
+        if (profile == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Buyer profile not found"));
+        }
         
         return ResponseEntity.ok(requirementRepository.findByBuyerId(profile.getId()));
     }
 
     @PostMapping
-    public ResponseEntity<?> addRequirement(@RequestBody BuyerRequirementRequest request, Authentication authentication) {
+    public ResponseEntity<?> addRequirement(@Valid @RequestBody BuyerRequirementRequest request, Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse("Unauthorized"));
+        }
         String username = authentication.getName();
-        User user = userRepository.findByEmail(username).orElseThrow();
-        BuyerProfile profile = buyerProfileRepository.findByUser(user).orElseThrow();
+        User user = userRepository.findByEmail(username).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("User not found"));
+        }
+        BuyerProfile profile = buyerProfileRepository.findByUser(user).orElse(null);
+        if (profile == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponse("Only buyers can post requirements"));
+        }
 
-        Crop crop = cropRepository.findById(request.getCropId()).orElseThrow(() -> new RuntimeException("Crop not found"));
+        Crop crop = cropRepository.findById(request.getCropId()).orElse(null);
+        if (crop == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Crop not found"));
+        }
 
         BuyerRequirement req = new BuyerRequirement();
         req.setBuyer(profile);
@@ -63,8 +85,23 @@ public class BuyerRequirementController {
 
     @GetMapping("/{id}/matches")
     public ResponseEntity<?> getMatches(@PathVariable Long id, Authentication authentication) {
-        BuyerRequirement req = requirementRepository.findById(id).orElseThrow(() -> new RuntimeException("Requirement not found"));
-        // Basic matching logic: find FarmerCrops of the same crop that are available
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new MessageResponse("Unauthorized"));
+        }
+        BuyerRequirement req = requirementRepository.findById(id).orElse(null);
+        if (req == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new MessageResponse("Requirement not found"));
+        }
+
+        // Authorization check: Verify that the current user owns this requirement
+        String username = authentication.getName();
+        User user = userRepository.findByEmail(username).orElse(null);
+        if (user == null || req.getBuyer() == null || req.getBuyer().getUser() == null ||
+            !req.getBuyer().getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new MessageResponse("Access denied: You do not own this requirement"));
+        }
+
+        // Matching logic
         List<FarmerCrop> matches = farmerCropRepository.findAll().stream()
                 .filter(fc -> fc.getCrop() != null && fc.getCrop().getId().equals(req.getCrop().getId()))
                 .filter(fc -> fc.getQuantity() != null && req.getQuantityRequired() != null &&
