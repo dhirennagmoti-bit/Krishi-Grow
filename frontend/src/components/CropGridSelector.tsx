@@ -76,7 +76,7 @@ export const CropGridSelector: React.FC<CropGridSelectorProps> = ({
               <span className={`text-xs font-bold tracking-wide text-center transition-colors line-clamp-1 ${
                 isSelected ? 'text-emerald-300' : 'text-gray-100 group-hover:text-white'
               }`}>
-                {t(`crops.${crop.name}`, crop.name)}
+                {t(`crops.${crop.id}`, crop.name)}
               </span>
             </button>
           );
