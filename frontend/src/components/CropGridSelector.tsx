@@ -19,7 +19,7 @@ export const CropGridSelector: React.FC<CropGridSelectorProps> = ({
         <label className="text-xs font-bold uppercase tracking-wider text-gray-300">
           Select Crop ({CROP_CATALOG.length} Available)
         </label>
-        <span className="text-[11px] text-emerald-400 font-semibold">
+        <span className="text-xs text-emerald-400 font-semibold">
           Active: <strong className="text-white">{selectedCrop}</strong>
         </span>
       </div>
@@ -34,10 +34,10 @@ export const CropGridSelector: React.FC<CropGridSelectorProps> = ({
               key={crop.id}
               type="button"
               onClick={() => onSelectCrop(crop.name)}
-              className={`relative aspect-[1/1.15] rounded-2xl p-4 flex flex-col items-center justify-between transition-all duration-200 group border text-left cursor-pointer overflow-hidden ${
+              className={`relative aspect-[1/1.15] rounded-xl p-4 flex flex-col items-center justify-between transition-all duration-200 group border text-left cursor-pointer overflow-hidden ${
                 isSelected
                   ? 'border-2 border-emerald-500 bg-[#16291d] shadow-[0_0_25px_rgba(16,185,129,0.3)] ring-1 ring-emerald-500/50 scale-[1.02]'
-                  : 'bg-[#1b1816]/90 hover:bg-[#25211c] border-white/10 hover:border-white/25 shadow-lg hover:scale-[1.01]'
+                  : 'bg-[#1b1816]/90 hover:bg-[#25211c] border-white/10 hover:border-white/25 shadow-md hover:scale-[1.01]'
               }`}
             >
               {/* Checkmark Indicator for selected tile */}
@@ -57,7 +57,7 @@ export const CropGridSelector: React.FC<CropGridSelectorProps> = ({
                   <img
                     src={crop.iconUrl}
                     alt={crop.name}
-                    className="w-full h-full object-cover rounded-2xl relative z-10 shadow-md border border-white/10 group-hover:border-emerald-400/40"
+                    className="w-full h-full object-cover rounded-xl relative z-10 shadow-md border border-white/10 group-hover:border-emerald-400/40"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       // Replace the src with a generated SVG data URI containing the emoji, avoiding DOM mutation bugs

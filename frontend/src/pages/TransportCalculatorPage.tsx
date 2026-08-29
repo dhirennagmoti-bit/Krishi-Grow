@@ -35,7 +35,7 @@ export const TransportCalculatorPage: React.FC = () => {
     <div className="space-y-6">
 
       {/* Page Header */}
-      <div className="bg-black/20 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-2xl">
+      <div className="bg-black/20 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-agri-600 text-white flex items-center justify-center font-bold">
             <Truck className="w-6 h-6" />
@@ -52,7 +52,7 @@ export const TransportCalculatorPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         {/* Left Inputs Form */}
-        <div className="lg:col-span-5 bg-black/20 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-2xl space-y-4">
+        <div className="lg:col-span-5 bg-black/20 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md space-y-4">
           <h3 className="text-sm font-bold text-white uppercase tracking-wider">Transport Parameters</h3>
 
           <div>
@@ -128,11 +128,11 @@ export const TransportCalculatorPage: React.FC = () => {
         </div>
 
         {/* Right Output Cost Breakdown */}
-        <div className="lg:col-span-7 bg-black/20 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-2xl space-y-6">
+        <div className="lg:col-span-7 bg-black/20 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md space-y-6">
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
             <div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/20 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/20 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
                 Cost Calculation Summary
               </span>
               <h3 className="text-xl font-extrabold text-white mt-1">
@@ -148,15 +148,15 @@ export const TransportCalculatorPage: React.FC = () => {
           {/* Quick Route Specs */}
           <div className="grid grid-cols-3 gap-3 bg-white/5 backdrop-blur-md p-4 rounded-xl border border-white/10 text-center">
             <div>
-              <span className="text-[10px] text-gray-400 block">Distance</span>
+              <span className="text-xs text-gray-400 block">Distance</span>
               <span className="font-bold font-mono text-sm text-white">{result.distanceKm} km</span>
             </div>
             <div>
-              <span className="text-[10px] text-gray-400 block">Transit Time</span>
+              <span className="text-xs text-gray-400 block">Transit Time</span>
               <span className="font-bold font-mono text-sm text-white">{result.travelTimeHours} Hours</span>
             </div>
             <div>
-              <span className="text-[10px] text-gray-400 block">Vehicle Capacity</span>
+              <span className="text-xs text-gray-400 block">Vehicle Capacity</span>
               <span className="font-bold font-mono text-sm text-white">{result.vehicleCapacityTonnes} Tonnes</span>
             </div>
           </div>
@@ -204,7 +204,7 @@ export const TransportCalculatorPage: React.FC = () => {
       </div>
 
       {/* Regional Transporter Directory */}
-      <div id="transporter-directory" className="bg-black/20 backdrop-blur-xl p-6 rounded-2xl border border-white/10 shadow-2xl space-y-6">
+      <div id="transporter-directory" className="bg-black/20 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md space-y-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
           <div>
             <h3 className="text-lg font-extrabold text-white">Regional Transporter Directory</h3>
@@ -231,7 +231,7 @@ export const TransportCalculatorPage: React.FC = () => {
         {filteredTransporters.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredTransporters.map((provider) => (
-              <div key={provider.id} className="p-4 rounded-xl border border-white/10 bg-white/5 space-y-3 hover:border-emerald-500/50 hover:bg-white/10 hover:shadow-2xl transition-all">
+              <div key={provider.id} className="p-4 rounded-xl border border-white/10 bg-white/5 space-y-3 hover:border-emerald-500/50 hover:bg-white/10 hover:shadow-md transition-all">
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center shrink-0">
@@ -254,9 +254,9 @@ export const TransportCalculatorPage: React.FC = () => {
                     {provider.phone}
                   </a>
                   {provider.email && (
-                    <a href={`mailto:${provider.email}`} className="flex items-center gap-2 text-[11px] font-medium text-gray-400 hover:text-emerald-400 transition-colors">
+                    <a href={`mailto:${provider.email}`} className="flex items-center gap-2 text-xs font-medium text-gray-400 hover:text-emerald-400 transition-colors">
                       <div className="w-6 h-6 rounded-md bg-white/10 border border-white/20 flex items-center justify-center shadow-xs shrink-0">
-                        <Mail className="w-3 h-3 text-purple-400" />
+                        <Mail className="w-3 h-3 text-blue-400" />
                       </div>
                       <span className="truncate">{provider.email}</span>
                     </a>

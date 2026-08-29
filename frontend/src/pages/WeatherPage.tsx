@@ -285,9 +285,9 @@ export const WeatherPage: React.FC = () => {
     <div className="space-y-6">
 
       {/* Header */}
-      <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-950">
+          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-md shadow-blue-950">
             <CloudSun className="w-7 h-7 text-white" />
           </div>
           <div>
@@ -325,21 +325,21 @@ export const WeatherPage: React.FC = () => {
 
       {/* Error Banner */}
       {error && (
-        <div className="bg-amber-950/40 border border-amber-500/30 text-amber-300 text-xs rounded-2xl px-4 py-3 flex items-center gap-2">
+        <div className="bg-amber-950/40 border border-amber-500/30 text-amber-300 text-xs rounded-xl px-4 py-3 flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 shrink-0" />
           <span>{error} {t('weather.errorMsg')}</span>
         </div>
       )}
 
       {loading ? (
-        <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-16 flex flex-col items-center justify-center gap-4">
+        <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-16 flex flex-col items-center justify-center gap-4">
           <Loader2 className="w-10 h-10 text-blue-400 animate-spin" />
           <p className="text-neutral-400 text-sm">{t('weather.fetching')}</p>
         </div>
       ) : weather ? (
         <>
           {/* Current Weather Hero Card */}
-          <div className="bg-gradient-to-br from-blue-900/60 via-indigo-900/40 to-black/60 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-6 md:p-8 shadow-2xl">
+          <div className="bg-gradient-to-br from-blue-900/60 via-indigo-900/40 to-black/60 backdrop-blur-xl border border-blue-500/20 rounded-xl p-6 md:p-8 shadow-md">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div>
                 <div className="flex items-center gap-2 mb-1">
@@ -363,12 +363,12 @@ export const WeatherPage: React.FC = () => {
                 {[
                   { Icon: Droplets, label: t('weather.humidity'), value: `${weather.humidity}%`, color: 'text-blue-300' },
                   { Icon: Wind, label: t('weather.wind'), value: `${weather.windSpeedKm} km/h`, color: 'text-cyan-300' },
-                  { Icon: Eye, label: t('weather.visibility'), value: `${weather.visibility} km`, color: 'text-purple-300' },
+                  { Icon: Eye, label: t('weather.visibility'), value: `${weather.visibility} km`, color: 'text-blue-300' },
                   { Icon: Gauge, label: t('weather.pressure'), value: `${weather.pressure} hPa`, color: 'text-amber-300' },
                 ].map(({ Icon, label, value, color }) => (
-                  <div key={label} className="bg-white/10 backdrop-blur-md rounded-2xl p-3 text-center border border-white/10">
+                  <div key={label} className="bg-white/10 backdrop-blur-md rounded-xl p-3 text-center border border-white/10">
                     <Icon className={`w-5 h-5 mx-auto mb-1 ${color}`} />
-                    <div className="text-[10px] text-blue-200">{label}</div>
+                    <div className="text-xs text-blue-200">{label}</div>
                     <div className="text-xs font-black text-white font-mono">{value}</div>
                   </div>
                 ))}
@@ -396,23 +396,23 @@ export const WeatherPage: React.FC = () => {
           </div>
 
           {/* 7-Day Forecast */}
-          <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6">
+          <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-6">
             <h3 className="text-sm font-black text-white mb-4 uppercase tracking-wider">{t('weather.forecastTitle')}</h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
               {weather.forecast.map((f, i) => (
                 <div
                   key={i}
-                  className="bg-white/5 hover:bg-white/10 transition-colors rounded-2xl p-3 text-center border border-white/10 cursor-default"
+                  className="bg-white/5 hover:bg-white/10 transition-colors rounded-xl p-3 text-center border border-white/10 cursor-default"
                 >
-                  <span className="text-[11px] font-black text-blue-300 block">{f.day}</span>
+                  <span className="text-xs font-black text-blue-300 block">{f.day}</span>
                   <div className="my-2 flex justify-center">
                     {getWeatherIcon(f.conditionCode, 'w-5 h-5')}
                   </div>
                   <span className="text-xs font-bold text-white block font-mono">
                     {Math.round(f.tempMax)}° / {Math.round(f.tempMin)}°
                   </span>
-                  <span className="text-[9px] text-neutral-400 block mt-0.5 truncate">{f.condition}</span>
-                  <span className={`text-[9px] font-bold block mt-1 ${f.rainProbability >= 70 ? 'text-rose-400' : f.rainProbability >= 40 ? 'text-amber-400' : 'text-blue-300'}`}>
+                  <span className="text-xs text-neutral-400 block mt-0.5 truncate">{f.condition}</span>
+                  <span className={`text-xs font-bold block mt-1 ${f.rainProbability >= 70 ? 'text-rose-400' : f.rainProbability >= 40 ? 'text-amber-400' : 'text-blue-300'}`}>
                     🌧 {f.rainProbability}%
                   </span>
                 </div>
@@ -421,21 +421,21 @@ export const WeatherPage: React.FC = () => {
           </div>
 
           {/* Crop Risk Advisory */}
-          <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-3xl p-6">
+          <div className="bg-black/40 backdrop-blur-xl border border-white/10 rounded-xl p-6">
             <div className="flex items-center gap-2 mb-4">
               <ShieldCheck className="w-5 h-5 text-emerald-400" />
               <h3 className="text-sm font-black text-white uppercase tracking-wider">{t('weather.advisoryTitle')}</h3>
-              <span className="text-[10px] text-neutral-400 ml-1">{t('weather.basedOn', { location: weather.location })}</span>
+              <span className="text-xs text-neutral-400 ml-1">{t('weather.basedOn', { location: weather.location })}</span>
             </div>
             <div className="space-y-3">
               {weather.cropRisks.map((risk, i) => (
                 <div
                   key={i}
-                  className={`p-4 rounded-2xl border ${riskColor[risk.riskLevel]}`}
+                  className={`p-4 rounded-xl border ${riskColor[risk.riskLevel]}`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-black text-white">{risk.crop}</span>
-                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase ${riskBadge[risk.riskLevel]}`}>
+                    <span className={`text-xs font-black px-2 py-0.5 rounded-full uppercase ${riskBadge[risk.riskLevel]}`}>
                       {t('weather.risk', { level: risk.riskLevel })}
                     </span>
                   </div>

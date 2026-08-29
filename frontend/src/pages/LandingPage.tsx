@@ -33,7 +33,7 @@ export const LandingPage: React.FC = () => {
     <div className="space-y-12 py-6 px-4 md:px-8 max-w-[550px] ml-2 md:ml-8 lg:ml-12 relative z-10 pb-32">
       
       {/* Hero Banner Section */}
-      <section className="relative rounded-3xl overflow-hidden bg-black/20 backdrop-blur-md text-white border border-white/10 shadow-2xl">
+      <section className="relative rounded-xl overflow-hidden bg-black/20 backdrop-blur-md text-white border border-white/10 shadow-md">
         <div className="flex items-center">
           
           {/* Hero Content */}
@@ -61,7 +61,7 @@ export const LandingPage: React.FC = () => {
                 onClick={() => {
                   setIsAuthModalOpen(true);
                 }}
-                className="px-6 py-3.5 bg-agri-500 hover:bg-agri-400 text-white font-bold text-sm rounded-xl shadow-lg hover:shadow-agri-500/30 transition-all flex items-center gap-2 group border border-agri-400/50"
+                className="px-6 py-3.5 bg-agri-500 hover:bg-agri-400 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center gap-2 group border border-agri-400/50"
               >
                 <span><FoldText text={t('landing.getStarted')} trigger="scroll" splitBy="word" /></span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -79,12 +79,12 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Interactive Value Chain Flow Component */}
-      <section className="rounded-3xl bg-black/20 backdrop-blur-md border border-white/10 shadow-2xl overflow-hidden p-2">
+      <section className="rounded-xl bg-black/20 backdrop-blur-md border border-white/10 shadow-md overflow-hidden p-2">
         <ValueChainFlow />
       </section>
 
       {/* Platform Features Grid */}
-      <section className="space-y-8 rounded-3xl bg-black/20 backdrop-blur-md border border-white/10 shadow-2xl p-6 md:p-8">
+      <section className="space-y-8 rounded-xl bg-black/20 backdrop-blur-md border border-white/10 shadow-md p-6 md:p-8">
         <div className="text-left max-w-2xl">
           <span className="text-xs font-bold uppercase tracking-wider text-agri-300 bg-white/10 px-3 py-1 rounded-full border border-white/10">
             <FoldText text={t('landing.suite')} trigger="scroll" splitBy="word" />
@@ -101,7 +101,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Dual Value Proposition: Farmer vs Buyer */}
-      <section className="bg-black/20 backdrop-blur-md rounded-3xl p-6 md:p-8 border border-white/10 shadow-2xl space-y-8 text-white">
+      <section className="bg-black/20 backdrop-blur-md rounded-xl p-6 md:p-8 border border-white/10 shadow-md space-y-8 text-white">
         <div className="flex flex-col gap-12 divide-y divide-white/10">
           
           {/* Farmer Column */}
@@ -123,7 +123,7 @@ export const LandingPage: React.FC = () => {
             </ul>
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="mt-6 px-6 py-3 bg-agri-500 text-white text-sm font-bold rounded-xl hover:bg-agri-400 transition-colors shadow-lg border border-agri-400/50"
+              className="mt-6 px-6 py-3 bg-agri-500 text-white text-sm font-bold rounded-xl hover:bg-agri-400 transition-colors shadow-md border border-agri-400/50"
             >
               <FoldText text={t('landing.registerFarmer')} trigger="scroll" splitBy="word" />
             </button>
@@ -131,8 +131,8 @@ export const LandingPage: React.FC = () => {
 
           {/* Buyer Column */}
           <div className="space-y-4 pt-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-purple-300 text-xs font-bold rounded-full border border-white/10">
-              <Users className="w-4 h-4 text-purple-400" /> <FoldText text={t('landing.forBuyers')} trigger="scroll" splitBy="word" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 text-blue-300 text-xs font-bold rounded-full border border-white/10">
+              <Users className="w-4 h-4 text-blue-400" /> <FoldText text={t('landing.forBuyers')} trigger="scroll" splitBy="word" />
             </div>
             <h3 className="text-2xl font-bold text-white"><FoldText text={t('landing.directProcurement')} trigger="scroll" splitBy="word" /></h3>
             <p className="text-sm text-gray-300">
@@ -141,14 +141,14 @@ export const LandingPage: React.FC = () => {
             <ul className="space-y-3 pt-2">
               {buyerBenefits.map((b, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-gray-200 font-medium">
-                  <CheckCircle2 className="w-5 h-5 text-purple-400 shrink-0 mt-0.5" />
+                  <CheckCircle2 className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
                   <span><FoldText text={b} trigger="scroll" splitBy="word" /></span>
                 </li>
               ))}
             </ul>
             <button
               onClick={() => setIsAuthModalOpen(true)}
-              className="mt-6 px-6 py-3 bg-white/20 backdrop-blur-md text-white text-sm font-bold rounded-xl hover:bg-white/30 transition-colors shadow-lg border border-white/20"
+              className="mt-6 px-6 py-3 bg-white/20 backdrop-blur-md text-white text-sm font-bold rounded-xl hover:bg-white/30 transition-colors shadow-md border border-white/20"
             >
               <FoldText text={t('landing.registerBuyer')} trigger="scroll" splitBy="word" />
             </button>
@@ -157,10 +157,10 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Floating AI Callout Banner */}
-      <section className="bg-black/30 backdrop-blur-xl text-white rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl border border-amber-500/30 relative overflow-hidden">
+      <section className="bg-black/30 backdrop-blur-xl text-white rounded-xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-md border border-amber-500/30 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-amber-500/20 via-transparent to-agri-500/20 pointer-events-none" />
         <div className="flex items-center gap-4 relative z-10">
-          <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center shrink-0">
+          <div className="w-14 h-14 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center shrink-0">
             <Bot className="w-8 h-8 text-amber-300" />
           </div>
           <div>
@@ -173,7 +173,7 @@ export const LandingPage: React.FC = () => {
 
         <button
           onClick={() => setIsAIModalOpen(true)}
-          className="relative z-10 px-6 py-3 bg-amber-500/80 backdrop-blur-md text-white font-bold text-xs rounded-xl hover:bg-amber-400 transition-colors shadow-lg border border-amber-400/50 whitespace-nowrap"
+          className="relative z-10 px-6 py-3 bg-amber-500/80 backdrop-blur-md text-white font-bold text-xs rounded-xl hover:bg-amber-400 transition-colors shadow-md border border-amber-400/50 whitespace-nowrap"
         >
           <FoldText text={t('landing.chatAgriAI')} trigger="scroll" splitBy="word" />
         </button>

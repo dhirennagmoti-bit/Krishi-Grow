@@ -106,7 +106,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
     <div className="space-y-8 animate-in fade-in duration-300">
       
       {/* Header Bar */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-2">
             <Store className="w-3.5 h-3.5" /> B2B Spot Trading & Commercial Fulfillment
@@ -114,7 +114,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
             Bulk Marketplace & Sales Orders
           </h2>
-          <p className="text-xs md:text-sm text-neutral-300 font-light">
+          <p className="text-xs md:text-sm text-neutral-300 font-normal">
             Procure verified bulk crop lots directly from Aggregators and generate B2B sales invoices for institutional clients.
           </p>
         </div>
@@ -123,7 +123,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
           {activeTab === 'SALES_ORDERS' ? (
             <button
               onClick={() => setIsOrderModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-purple-950 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md shadow-md transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
               <span>+ Create B2B Sales Order</span>
@@ -131,7 +131,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
           ) : (
             <button
               onClick={() => setActiveTab('SALES_ORDERS')}
-              className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-950 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-950 transition-all cursor-pointer"
             >
               <FileText className="w-4 h-4" />
               <span>View All Sales Invoices</span>
@@ -141,12 +141,12 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
       </div>
 
       {/* Sub-Tabs Toggle */}
-      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 max-w-md">
+      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-xl border border-white/10 max-w-md">
         <button
           onClick={() => setActiveTab('MARKETPLACE')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'MARKETPLACE'
-              ? 'bg-blue-600 text-white shadow-lg'
+              ? 'bg-blue-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -157,7 +157,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
           onClick={() => setActiveTab('SALES_ORDERS')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'SALES_ORDERS'
-              ? 'bg-purple-600 text-white shadow-lg'
+              ? 'bg-blue-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -172,7 +172,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
           {marketOffers.map((offer) => (
             <div
               key={offer.id}
-              className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-blue-500/40 transition-all space-y-4 shadow-xl flex flex-col justify-between"
+              className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-blue-500/40 transition-all space-y-4 shadow-xl flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
@@ -180,12 +180,12 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                     <img
                       src={getCropImage(offer.crop)}
                       alt={offer.crop}
-                      className="w-14 h-14 rounded-2xl object-cover border border-white/15 shadow-md"
+                      className="w-14 h-14 rounded-xl object-cover border border-white/15 shadow-md"
                     />
                     <div>
                       <h4 className="font-bold text-white text-base leading-tight">{offer.crop}</h4>
                       <p className="text-xs text-neutral-400">{offer.variety}</p>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 inline-block mt-1">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 inline-block mt-1">
                         Grade {offer.grade}
                       </span>
                     </div>
@@ -196,7 +196,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
                   <div className="flex justify-between">
                     <span className="text-neutral-400 font-sans">Available Volume:</span>
                     <strong className="text-white">{(offer.quantityKg / 1000).toFixed(1)} Tonnes</strong>
@@ -219,7 +219,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
               <div className="pt-3 border-t border-white/10 flex gap-2">
                 <button
                   onClick={() => handleBuyMarketOffer(offer)}
-                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-blue-950"
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md shadow-blue-950"
                 >
                   <ShoppingBag className="w-4 h-4" />
                   <span>Issue Purchase Order (Buy Bulk)</span>
@@ -233,10 +233,10 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
       {/* 2. SALES ORDERS & INVOICES VIEW */}
       {activeTab === 'SALES_ORDERS' && (
         <div className="space-y-4">
-          <div className="rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 overflow-hidden shadow-xl">
+          <div className="rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 overflow-hidden shadow-xl">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-white/5 text-neutral-300 font-bold uppercase text-[10px] border-b border-white/10">
+                <thead className="bg-white/5 text-neutral-300 font-bold uppercase text-xs border-b border-white/10">
                   <tr>
                     <th className="py-4 px-5">Order # & Crop</th>
                     <th className="py-4 px-5">Buyer Client</th>
@@ -256,14 +256,14 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                           <img src={getCropImage(order.cropOrProduct)} alt={order.cropOrProduct} className="w-10 h-10 rounded-xl object-cover border border-white/10" />
                           <div>
                             <span className="font-bold text-white font-sans text-sm block">{order.cropOrProduct}</span>
-                            <span className="text-[11px] text-cyan-400">{order.orderNumber}</span>
+                            <span className="text-xs text-cyan-400">{order.orderNumber}</span>
                           </div>
                         </div>
                       </td>
 
                       <td className="py-4 px-5 font-sans font-medium text-white">
                         {order.customerName}
-                        <span className="text-[10px] text-neutral-400 block font-mono">📍 {order.destinationCity}</span>
+                        <span className="text-xs text-neutral-400 block font-mono">📍 {order.destinationCity}</span>
                       </td>
 
                       <td className="py-4 px-5 font-bold text-white">
@@ -279,12 +279,12 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                       </td>
 
                       <td className="py-4 px-5 font-sans">
-                        <span className="text-neutral-300 block font-mono text-[11px]">{order.assignedVehicle}</span>
-                        <span className="text-[10px] text-neutral-400 font-sans">Driver: {order.driverName}</span>
+                        <span className="text-neutral-300 block font-mono text-xs">{order.assignedVehicle}</span>
+                        <span className="text-xs text-neutral-400 font-sans">Driver: {order.driverName}</span>
                       </td>
 
                       <td className="py-4 px-5 font-sans">
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
                           order.status === 'DELIVERED' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
                           order.status === 'DISPATCHED' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
                           'bg-amber-500/20 text-amber-300 border border-amber-500/30'
@@ -298,7 +298,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                           onClick={() => handleViewSalesInvoice(order)}
                           className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-semibold border border-white/10 transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                         >
-                          <FileText className="w-3.5 h-3.5 text-purple-400" />
+                          <FileText className="w-3.5 h-3.5 text-blue-400" />
                           <span>View Invoice</span>
                         </button>
                       </td>
@@ -314,10 +314,10 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
       {/* Modal: Create B2B Sales Order */}
       {isOrderModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleCreateOrder} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleCreateOrder} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
-                <FileText className="w-5 h-5 text-purple-400" />
+                <FileText className="w-5 h-5 text-blue-400" />
                 Generate B2B Institutional Sales Order
               </h3>
               <button type="button" onClick={() => setIsOrderModalOpen(false)} className="p-2 text-neutral-400 hover:text-white rounded-xl">
@@ -331,7 +331,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                 <select
                   value={selectedCustomerId}
                   onChange={(e) => setSelectedCustomerId(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500"
                 >
                   {wholesalerCustomers.map(c => (
                     <option key={c.id} value={c.id} className="bg-[#121214]">
@@ -347,7 +347,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                   <select
                     value={orderCrop}
                     onChange={(e) => setOrderCrop(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500"
                   >
                     <option value="Red Onion" className="bg-[#121214]">Red Onion</option>
                     <option value="Tomato" className="bg-[#121214]">Tomato</option>
@@ -361,7 +361,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                   <select
                     value={orderGrade}
                     onChange={(e) => setOrderGrade(e.target.value as any)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-purple-500 font-bold"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500 font-bold"
                   >
                     <option value="A+" className="bg-[#121214]">Grade A+</option>
                     <option value="A" className="bg-[#121214]">Grade A</option>
@@ -378,7 +378,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                     required
                     value={orderQtyKg}
                     onChange={(e) => setOrderQtyKg(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono outline-none focus:border-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -389,14 +389,14 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
                     required
                     value={orderPriceKg}
                     onChange={(e) => setOrderPriceKg(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono outline-none focus:border-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono outline-none focus:border-blue-500"
                   />
                 </div>
               </div>
 
-              <div className="p-3 rounded-2xl bg-purple-950/30 border border-purple-500/20 flex items-center justify-between font-mono">
+              <div className="p-3 rounded-xl bg-blue-950/30 border border-blue-500/20 flex items-center justify-between font-mono">
                 <span className="text-neutral-300 font-sans font-bold">Total Order Value:</span>
-                <span className="text-base font-black text-purple-300">₹{totalAmount.toLocaleString()}</span>
+                <span className="text-base font-black text-blue-300">₹{totalAmount.toLocaleString()}</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -434,7 +434,7 @@ export const WholesalerMarketplaceSalesPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Issue Order & Dispatch
               </button>

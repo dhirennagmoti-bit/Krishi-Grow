@@ -43,7 +43,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         {toasts.map(t => (
           <div
             key={t.id}
-            className={`px-4 py-2 rounded-lg shadow-lg pointer-events-auto transition-opacity duration-300 text-white text-sm max-w-xs ${
+            className={`px-4 py-2 rounded-lg shadow-md pointer-events-auto transition-opacity duration-300 text-white text-sm max-w-xs ${
               t.type === 'success' ? 'bg-emerald-600' : 'bg-rose-600'
             }`}
           >

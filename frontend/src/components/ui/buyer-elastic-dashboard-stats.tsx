@@ -78,7 +78,7 @@ export function BuyerElasticDashboardStats({
             onMouseEnter={() => setActiveId(item.id)}
             onClick={() => setActiveId(item.id)}
             className={cn(
-              "relative cursor-pointer overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-xs dark:border-neutral-800 dark:bg-neutral-950",
+              "relative cursor-pointer overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-xs dark:border-neutral-800 dark:bg-neutral-950",
               "transition-[flex,filter] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]",
               activeId === item.id ? "flex-[4]" : "flex-[1]",
               activeId === item.id
@@ -127,7 +127,7 @@ export function BuyerElasticDashboardStats({
                 )}
               >
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="rounded-full border border-white/30 bg-white/20 px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-white backdrop-blur-md md:px-3 md:text-xs">
+                  <span className="rounded-full border border-white/30 bg-white/20 px-2 py-1 text-xs font-bold uppercase tracking-wider text-white backdrop-blur-md md:px-3 md:text-xs">
                     {item.category}
                   </span>
                   <div className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center ml-auto border border-white/10">

@@ -67,21 +67,21 @@ export const BuyerRequirementsPage: React.FC = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-white/5 shadow-sm">
+      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-xl border border-white/5 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-white/5 text-white flex items-center justify-center font-bold">
-            <Building2 className="w-5 h-5 text-purple-400" />
+            <Building2 className="w-5 h-5 text-blue-400" />
           </div>
           <div>
             <h2 className="text-2xl font-medium tracking-tight text-white">Post Procurement Requirement</h2>
-            <p className="text-sm text-neutral-400 mt-1 font-light">
+            <p className="text-sm text-neutral-400 mt-1 font-normal">
               Post your crop demand to instantly trigger AI matchmaking with nearby farmers.
             </p>
           </div>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-white/5 shadow-sm space-y-8">
+      <form onSubmit={handleSubmit} className="bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-xl border border-white/5 shadow-sm space-y-8">
         <div>
           <CropGridSelector
             selectedCrop={crop}
@@ -97,7 +97,7 @@ export const BuyerRequirementsPage: React.FC = () => {
               required
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-purple-500/50 outline-none font-mono transition-all"
+              className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-blue-500/50 outline-none font-mono transition-all"
             />
           </div>
           <div>
@@ -105,7 +105,7 @@ export const BuyerRequirementsPage: React.FC = () => {
             <select
               value={minGrade}
               onChange={(e) => setMinGrade(e.target.value as QualityGrade)}
-              className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-purple-500/50 outline-none appearance-none transition-all"
+              className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-blue-500/50 outline-none appearance-none transition-all"
             >
               <option value="A+">Grade A+ (Premium Export)</option>
               <option value="A">Grade A (Standard)</option>
@@ -121,7 +121,7 @@ export const BuyerRequirementsPage: React.FC = () => {
               type="number"
               value={targetPrice}
               onChange={(e) => setTargetPrice(e.target.value)}
-              className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-purple-500/50 outline-none font-mono transition-all"
+              className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-blue-500/50 outline-none font-mono transition-all"
             />
           </div>
           <div>
@@ -130,7 +130,7 @@ export const BuyerRequirementsPage: React.FC = () => {
               type="date"
               value={requiredByDate}
               onChange={(e) => setRequiredByDate(e.target.value)}
-              className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-purple-500/50 outline-none font-mono transition-all"
+              className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-blue-500/50 outline-none font-mono transition-all"
               style={{ colorScheme: 'dark' }}
             />
           </div>
@@ -142,7 +142,7 @@ export const BuyerRequirementsPage: React.FC = () => {
             type="text"
             value={pickupRegion}
             onChange={(e) => setPickupRegion(e.target.value)}
-            className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-purple-500/50 outline-none transition-all"
+            className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-blue-500/50 outline-none transition-all"
           />
         </div>
 
@@ -152,13 +152,13 @@ export const BuyerRequirementsPage: React.FC = () => {
             rows={3}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-purple-500/50 outline-none transition-all resize-none"
+            className="w-full px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-blue-500/50 outline-none transition-all resize-none"
           />
         </div>
 
         <button
           type="submit"
-          className="w-full py-4 bg-purple-600 hover:bg-purple-700 text-white font-medium text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 mt-4"
+          className="w-full py-4 bg-blue-600 hover:bg-purple-700 text-white font-medium text-sm rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 mt-4"
         >
           <CheckCircle2 className="w-5 h-5" />
           <span>Publish Requirement & Match Farmers</span>

@@ -16,13 +16,13 @@ export const BuyerDashboard: React.FC = () => {
     <div className="space-y-6 animate-in fade-in duration-300">
       
       {/* Top Buyer Sub-Role Switcher Bar with Dark Glass Effect */}
-      <div className="p-2 rounded-2xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-xl flex flex-wrap items-center justify-between gap-3">
+      <div className="p-2 rounded-xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-xl flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-1.5 p-1 bg-black/40 rounded-xl border border-white/10 w-full sm:w-auto">
           <button
             onClick={() => switchBuyerType('AGGREGATOR')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               currentBuyerType === 'AGGREGATOR'
-                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950'
+                ? 'bg-emerald-600 text-white shadow-md shadow-md'
                 : 'text-neutral-400 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -34,7 +34,7 @@ export const BuyerDashboard: React.FC = () => {
             onClick={() => switchBuyerType('PROCESSOR')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               currentBuyerType === 'PROCESSOR'
-                ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-950'
+                ? 'bg-cyan-600 text-white shadow-md shadow-cyan-950'
                 : 'text-neutral-400 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -46,7 +46,7 @@ export const BuyerDashboard: React.FC = () => {
             onClick={() => switchBuyerType('WHOLESALER')}
             className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
               currentBuyerType === 'WHOLESALER'
-                ? 'bg-purple-600 text-white shadow-lg shadow-purple-950'
+                ? 'bg-blue-600 text-white shadow-md shadow-md'
                 : 'text-neutral-400 hover:text-white hover:bg-white/5'
             }`}
           >

@@ -112,22 +112,22 @@ export const CropScannerModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center p-3 sm:p-4 animate-in fade-in">
-      <div className="w-full max-w-2xl bg-neutral-900 text-white rounded-3xl shadow-2xl border border-white/10 overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="w-full max-w-2xl bg-neutral-900 text-white rounded-xl shadow-md border border-white/10 overflow-hidden flex flex-col max-h-[90vh]">
         
         {/* Header */}
         <div className="p-4 sm:p-5 bg-gradient-to-r from-emerald-700 via-emerald-600 to-teal-700 text-white flex items-center justify-between shadow-md">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-sm">
               <ScanLine className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-black text-lg tracking-tight">AI Crop Health Scanner</h3>
-                <span className="text-[10px] bg-emerald-950/60 text-emerald-200 font-bold px-2 py-0.5 rounded-full border border-emerald-400/30">
+                <span className="text-xs bg-emerald-950/60 text-emerald-200 font-bold px-2 py-0.5 rounded-full border border-emerald-400/30">
                   Gemini Vision
                 </span>
               </div>
-              <p className="text-[11px] text-emerald-100/90 font-light">Visual Leaf, Disease & Pest Diagnosis</p>
+              <p className="text-xs text-emerald-100/90 font-normal">Visual Leaf, Disease & Pest Diagnosis</p>
             </div>
           </div>
           <button
@@ -145,7 +145,7 @@ export const CropScannerModal: React.FC = () => {
         <div className="p-4 sm:p-6 space-y-6 overflow-y-auto flex-1">
           
           {/* Crop Selector */}
-          <div className="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-3">
+          <div className="bg-white/5 p-4 rounded-xl border border-white/10 space-y-3">
             <CropGridSelector
               selectedCrop={selectedCrop}
               onSelectCrop={(name) => setSelectedCrop(name)}
@@ -166,7 +166,7 @@ export const CropScannerModal: React.FC = () => {
           </div>
 
           {/* Mode Selector Tabs (Camera vs Upload) */}
-          <div className="flex gap-2 p-1 bg-black/40 rounded-2xl border border-white/10">
+          <div className="flex gap-2 p-1 bg-black/40 rounded-xl border border-white/10">
             <button
               type="button"
               onClick={() => {
@@ -202,7 +202,7 @@ export const CropScannerModal: React.FC = () => {
           </div>
 
           {/* Capture / Upload Area */}
-          <div className="relative rounded-2xl border-2 border-dashed border-white/20 bg-black/30 p-4 sm:p-6 text-center flex flex-col items-center justify-center min-h-[220px] overflow-hidden">
+          <div className="relative rounded-xl border-2 border-dashed border-white/20 bg-black/30 p-4 sm:p-6 text-center flex flex-col items-center justify-center min-h-[220px] overflow-hidden">
             
             {/* 1. Live Camera Feed */}
             {scanMode === 'CAMERA' && !imagePreview && (
@@ -221,7 +221,7 @@ export const CropScannerModal: React.FC = () => {
                     <div className="w-8 h-8 border-t-2 border-r-2 border-emerald-400 absolute top-0 right-0" />
                     <div className="w-8 h-8 border-b-2 border-l-2 border-emerald-400 absolute bottom-0 left-0" />
                     <div className="w-8 h-8 border-b-2 border-r-2 border-emerald-400 absolute bottom-0 right-0" />
-                    <span className="text-[10px] text-emerald-300 font-mono bg-black/60 px-2 py-0.5 rounded">
+                    <span className="text-xs text-emerald-300 font-mono bg-black/60 px-2 py-0.5 rounded">
                       Align Affected Leaf / Plant
                     </span>
                   </div>
@@ -232,7 +232,7 @@ export const CropScannerModal: React.FC = () => {
                     type="button"
                     onClick={capturePhoto}
                     disabled={!isCameraActive}
-                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-lg flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50"
+                    className="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2 transition-all active:scale-95 disabled:opacity-50"
                   >
                     <Camera className="w-4 h-4" />
                     <span>Capture Snapshot</span>
@@ -253,7 +253,7 @@ export const CropScannerModal: React.FC = () => {
                 />
                 <div 
                   onClick={() => fileInputRef.current?.click()}
-                  className="w-20 h-20 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center cursor-pointer hover:bg-emerald-500/20 transition-all group"
+                  className="w-20 h-20 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center cursor-pointer hover:bg-emerald-500/20 transition-all group"
                 >
                   <Upload className="w-8 h-8 text-emerald-400 group-hover:scale-110 transition-transform" />
                 </div>
@@ -276,9 +276,9 @@ export const CropScannerModal: React.FC = () => {
             {/* 3. Image Preview when Photo is captured or uploaded */}
             {imagePreview && (
               <div className="w-full flex flex-col items-center space-y-3">
-                <div className="relative w-full max-w-xs aspect-video rounded-xl overflow-hidden border-2 border-emerald-500/50 shadow-lg">
+                <div className="relative w-full max-w-xs aspect-video rounded-xl overflow-hidden border-2 border-emerald-500/50 shadow-md">
                   <img src={imagePreview} alt="Crop sample" className="w-full h-full object-cover" />
-                  <div className="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                  <div className="absolute top-2 right-2 bg-emerald-600 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">
                     Ready for AI
                   </div>
                 </div>
@@ -301,7 +301,7 @@ export const CropScannerModal: React.FC = () => {
             <button
               onClick={handleRunScan}
               disabled={isScanning}
-              className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-black rounded-2xl shadow-xl transition-all flex items-center justify-center gap-2 active:scale-98 disabled:opacity-50"
+              className="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-sm font-black rounded-xl shadow-xl transition-all flex items-center justify-center gap-2 active:scale-98 disabled:opacity-50"
             >
               {isScanning ? (
                 <>
@@ -319,10 +319,10 @@ export const CropScannerModal: React.FC = () => {
 
           {/* Diagnostic Results Display */}
           {result && (
-            <div className="bg-white/5 p-5 rounded-2xl border border-emerald-500/30 space-y-4 animate-in slide-in-from-bottom-2 shadow-2xl">
+            <div className="bg-white/5 p-5 rounded-xl border border-emerald-500/30 space-y-4 animate-in slide-in-from-bottom-2 shadow-md">
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md border border-emerald-500/30">
+                  <span className="text-xs font-bold uppercase tracking-wider text-emerald-300 bg-emerald-950/80 px-2.5 py-1 rounded-md border border-emerald-500/30">
                     Diagnosis Match
                   </span>
                   <h4 className="text-lg font-black text-white mt-1.5">{result.diseaseName}</h4>
@@ -331,7 +331,7 @@ export const CropScannerModal: React.FC = () => {
                   <span className="text-xl font-black text-emerald-400 font-mono">
                     {result.confidencePercent}%
                   </span>
-                  <p className="text-[10px] text-neutral-400 font-medium">Confidence</p>
+                  <p className="text-xs text-neutral-400 font-medium">Confidence</p>
                 </div>
               </div>
 
@@ -383,7 +383,7 @@ export const CropScannerModal: React.FC = () => {
               </div>
 
               {/* Safety & Official Verification Notice */}
-              <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-[11px] text-amber-200/90 flex items-start gap-2">
+              <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-200/90 flex items-start gap-2">
                 <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <p>
                   <strong>Official Verification Required:</strong> AI diagnosis is advisory. Always cross-check with local Agricultural Extension Officers / KVK and consult the CIB&RC / PPQS registered label before chemical pesticide spray.

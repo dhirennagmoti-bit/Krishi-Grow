@@ -123,7 +123,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
     <div className="space-y-8 animate-in fade-in duration-300">
       
       {/* Header Bar */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider mb-2">
             <Scale className="w-3.5 h-3.5" /> Automated Intake Weighment & QC
@@ -131,7 +131,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
             Weighbridge Station & Quality Grading Lab
           </h2>
-          <p className="text-xs md:text-sm text-neutral-300 font-light">
+          <p className="text-xs md:text-sm text-neutral-300 font-normal">
             Generate tamper-proof weighment slips, inspect moisture/defects, assign standardized grades, and issue digital certificates.
           </p>
         </div>
@@ -140,7 +140,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
           {activeSubTab === 'WEIGHING' ? (
             <button
               onClick={() => setIsWeighModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-950 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md shadow-md transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
               <span>+ Record Weighment Slip</span>
@@ -148,7 +148,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
           ) : (
             <button
               onClick={() => setIsQCModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-cyan-950 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-md shadow-cyan-950 transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
               <span>+ New Quality Inspection</span>
@@ -158,12 +158,12 @@ export const AggregatorWeighingQCPage: React.FC = () => {
       </div>
 
       {/* Sub-Tabs Selector */}
-      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 max-w-md">
+      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-xl border border-white/10 max-w-md">
         <button
           onClick={() => setActiveSubTab('WEIGHING')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeSubTab === 'WEIGHING'
-              ? 'bg-emerald-600 text-white shadow-lg'
+              ? 'bg-emerald-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -174,7 +174,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
           onClick={() => setActiveSubTab('QC')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeSubTab === 'QC'
-              ? 'bg-cyan-600 text-white shadow-lg'
+              ? 'bg-cyan-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -186,10 +186,10 @@ export const AggregatorWeighingQCPage: React.FC = () => {
       {/* 1. WEIGHING SLIPS TAB */}
       {activeSubTab === 'WEIGHING' && (
         <div className="space-y-4">
-          <div className="rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 overflow-hidden shadow-xl">
+          <div className="rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 overflow-hidden shadow-xl">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-white/5 text-neutral-300 font-bold uppercase text-[10px] border-b border-white/10">
+                <thead className="bg-white/5 text-neutral-300 font-bold uppercase text-xs border-b border-white/10">
                   <tr>
                     <th className="py-4 px-5">Batch ID & Crop</th>
                     <th className="py-4 px-5">Farmer</th>
@@ -209,14 +209,14 @@ export const AggregatorWeighingQCPage: React.FC = () => {
                           <img src={getCropImage(slip.crop)} alt={slip.crop} className="w-10 h-10 rounded-xl object-cover border border-white/10" />
                           <div>
                             <span className="font-bold text-white font-sans text-sm block">{slip.crop}</span>
-                            <span className="text-[11px] text-neutral-400">{slip.batchId}</span>
+                            <span className="text-xs text-neutral-400">{slip.batchId}</span>
                           </div>
                         </div>
                       </td>
 
                       <td className="py-4 px-5 font-sans font-medium text-white">
                         {slip.farmerName}
-                        <span className="text-[10px] text-neutral-400 block font-mono">{slip.weighbridgeLocation}</span>
+                        <span className="text-xs text-neutral-400 block font-mono">{slip.weighbridgeLocation}</span>
                       </td>
 
                       <td className="py-4 px-5 text-neutral-300">
@@ -229,16 +229,16 @@ export const AggregatorWeighingQCPage: React.FC = () => {
 
                       <td className="py-4 px-5 font-black text-emerald-400 text-sm">
                         {slip.netWeightKg.toLocaleString()} kg
-                        <span className="text-[10px] text-neutral-400 font-sans block">({(slip.netWeightKg / 1000).toFixed(2)} T)</span>
+                        <span className="text-xs text-neutral-400 font-sans block">({(slip.netWeightKg / 1000).toFixed(2)} T)</span>
                       </td>
 
                       <td className="py-4 px-5 font-sans">
                         <span className="text-white block font-mono">{slip.moisturePercent}% Moist</span>
-                        <span className="text-[10px] text-neutral-400 font-mono">{slip.damagedPercent}% Damage</span>
+                        <span className="text-xs text-neutral-400 font-mono">{slip.damagedPercent}% Damage</span>
                       </td>
 
                       <td className="py-4 px-5 font-sans">
-                        <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
                           slip.calculatedGrade === 'A+' || slip.calculatedGrade === 'A'
                             ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                             : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
@@ -290,19 +290,19 @@ export const AggregatorWeighingQCPage: React.FC = () => {
           {qualityReports.map((report) => (
             <div
               key={report.id}
-              className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-cyan-500/30 transition-all space-y-4 shadow-xl"
+              className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-cyan-500/30 transition-all space-y-4 shadow-xl"
             >
               <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <img
                     src={getCropImage(report.crop)}
                     alt={report.crop}
-                    className="w-14 h-14 rounded-2xl object-cover border border-white/15 shrink-0 shadow-md"
+                    className="w-14 h-14 rounded-xl object-cover border border-white/15 shrink-0 shadow-md"
                   />
                   <div>
                     <div className="flex items-center gap-2">
                       <h3 className="font-bold text-white text-base">{report.crop}</h3>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                         Grade {report.assignedGrade}
                       </span>
                     </div>
@@ -311,7 +311,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
                   </div>
                 </div>
 
-                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase ${
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full uppercase ${
                   report.decision === 'ACCEPT'
                     ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                     : 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
@@ -321,34 +321,34 @@ export const AggregatorWeighingQCPage: React.FC = () => {
               </div>
 
               {/* Quality Radar Spec Grid */}
-              <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 text-xs font-mono">
+              <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs font-mono">
                 <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Moisture</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Moisture</span>
                   <strong className="text-white">{report.parameters.moisturePercent}%</strong>
                 </div>
                 <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Defects</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Defects</span>
                   <strong className="text-emerald-400">{report.parameters.damagePercent}%</strong>
                 </div>
                 <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Foreign Mat</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Foreign Mat</span>
                   <strong className="text-white">{report.parameters.foreignMaterialPercent}%</strong>
                 </div>
                 <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Size Class</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Size Class</span>
                   <strong className="text-cyan-300">{report.parameters.size}</strong>
                 </div>
                 <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Coloration</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Coloration</span>
                   <strong className="text-amber-300">{report.parameters.color}</strong>
                 </div>
                 <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Ripeness</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Ripeness</span>
                   <strong className="text-emerald-400">{report.parameters.ripeness}</strong>
                 </div>
               </div>
 
-              <div className="text-[11px] text-neutral-400 font-light flex items-center justify-between">
+              <div className="text-xs text-neutral-400 font-normal flex items-center justify-between">
                 <span>Auditor: {report.inspectorName}</span>
                 <span className="font-mono">{report.date}</span>
               </div>
@@ -370,7 +370,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
       {/* Modal: New Weighment Slip */}
       {isWeighModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleCreateWeighSlip} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleCreateWeighSlip} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
                 <Scale className="w-5 h-5 text-emerald-400" />
@@ -410,7 +410,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
               </div>
 
               {/* Weight Inputs */}
-              <div className="grid grid-cols-3 gap-3 p-3 rounded-2xl bg-white/5 border border-white/10">
+              <div className="grid grid-cols-3 gap-3 p-3 rounded-xl bg-white/5 border border-white/10">
                 <div>
                   <label className="block text-neutral-400 font-bold mb-1">Gross Wt (kg)</label>
                   <input
@@ -473,7 +473,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-3 rounded-2xl bg-emerald-950/30 border border-emerald-500/20 flex items-center justify-between">
+              <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/20 flex items-center justify-between">
                 <span className="text-neutral-300 font-bold">Auto-Calculated Intake Grade:</span>
                 <span className="px-3 py-1 rounded-full bg-emerald-500 text-black font-black text-xs font-mono">
                   Grade {calculatedGrade}
@@ -491,7 +491,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Save & Print Slip
               </button>
@@ -503,7 +503,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
       {/* Modal: New QC Report */}
       {isQCModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleCreateQC} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleCreateQC} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-cyan-400" />
@@ -613,7 +613,7 @@ export const AggregatorWeighingQCPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Issue Quality Report
               </button>

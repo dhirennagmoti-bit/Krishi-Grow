@@ -84,15 +84,15 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
     <div className="space-y-8 animate-in fade-in duration-300">
       
       {/* Header Bar */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-2">
             <Package className="w-3.5 h-3.5" /> Warehouse & B2B Trade Exchange
           </div>
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
             Inventory Management & B2B Marketplace
           </h2>
-          <p className="text-xs md:text-sm text-neutral-300 font-light">
+          <p className="text-xs md:text-sm text-neutral-300 font-normal">
             Monitor batch-tracked warehouse stock, spoilage risks, and publish bulk lots directly to Processors and Wholesalers.
           </p>
         </div>
@@ -101,7 +101,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
           {activeTab === 'INVENTORY' ? (
             <button
               onClick={() => setIsAddStockModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-purple-950 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md shadow-md transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
               <span>+ Add Warehouse Stock</span>
@@ -109,7 +109,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
           ) : (
             <button
               onClick={() => setIsCreateOfferModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-950 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md shadow-md transition-all cursor-pointer"
             >
               <Store className="w-4 h-4" />
               <span>+ Post B2B Sell Listing</span>
@@ -119,12 +119,12 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
       </div>
 
       {/* Sub-Tabs Toggle */}
-      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 max-w-md">
+      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-xl border border-white/10 max-w-md">
         <button
           onClick={() => setActiveTab('INVENTORY')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'INVENTORY'
-              ? 'bg-purple-600 text-white shadow-lg'
+              ? 'bg-blue-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -135,7 +135,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
           onClick={() => setActiveTab('MARKETPLACE')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'MARKETPLACE'
-              ? 'bg-emerald-600 text-white shadow-lg'
+              ? 'bg-emerald-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -151,31 +151,31 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
             {aggregatorInventory.map((item) => (
               <div
                 key={item.id}
-                className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-purple-500/40 transition-all space-y-4 shadow-xl group"
+                className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-blue-500/40 transition-all space-y-4 shadow-xl group"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <img
                       src={getCropImage(item.crop)}
                       alt={item.crop}
-                      className="w-12 h-12 rounded-2xl object-cover border border-white/15 shadow-md"
+                      className="w-12 h-12 rounded-xl object-cover border border-white/15 shadow-md"
                     />
                     <div>
                       <h4 className="font-bold text-white text-base">{item.crop}</h4>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
                         Grade {item.grade}
                       </span>
                     </div>
                   </div>
 
-                  <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full uppercase ${
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase ${
                     item.spoilageRisk === 'LOW' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'
                   }`}>
                     Risk: {item.spoilageRisk}
                   </span>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
                   <div className="flex justify-between">
                     <span className="text-neutral-400 font-sans">Batch ID:</span>
                     <strong className="text-white">{item.batchId}</strong>
@@ -194,7 +194,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="text-[11px] text-neutral-400 space-y-0.5">
+                <div className="text-xs text-neutral-400 space-y-0.5">
                   <p className="truncate">📍 {item.warehouse}</p>
                   <p className="text-neutral-500">Storage: {item.storageLocation}</p>
                 </div>
@@ -206,7 +206,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                     setOfferQuantityKg((item.availableQuantityKg).toString());
                     setIsCreateOfferModalOpen(true);
                   }}
-                  className="w-full py-2 bg-purple-600/30 hover:bg-purple-600/60 text-purple-300 border border-purple-500/30 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full py-2 bg-blue-600/30 hover:bg-blue-600/60 text-blue-300 border border-blue-500/30 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
                   <Store className="w-3.5 h-3.5" />
                   <span>List Lot on Marketplace</span>
@@ -223,7 +223,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
           {marketOffers.map((offer) => (
             <div
               key={offer.id}
-              className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-emerald-500/40 transition-all space-y-4 shadow-xl flex flex-col justify-between"
+              className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-emerald-500/40 transition-all space-y-4 shadow-xl flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
@@ -231,12 +231,12 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                     <img
                       src={getCropImage(offer.crop)}
                       alt={offer.crop}
-                      className="w-14 h-14 rounded-2xl object-cover border border-white/15 shadow-md"
+                      className="w-14 h-14 rounded-xl object-cover border border-white/15 shadow-md"
                     />
                     <div>
                       <h4 className="font-bold text-white text-base leading-tight">{offer.crop}</h4>
                       <p className="text-xs text-neutral-400">{offer.variety}</p>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 inline-block mt-1">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 inline-block mt-1">
                         Grade {offer.grade}
                       </span>
                     </div>
@@ -247,7 +247,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
+                <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
                   <div className="flex justify-between">
                     <span className="text-neutral-400 font-sans">Offered Lot Volume:</span>
                     <strong className="text-white">{(offer.quantityKg / 1000).toFixed(1)} Tonnes ({offer.quantityKg.toLocaleString()} kg)</strong>
@@ -288,10 +288,10 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
       {/* Modal: Add Warehouse Stock */}
       {isAddStockModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleAddStock} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleAddStock} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
-                <Package className="w-5 h-5 text-purple-400" />
+                <Package className="w-5 h-5 text-blue-400" />
                 Add Inventory Batch to Warehouse
               </h3>
               <button type="button" onClick={() => setIsAddStockModalOpen(false)} className="p-2 text-neutral-400 hover:text-white rounded-xl">
@@ -306,7 +306,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                   <select
                     value={crop}
                     onChange={(e) => setCrop(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500"
                   >
                     <option value="Red Onion" className="bg-[#121214]">Red Onion</option>
                     <option value="Tomato" className="bg-[#121214]">Tomato</option>
@@ -320,7 +320,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                   <select
                     value={grade}
                     onChange={(e) => setGrade(e.target.value as any)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-purple-500 font-bold"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500 font-bold"
                   >
                     <option value="A+" className="bg-[#121214]">Grade A+</option>
                     <option value="A" className="bg-[#121214]">Grade A</option>
@@ -338,7 +338,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                     required
                     value={quantityKg}
                     onChange={(e) => setQuantityKg(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono outline-none focus:border-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono outline-none focus:border-blue-500"
                   />
                 </div>
                 <div>
@@ -349,7 +349,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                     required
                     value={purchasePrice}
                     onChange={(e) => setPurchasePrice(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono outline-none focus:border-purple-500"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white font-mono outline-none focus:border-blue-500"
                   />
                 </div>
               </div>
@@ -361,7 +361,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                   required
                   value={warehouse}
                   onChange={(e) => setWarehouse(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -372,7 +372,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
                   required
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500"
                 />
               </div>
             </div>
@@ -387,7 +387,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Save Stock Batch
               </button>
@@ -399,7 +399,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
       {/* Modal: Create Marketplace B2B Offer */}
       {isCreateOfferModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleCreateOffer} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleCreateOffer} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
                 <Store className="w-5 h-5 text-emerald-400" />
@@ -499,7 +499,7 @@ export const AggregatorInventoryMarketPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Publish Live Offer
               </button>

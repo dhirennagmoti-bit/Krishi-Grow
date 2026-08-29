@@ -313,17 +313,17 @@ export const AuthModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
-      <div className="w-full max-w-lg bg-[#0e0e11] rounded-3xl shadow-2xl border border-white/15 overflow-hidden max-h-[95vh] overflow-y-auto">
+      <div className="w-full max-w-lg bg-[#0e0e11] rounded-xl shadow-md border border-white/15 overflow-hidden max-h-[95vh] overflow-y-auto">
 
         {/* Modal Header */}
         <div className="px-6 py-4 bg-gradient-to-r from-emerald-900/60 to-black/60 border-b border-white/10 flex items-center justify-between backdrop-blur-xl">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center shadow-md">
               <Sprout className="w-5 h-5 text-white" />
             </div>
             <div>
               <h3 className="font-black text-white text-base tracking-tight">{t('authModal.platformName')}</h3>
-              <p className="text-[10px] text-emerald-400 font-medium">{t('authModal.platformSub')}</p>
+              <p className="text-xs text-emerald-400 font-medium">{t('authModal.platformSub')}</p>
             </div>
           </div>
           <button
@@ -335,7 +335,7 @@ export const AuthModal: React.FC = () => {
         </div>
 
         {/* Prominent Demo User Access Card */}
-        <div className="p-4 mx-6 mt-4 bg-gradient-to-r from-emerald-950/70 via-neutral-900/80 to-purple-950/70 border border-emerald-500/30 rounded-2xl">
+        <div className="p-4 mx-6 mt-4 bg-gradient-to-r from-emerald-950/70 via-neutral-900/80 to-blue-950/70 border border-emerald-500/30 rounded-xl">
           <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-2">
               <span className="flex h-2 w-2 relative">
@@ -344,11 +344,11 @@ export const AuthModal: React.FC = () => {
               </span>
               <p className="text-xs font-black text-white">{t('authModal.demoInstant')}</p>
             </div>
-            <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
+            <span className="text-xs bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
               {t('authModal.noSignUpNeeded')}
             </span>
           </div>
-          <p className="text-[11px] text-neutral-300 mb-3">
+          <p className="text-xs text-neutral-300 mb-3">
             {t('authModal.exploreInteractive')}
           </p>
           <div className="grid grid-cols-3 gap-2">
@@ -365,9 +365,9 @@ export const AuthModal: React.FC = () => {
               type="button"
               onClick={() => handleDemoLogin('BUYER', 'AGGREGATOR')}
               disabled={loading}
-              className="flex flex-col items-center justify-center gap-1.5 p-2.5 bg-purple-600/30 hover:bg-purple-600/60 text-purple-300 text-xs font-bold rounded-xl border border-purple-500/40 transition-all cursor-pointer disabled:opacity-50"
+              className="flex flex-col items-center justify-center gap-1.5 p-2.5 bg-blue-600/30 hover:bg-blue-600/60 text-blue-300 text-xs font-bold rounded-xl border border-blue-500/40 transition-all cursor-pointer disabled:opacity-50"
             >
-              <Building2 className="w-4 h-4 text-purple-400" />
+              <Building2 className="w-4 h-4 text-blue-400" />
               <span>{t('authModal.demoAggregator')}</span>
             </button>
             <button
@@ -412,7 +412,7 @@ export const AuthModal: React.FC = () => {
 
           {/* Error Message */}
           {errorMsg && (
-            <div className="p-3 bg-rose-950/60 border border-rose-500/30 rounded-2xl text-rose-300 text-xs flex items-start gap-2">
+            <div className="p-3 bg-rose-950/60 border border-rose-500/30 rounded-xl text-rose-300 text-xs flex items-start gap-2">
               <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{errorMsg}</span>
             </div>
@@ -420,7 +420,7 @@ export const AuthModal: React.FC = () => {
 
           {/* Success Message */}
           {successMsg && (
-            <div className="p-3 bg-emerald-950/60 border border-emerald-500/30 rounded-2xl text-emerald-300 text-xs flex items-start gap-2">
+            <div className="p-3 bg-emerald-950/60 border border-emerald-500/30 rounded-xl text-emerald-300 text-xs flex items-start gap-2">
               <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{successMsg}</span>
             </div>
@@ -471,7 +471,7 @@ export const AuthModal: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-md shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
                     <><Loader2 className="w-4 h-4 animate-spin" /> <span>{t('authModal.signingIn')}</span></>
@@ -521,7 +521,7 @@ export const AuthModal: React.FC = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-md shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
                     <><Loader2 className="w-4 h-4 animate-spin" /> <span>{t('authModal.sendingResetLink')}</span></>
@@ -559,9 +559,9 @@ export const AuthModal: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setRole('FARMER')}
-                      className={`p-5 rounded-2xl border-2 text-left transition-all cursor-pointer ${
+                      className={`p-5 rounded-xl border-2 text-left transition-all cursor-pointer ${
                         role === 'FARMER'
-                          ? 'border-emerald-500 bg-emerald-950/40 shadow-lg shadow-emerald-950'
+                          ? 'border-emerald-500 bg-emerald-950/40 shadow-md shadow-md'
                           : 'border-white/10 bg-white/5 hover:border-white/20'
                       }`}
                     >
@@ -569,11 +569,11 @@ export const AuthModal: React.FC = () => {
                         <Sprout className="w-5 h-5" />
                       </div>
                       <h5 className="font-black text-sm text-white">{t('authModal.roleFarmer')}</h5>
-                      <p className="text-[11px] text-neutral-400 mt-1 leading-relaxed">
+                      <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
                         {t('authModal.farmerDesc')}
                       </p>
                       {role === 'FARMER' && (
-                        <span className="inline-flex items-center gap-1 mt-2 text-[10px] text-emerald-400 font-bold">
+                        <span className="inline-flex items-center gap-1 mt-2 text-xs text-emerald-400 font-bold">
                           <CheckCircle2 className="w-3 h-3" /> {t('authModal.selected')}
                         </span>
                       )}
@@ -583,21 +583,21 @@ export const AuthModal: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setRole('BUYER')}
-                      className={`p-5 rounded-2xl border-2 text-left transition-all cursor-pointer ${
+                      className={`p-5 rounded-xl border-2 text-left transition-all cursor-pointer ${
                         role === 'BUYER'
-                          ? 'border-purple-500 bg-purple-950/40 shadow-lg shadow-purple-950'
+                          ? 'border-blue-500 bg-blue-950/40 shadow-md shadow-md'
                           : 'border-white/10 bg-white/5 hover:border-white/20'
                       }`}
                     >
-                      <div className="w-10 h-10 rounded-xl bg-purple-600 text-white flex items-center justify-center mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-3">
                         <Building2 className="w-5 h-5" />
                       </div>
                       <h5 className="font-black text-sm text-white">{t('authModal.roleBuyer')}</h5>
-                      <p className="text-[11px] text-neutral-400 mt-1 leading-relaxed">
+                      <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
                         {t('authModal.buyerDesc')}
                       </p>
                       {role === 'BUYER' && (
-                        <span className="inline-flex items-center gap-1 mt-2 text-[10px] text-purple-400 font-bold">
+                        <span className="inline-flex items-center gap-1 mt-2 text-xs text-blue-400 font-bold">
                           <CheckCircle2 className="w-3 h-3" /> {t('authModal.selected')}
                         </span>
                       )}
@@ -635,7 +635,7 @@ export const AuthModal: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setStep(2)}
-                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-md shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>{t('authModal.continueToAccountDetails')}</span>
                     <ArrowRight className="w-4 h-4" />
@@ -645,7 +645,7 @@ export const AuthModal: React.FC = () => {
                 <div className="space-y-4">
                   <form onSubmit={handleSignUp} className="space-y-3 pt-1">
                     <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                      <span className={`text-xs font-bold uppercase ${role === 'FARMER' ? 'text-emerald-400' : 'text-purple-400'}`}>
+                      <span className={`text-xs font-bold uppercase ${role === 'FARMER' ? 'text-emerald-400' : 'text-blue-400'}`}>
                         {t('authModal.registrationRole', { role: role === 'FARMER' ? t('authModal.roleFarmer') : t('authModal.roleBuyer'), type: role === 'BUYER' ? t(`authModal.${buyerType.toLowerCase()}`) : t('authModal.cultivator') })}
                       </span>
                       <button
@@ -758,7 +758,7 @@ export const AuthModal: React.FC = () => {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-2xl shadow-lg shadow-emerald-950 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs rounded-xl shadow-md shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       {loading ? (
                         <><Loader2 className="w-4 h-4 animate-spin" /> <span>{t('authModal.creatingAccount')}</span></>
@@ -773,7 +773,7 @@ export const AuthModal: React.FC = () => {
           )}
 
           {/* Footer Note */}
-          <p className="text-center text-[10px] text-neutral-500 leading-relaxed">
+          <p className="text-center text-xs text-neutral-500 leading-relaxed">
             {t('authModal.termsPrivacy')}
           </p>
         </div>

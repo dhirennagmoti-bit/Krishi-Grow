@@ -24,7 +24,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-[#121214] border border-white/15 rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+      <div className="bg-[#121214] border border-white/15 rounded-xl max-w-3xl w-full overflow-hidden shadow-md flex flex-col max-h-[90vh]">
         
         {/* Header Action Bar */}
         <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-white/5">
@@ -84,9 +84,9 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
           </div>
 
           {/* Issuer & Recipient Meta Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-xl bg-white/5 border border-white/10 text-xs">
             <div className="space-y-1">
-              <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">ISSUED BY (Party A)</span>
+              <span className="text-xs uppercase font-bold text-neutral-400 tracking-wider">ISSUED BY (Party A)</span>
               <h4 className="font-bold text-white text-sm">{document.issuerName}</h4>
               <p className="text-neutral-300">{document.issuerRole}</p>
               {document.metadata?.issuerLocation && (
@@ -97,7 +97,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
             </div>
 
             <div className="space-y-1">
-              <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider">RECIPIENT / BUYER (Party B)</span>
+              <span className="text-xs uppercase font-bold text-neutral-400 tracking-wider">RECIPIENT / BUYER (Party B)</span>
               <h4 className="font-bold text-white text-sm">{document.recipientName}</h4>
               <p className="text-neutral-300">{document.metadata?.recipientRole || 'Procurement Partner'}</p>
               {document.metadata?.recipientLocation && (
@@ -109,9 +109,9 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
           </div>
 
           {/* Core Goods / Quality Table */}
-          <div className="rounded-2xl border border-white/10 overflow-hidden">
+          <div className="rounded-xl border border-white/10 overflow-hidden">
             <table className="w-full text-left text-xs">
-              <thead className="bg-white/10 text-neutral-300 font-bold uppercase text-[10px]">
+              <thead className="bg-white/10 text-neutral-300 font-bold uppercase text-xs">
                 <tr>
                   <th className="py-3 px-4">Commodity / Item</th>
                   <th className="py-3 px-4">Grade & Spec</th>
@@ -142,26 +142,26 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
 
           {/* Conditional Metadata Details */}
           {document.type === 'QUALITY_CERTIFICATE' && document.metadata?.parameters && (
-            <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/20 space-y-3">
+            <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/20 space-y-3">
               <h5 className="font-bold text-emerald-300 text-xs flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-400" />
                 Laboratory & Organoleptic Quality Analysis
               </h5>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
                 <div className="bg-black/40 p-2 rounded-xl border border-white/10">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Moisture Content</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Moisture Content</span>
                   <span className="font-bold text-white">{document.metadata.parameters.moisturePercent}%</span>
                 </div>
                 <div className="bg-black/40 p-2 rounded-xl border border-white/10">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Defects / Damage</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Defects / Damage</span>
                   <span className="font-bold text-emerald-400">{document.metadata.parameters.damagePercent}%</span>
                 </div>
                 <div className="bg-black/40 p-2 rounded-xl border border-white/10">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Foreign Matter</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Foreign Matter</span>
                   <span className="font-bold text-white">{document.metadata.parameters.foreignMaterialPercent}%</span>
                 </div>
                 <div className="bg-black/40 p-2 rounded-xl border border-white/10">
-                  <span className="text-[10px] text-neutral-400 block font-sans">Ripeness / Color</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Ripeness / Color</span>
                   <span className="font-bold text-emerald-400">{document.metadata.parameters.color}</span>
                 </div>
               </div>
@@ -169,7 +169,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
           )}
 
           {document.type === 'TRACEABILITY_PASSPORT' && document.metadata?.trace && (
-            <div className="p-4 rounded-2xl bg-cyan-950/30 border border-cyan-500/20 space-y-3">
+            <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/20 space-y-3">
               <h5 className="font-bold text-cyan-300 text-xs flex items-center gap-1.5">
                 <QrCode className="w-4 h-4 text-cyan-400" />
                 Immutable QR Supply Lineage (Farm-to-Fork)
@@ -191,7 +191,7 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                   <strong className="text-white">{document.metadata.trace.aggregator}</strong>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-purple-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-400" />
                   <span className="text-neutral-400">4. Processing Batch:</span>
                   <strong className="text-white font-mono">{document.metadata.trace.rawBatchId}</strong>
                 </div>
@@ -216,17 +216,17 @@ export const DocumentViewerModal: React.FC<DocumentViewerModalProps> = ({
                 </svg>
               </div>
               <div>
-                <span className="text-[10px] text-neutral-400 block font-bold uppercase">Digital Security Hash</span>
+                <span className="text-xs text-neutral-400 block font-bold uppercase">Digital Security Hash</span>
                 <span className="text-xs font-mono text-emerald-400 font-bold">KG-BLOCK-884029-CERT</span>
-                <p className="text-[10px] text-neutral-400 mt-0.5">Scan to verify authentic certificate ledger on Krishi Grow.</p>
+                <p className="text-xs text-neutral-400 mt-0.5">Scan to verify authentic certificate ledger on Krishi Grow.</p>
               </div>
             </div>
 
             <div className="text-right">
               <div className="w-32 h-10 border-b border-white/30 mb-1 flex items-end justify-center">
-                <span className="text-[10px] text-emerald-300 font-serif italic">Verified Digital Signature</span>
+                <span className="text-xs text-emerald-300 font-serif italic">Verified Digital Signature</span>
               </div>
-              <span className="text-[10px] text-neutral-400 font-medium">Authorized Supply Officer</span>
+              <span className="text-xs text-neutral-400 font-medium">Authorized Supply Officer</span>
             </div>
           </div>
 

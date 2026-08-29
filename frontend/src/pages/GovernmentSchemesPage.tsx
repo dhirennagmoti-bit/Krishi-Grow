@@ -20,15 +20,15 @@ export const GovernmentSchemesPage: React.FC = () => {
     <div className="space-y-6">
       
       {/* Header */}
-      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/5 shadow-sm">
+      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-xl border border-white/5 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-white/5 text-white flex items-center justify-center font-bold">
-              <FileText className="w-5 h-5 text-purple-400" />
+              <FileText className="w-5 h-5 text-blue-400" />
             </div>
             <div>
               <h2 className="text-2xl font-medium tracking-tight text-white">{t('governmentSchemes.title')}</h2>
-              <p className="text-sm text-neutral-400 mt-1 font-light">
+              <p className="text-sm text-neutral-400 mt-1 font-normal">
                 {t('governmentSchemes.subtitle')}
               </p>
             </div>
@@ -42,13 +42,13 @@ export const GovernmentSchemesPage: React.FC = () => {
                 placeholder={t('governmentSchemes.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 text-sm border border-white/10 rounded-xl focus:border-purple-500/50 outline-none bg-black/50 text-white font-light transition-all"
+                className="w-full pl-11 pr-4 py-3 text-sm border border-white/10 rounded-xl focus:border-blue-500/50 outline-none bg-black/50 text-white font-normal transition-all"
               />
             </div>
             <select
               value={selectedCrop}
               onChange={(e) => setSelectedCrop(e.target.value)}
-              className="px-4 py-3 text-sm border border-white/10 rounded-xl focus:border-purple-500/50 outline-none bg-black/50 text-white font-light transition-all appearance-none"
+              className="px-4 py-3 text-sm border border-white/10 rounded-xl focus:border-blue-500/50 outline-none bg-black/50 text-white font-normal transition-all appearance-none"
             >
               <option value="ALL">{t('governmentSchemes.allCrops')}</option>
               <option value="Tomato">{t('governmentSchemes.tomato')}</option>
@@ -60,7 +60,7 @@ export const GovernmentSchemesPage: React.FC = () => {
       </div>
 
       {/* Schemes Grid */}
-      <div className="h-[80vh] w-full border border-white/5 rounded-3xl overflow-hidden bg-black/60 backdrop-blur-xl">
+      <div className="h-[80vh] w-full border border-white/5 rounded-xl overflow-hidden bg-black/60 backdrop-blur-xl">
         <ScrollStack
           itemDistance={120}
           itemScale={0.01}
@@ -69,31 +69,31 @@ export const GovernmentSchemesPage: React.FC = () => {
           baseScale={0.85}
         >
           {filteredSchemes.map((s) => (
-            <ScrollStackItem key={s.id} itemClassName="bg-black/60 backdrop-blur-3xl border border-white/10 shadow-lg rounded-3xl">
+            <ScrollStackItem key={s.id} itemClassName="bg-black/60 backdrop-blur-3xl border border-white/10 shadow-md rounded-xl">
               <div className="p-8 h-full flex flex-col space-y-6">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/5">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full">
+                <span className="text-xs font-bold uppercase tracking-widest text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">
                   {s.agency}
                 </span>
                 <h3 className="text-xl font-medium text-white mt-3">{s.name}</h3>
               </div>
               <div className="text-left md:text-right">
                 <span className="text-xs text-neutral-400 block mb-1">{t('governmentSchemes.maxSubsidy')}</span>
-                <span className="text-lg font-medium font-mono text-purple-400">{s.maxSubsidyAmount}</span>
+                <span className="text-lg font-medium font-mono text-blue-400">{s.maxSubsidyAmount}</span>
               </div>
             </div>
 
-            <p className="text-sm text-neutral-300 font-light leading-relaxed">{s.description}</p>
+            <p className="text-sm text-neutral-300 font-normal leading-relaxed">{s.description}</p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/5 p-6 rounded-2xl border border-white/5 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white/5 p-6 rounded-xl border border-white/5 text-sm">
               <div className="space-y-1">
                 <span className="font-medium text-white block">{t('governmentSchemes.eligibilityCriteria')}</span>
-                <p className="text-neutral-400 font-light leading-relaxed">{s.eligibility}</p>
+                <p className="text-neutral-400 font-normal leading-relaxed">{s.eligibility}</p>
               </div>
               <div className="space-y-1">
                 <span className="font-medium text-white block">{t('governmentSchemes.subsidyBenefit')}</span>
-                <p className="text-emerald-400 font-light leading-relaxed">{s.subsidyBenefit}</p>
+                <p className="text-emerald-400 font-normal leading-relaxed">{s.subsidyBenefit}</p>
               </div>
             </div>
 
@@ -111,12 +111,12 @@ export const GovernmentSchemesPage: React.FC = () => {
             </div>
 
             <div className="flex items-center justify-between pt-4 border-t border-white/5">
-              <span className="text-[10px] text-gray-400 font-mono">{t('governmentSchemes.lastVerified', { date: s.lastVerifiedDate })}</span>
+              <span className="text-xs text-gray-400 font-mono">{t('governmentSchemes.lastVerified', { date: s.lastVerifiedDate })}</span>
               <a
                 href={s.applicationUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
+                className="px-4 py-2 bg-blue-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center gap-1.5"
               >
                 <span>{t('governmentSchemes.visitPortal')}</span>
                 <ExternalLink className="w-3.5 h-3.5" />

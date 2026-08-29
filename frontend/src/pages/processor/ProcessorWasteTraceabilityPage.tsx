@@ -25,7 +25,7 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
     <div className="space-y-8 animate-in fade-in duration-300">
       
       {/* Header Bar */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider mb-2">
             <QrCode className="w-3.5 h-3.5" /> Farm-to-Fork Integrity & Zero-Waste
@@ -33,7 +33,7 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
             Traceability Engine & Circular Waste Analytics
           </h2>
-          <p className="text-xs md:text-sm text-neutral-300 font-light">
+          <p className="text-xs md:text-sm text-neutral-300 font-normal">
             Immutable QR batch tracking across the value chain and automated industrial by-product monetization.
           </p>
         </div>
@@ -61,7 +61,7 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
               });
             }
           }}
-          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-950 transition-all cursor-pointer shrink-0"
+          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md shadow-md transition-all cursor-pointer shrink-0"
         >
           <QrCode className="w-4 h-4" />
           <span>Generate QR Passport Certificate</span>
@@ -69,7 +69,7 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
       </div>
 
       {/* 1. TRACEABILITY VISUAL PIPELINE EXPLORER */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl space-y-6">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl space-y-6">
         
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -100,51 +100,51 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
               
               {/* Step 1: Farm Origin */}
-              <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 space-y-2">
+              <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 space-y-2">
                 <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">1</div>
                 <h4 className="font-bold text-white text-xs">Farm Origin</h4>
-                <p className="text-[11px] text-emerald-300 font-mono">{searchedBatch.rawMaterialSource.farmOrigin}</p>
-                <span className="text-[10px] text-neutral-400 block">Soil & Climate Certified</span>
+                <p className="text-xs text-emerald-300 font-mono">{searchedBatch.rawMaterialSource.farmOrigin}</p>
+                <span className="text-xs text-neutral-400 block">Soil & Climate Certified</span>
               </div>
 
               {/* Step 2: Farmer */}
-              <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 space-y-2">
+              <div className="p-4 rounded-xl bg-emerald-950/30 border border-emerald-500/30 space-y-2">
                 <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs">2</div>
                 <h4 className="font-bold text-white text-xs">Cultivator</h4>
-                <p className="text-[11px] text-emerald-300 font-medium">{searchedBatch.rawMaterialSource.farmer}</p>
-                <span className="text-[10px] text-neutral-400 block font-mono">Crop: {searchedBatch.rawMaterialSource.crop}</span>
+                <p className="text-xs text-emerald-300 font-medium">{searchedBatch.rawMaterialSource.farmer}</p>
+                <span className="text-xs text-neutral-400 block font-mono">Crop: {searchedBatch.rawMaterialSource.crop}</span>
               </div>
 
               {/* Step 3: Aggregator Hub */}
-              <div className="p-4 rounded-2xl bg-cyan-950/30 border border-cyan-500/30 space-y-2">
+              <div className="p-4 rounded-xl bg-cyan-950/30 border border-cyan-500/30 space-y-2">
                 <div className="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold text-xs">3</div>
                 <h4 className="font-bold text-white text-xs">Aggregator & QC</h4>
-                <p className="text-[11px] text-cyan-300 font-medium">{searchedBatch.rawMaterialSource.aggregator}</p>
-                <span className="text-[10px] text-neutral-400 block font-mono">Weighed & Graded A+</span>
+                <p className="text-xs text-cyan-300 font-medium">{searchedBatch.rawMaterialSource.aggregator}</p>
+                <span className="text-xs text-neutral-400 block font-mono">Weighed & Graded A+</span>
               </div>
 
               {/* Step 4: Industrial Processor */}
-              <div className="p-4 rounded-2xl bg-purple-950/30 border border-purple-500/30 space-y-2">
-                <div className="w-8 h-8 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">4</div>
+              <div className="p-4 rounded-xl bg-blue-950/30 border border-blue-500/30 space-y-2">
+                <div className="w-8 h-8 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">4</div>
                 <h4 className="font-bold text-white text-xs">Processing Plant</h4>
-                <p className="text-[11px] text-purple-300 font-medium">{user.businessName || 'Sahyadri Processing'}</p>
-                <span className="text-[10px] text-neutral-400 block font-mono">Batch: {searchedBatch.batchId}</span>
+                <p className="text-xs text-blue-300 font-medium">{user.businessName || 'Sahyadri Processing'}</p>
+                <span className="text-xs text-neutral-400 block font-mono">Batch: {searchedBatch.batchId}</span>
               </div>
 
               {/* Step 5: Finished Good */}
-              <div className="p-4 rounded-2xl bg-amber-950/30 border border-amber-500/30 space-y-2">
+              <div className="p-4 rounded-xl bg-amber-950/30 border border-amber-500/30 space-y-2">
                 <div className="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">5</div>
                 <h4 className="font-bold text-white text-xs">Consumer Retail</h4>
-                <p className="text-[11px] text-amber-300 font-medium truncate">{searchedBatch.productName}</p>
-                <span className="text-[10px] text-emerald-400 block font-bold">100% Traceable Verified</span>
+                <p className="text-xs text-amber-300 font-medium truncate">{searchedBatch.productName}</p>
+                <span className="text-xs text-emerald-400 block font-bold">100% Traceable Verified</span>
               </div>
 
             </div>
 
             {/* QR Scanner Live Simulation Card */}
-            <div className="p-6 rounded-2xl bg-white/5 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="p-6 rounded-xl bg-white/5 border border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
               <div className="flex items-center gap-4">
-                <div className="w-20 h-20 bg-white p-2 rounded-2xl flex items-center justify-center shrink-0 shadow-lg">
+                <div className="w-20 h-20 bg-white p-2 rounded-xl flex items-center justify-center shrink-0 shadow-md">
                   <svg viewBox="0 0 100 100" className="w-full h-full text-black" fill="currentColor">
                     <rect width="25" height="25" />
                     <rect x="75" width="25" height="25" />
@@ -177,7 +177,7 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
       </div>
 
       {/* 2. CIRCULAR WASTE MANAGEMENT & BY-PRODUCT VALORIZATION */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl space-y-6">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
@@ -191,7 +191,7 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
 
           <div className="text-right">
             <span className="text-2xl font-black text-amber-400 font-mono">{aggregateWastePercent}%</span>
-            <span className="text-[10px] text-neutral-400 block">Facility Average Waste Ratio</span>
+            <span className="text-xs text-neutral-400 block">Facility Average Waste Ratio</span>
           </div>
         </div>
 
@@ -199,12 +199,12 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
           {wasteRecords.map((record) => (
             <div
               key={record.id}
-              className="p-6 rounded-3xl bg-white/5 border border-white/10 hover:border-amber-500/30 transition-all space-y-4"
+              className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-amber-500/30 transition-all space-y-4"
             >
               <div className="flex items-start justify-between">
                 <div>
                   <h4 className="font-bold text-white text-sm">{record.processName}</h4>
-                  <span className="text-[10px] text-neutral-400 font-mono block mt-0.5">Date: {record.date}</span>
+                  <span className="text-xs text-neutral-400 font-mono block mt-0.5">Date: {record.date}</span>
                 </div>
                 <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-mono">
                   {record.wastePercentage}% Waste
@@ -212,27 +212,27 @@ export const ProcessorWasteTraceabilityPage: React.FC = () => {
               </div>
 
               {/* Mass Balance Math */}
-              <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-black/40 border border-white/5 text-xs font-mono">
+              <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-black/40 border border-white/5 text-xs font-mono">
                 <div>
-                  <span className="text-[10px] text-neutral-400 block font-sans">Raw Input</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Raw Input</span>
                   <strong className="text-white">{record.inputRawKg.toLocaleString()} kg</strong>
                 </div>
                 <div>
-                  <span className="text-[10px] text-neutral-400 block font-sans">Pure Output</span>
+                  <span className="text-xs text-neutral-400 block font-sans">Pure Output</span>
                   <strong className="text-emerald-400">{record.outputProductKg.toLocaleString()} kg</strong>
                 </div>
                 <div>
-                  <span className="text-[10px] text-neutral-400 block font-sans">By-Product Waste</span>
+                  <span className="text-xs text-neutral-400 block font-sans">By-Product Waste</span>
                   <strong className="text-amber-400">{record.wasteKg.toLocaleString()} kg</strong>
                 </div>
               </div>
 
               {/* AI By-Product Monetization Recommendation */}
-              <div className="p-3.5 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 space-y-1 text-xs">
-                <span className="text-[10px] uppercase font-bold text-emerald-400 flex items-center gap-1.5">
+              <div className="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/20 space-y-1 text-xs">
+                <span className="text-xs uppercase font-bold text-emerald-400 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5" /> Circular Economy By-Product Monetization
                 </span>
-                <p className="text-neutral-300 text-[11px] leading-relaxed">
+                <p className="text-neutral-300 text-xs leading-relaxed">
                   {record.byProductUtilization}
                 </p>
               </div>

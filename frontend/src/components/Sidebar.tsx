@@ -67,17 +67,17 @@ export const Sidebar: React.FC = () => {
     : aggregatorItems;
 
   return (
-    <aside className="group w-20 hover:w-64 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] bg-black/40 backdrop-blur-2xl border-r border-white/10 flex flex-col justify-between hidden md:flex min-h-[calc(100vh-4rem)] px-3 py-4 sticky top-16 z-50 overflow-x-hidden shadow-2xl">
+    <aside className="group w-20 hover:w-64 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] bg-black/40 backdrop-blur-2xl border-r border-white/10 flex flex-col justify-between hidden md:flex min-h-[calc(100vh-4rem)] px-3 py-4 sticky top-16 z-50 overflow-x-hidden shadow-md">
       <div className="space-y-6">
         
         {/* User Card info */}
-        <div className="bg-white/5 p-2 rounded-2xl border border-white/10 flex items-center gap-3 overflow-hidden whitespace-nowrap transition-all duration-300 w-full">
+        <div className="bg-white/5 p-2 rounded-xl border border-white/10 flex items-center gap-3 overflow-hidden whitespace-nowrap transition-all duration-300 w-full">
           <div className="w-10 h-10 shrink-0 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center font-bold text-emerald-300">
             {user.name.charAt(0)}
           </div>
           <div className="flex flex-col truncate opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
             <span className="text-xs font-bold text-white truncate">{user.name}</span>
-            <span className="text-[10px] text-emerald-400 font-medium capitalize">
+            <span className="text-xs text-emerald-400 font-medium capitalize">
               {user.role === 'FARMER' ? `Farmer • ${user.district}` : `${user.buyerType} • ${user.district}`}
             </span>
           </div>
@@ -86,10 +86,10 @@ export const Sidebar: React.FC = () => {
         {/* Role Quick Switcher (when in Buyer mode) */}
         {user.role === 'BUYER' && (
           <div className="space-y-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
-            <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider px-2 block">
+            <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider px-2 block">
               Switch Supply Chain Role
             </span>
-            <div className="grid grid-cols-3 gap-1 p-1 bg-black/60 rounded-xl border border-white/10 text-[10px] font-bold">
+            <div className="grid grid-cols-3 gap-1 p-1 bg-black/60 rounded-xl border border-white/10 text-xs font-bold">
               <button
                 onClick={() => switchBuyerType('AGGREGATOR')}
                 className={`py-1 rounded-lg transition-all cursor-pointer text-center ${
@@ -109,7 +109,7 @@ export const Sidebar: React.FC = () => {
               <button
                 onClick={() => switchBuyerType('WHOLESALER')}
                 className={`py-1 rounded-lg transition-all cursor-pointer text-center ${
-                  user.buyerType === 'WHOLESALER' ? 'bg-purple-600 text-white' : 'text-neutral-400 hover:text-white'
+                  user.buyerType === 'WHOLESALER' ? 'bg-blue-600 text-white' : 'text-neutral-400 hover:text-white'
                 }`}
               >
                 Whol
@@ -120,7 +120,7 @@ export const Sidebar: React.FC = () => {
 
         {/* Sidebar Navigation */}
         <nav className="space-y-1">
-          <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-3 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 whitespace-nowrap h-4">
+          <div className="text-xs font-bold text-neutral-400 uppercase tracking-wider px-3 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 whitespace-nowrap h-4">
             Navigation Menu
           </div>
           {currentItems.map(item => {
@@ -130,9 +130,9 @@ export const Sidebar: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center gap-3 p-2 rounded-2xl text-xs font-semibold transition-all overflow-hidden cursor-pointer ${
+                className={`w-full flex items-center gap-3 p-2 rounded-xl text-xs font-semibold transition-all overflow-hidden cursor-pointer ${
                   isActive
-                    ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950 font-bold border border-emerald-500/50'
+                    ? 'bg-emerald-600 text-white shadow-md font-bold border border-emerald-500/50'
                     : 'text-neutral-400 hover:text-white hover:bg-white/10 border border-transparent'
                 }`}
                 title={item.label}
@@ -151,7 +151,7 @@ export const Sidebar: React.FC = () => {
       <div className="space-y-2 pt-4 border-t border-white/10">
         <button
           onClick={() => setIsAIModalOpen(true)}
-          className="w-full flex items-center justify-between p-2 bg-amber-500/10 hover:bg-amber-500/20 rounded-2xl border border-amber-500/20 text-amber-400 transition-colors overflow-hidden whitespace-nowrap cursor-pointer"
+          className="w-full flex items-center justify-between p-2 bg-amber-500/10 hover:bg-amber-500/20 rounded-xl border border-amber-500/20 text-amber-400 transition-colors overflow-hidden whitespace-nowrap cursor-pointer"
           title="Ask AgriAI"
         >
           <div className="flex items-center gap-3 text-xs font-bold shrink-0">
@@ -160,13 +160,13 @@ export const Sidebar: React.FC = () => {
             </div>
             <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">Ask AgriAI</span>
           </div>
-          <span className="text-[10px] bg-amber-500/80 text-white px-2 py-0.5 rounded-full font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">Live</span>
+          <span className="text-xs bg-amber-500/80 text-white px-2 py-0.5 rounded-full font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">Live</span>
         </button>
 
         {isAuthenticated ? (
           <button
             onClick={() => logout()}
-            className="w-full flex items-center gap-3 p-2 text-xs text-rose-400 font-semibold hover:bg-rose-500/10 hover:text-rose-300 rounded-2xl transition-colors overflow-hidden whitespace-nowrap cursor-pointer"
+            className="w-full flex items-center gap-3 p-2 text-xs text-rose-400 font-semibold hover:bg-rose-500/10 hover:text-rose-300 rounded-xl transition-colors overflow-hidden whitespace-nowrap cursor-pointer"
             title={t('nav.signOut')}
           >
             <div className="w-10 h-10 shrink-0 flex items-center justify-center">
@@ -177,7 +177,7 @@ export const Sidebar: React.FC = () => {
         ) : (
           <button
             onClick={() => setIsAuthModalOpen(true)}
-            className="w-full flex items-center gap-3 p-2 text-xs text-emerald-400 font-semibold hover:bg-emerald-500/10 hover:text-emerald-300 rounded-2xl transition-colors overflow-hidden whitespace-nowrap cursor-pointer"
+            className="w-full flex items-center gap-3 p-2 text-xs text-emerald-400 font-semibold hover:bg-emerald-500/10 hover:text-emerald-300 rounded-xl transition-colors overflow-hidden whitespace-nowrap cursor-pointer"
             title={t('nav.signInRegister')}
           >
             <div className="w-10 h-10 shrink-0 flex items-center justify-center">

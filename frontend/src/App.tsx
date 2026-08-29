@@ -143,7 +143,7 @@ const MainContent: React.FC = () => {
       <div className="fixed bottom-6 right-6 flex flex-col items-end gap-3 z-50">
         <button
           onClick={() => requireAuth(() => setIsScannerModalOpen(true))}
-          className="flex items-center gap-2 p-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-full shadow-2xl transition-all hover:pr-5 group cursor-pointer border border-amber-400/40"
+          className="flex items-center gap-2 p-3.5 bg-amber-500 hover:bg-amber-400 text-black font-bold rounded-full shadow-md transition-all hover:pr-5 group cursor-pointer border border-amber-400/40"
           title="Scan crop leaves or fruit for disease diagnosis"
         >
           <ScanLine className="w-6 h-6" />
@@ -154,7 +154,7 @@ const MainContent: React.FC = () => {
 
         <button
           onClick={() => requireAuth(() => setIsAIModalOpen(true))}
-          className="flex items-center gap-2 p-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-2xl transition-all hover:pr-5 group cursor-pointer border border-emerald-400/40"
+          className="flex items-center gap-2 p-3.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full shadow-md transition-all hover:pr-5 group cursor-pointer border border-emerald-400/40"
           title="AgriAI Assistant"
         >
           <Bot className="w-6 h-6" />

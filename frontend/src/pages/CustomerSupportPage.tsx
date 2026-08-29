@@ -165,12 +165,12 @@ export const CustomerSupportPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* ── Page Header ── */}
-      <div className="bg-gradient-to-r from-emerald-950/60 via-[#10141a] to-black p-6 md:p-8 rounded-3xl border border-emerald-500/20 backdrop-blur-xl relative overflow-hidden shadow-2xl">
+      <div className="bg-gradient-to-r from-emerald-950/60 via-[#10141a] to-black p-6 md:p-8 rounded-xl border border-emerald-500/20 backdrop-blur-xl relative overflow-hidden shadow-md">
         <div className="absolute -right-12 -top-12 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-emerald-600/30 border border-emerald-400/40 rounded-2xl text-emerald-400">
+              <div className="p-3 bg-emerald-600/30 border border-emerald-400/40 rounded-xl text-emerald-400">
                 <Headphones className="w-8 h-8" />
               </div>
               <div>
@@ -189,20 +189,20 @@ export const CustomerSupportPage: React.FC = () => {
 
           {/* Quick Metrics */}
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <div className="p-3 rounded-2xl bg-black/50 border border-white/10 text-center">
-              <span className="text-[10px] text-neutral-400 font-bold block uppercase">Resolution SLA</span>
+            <div className="p-3 rounded-xl bg-black/50 border border-white/10 text-center">
+              <span className="text-xs text-neutral-400 font-bold block uppercase">Resolution SLA</span>
               <span className="text-base font-black text-emerald-400 flex items-center justify-center gap-1">
                 <Clock className="w-4 h-4" /> &lt; 2 Hours
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-black/50 border border-white/10 text-center">
-              <span className="text-[10px] text-neutral-400 font-bold block uppercase">AI Auto-Triage</span>
+            <div className="p-3 rounded-xl bg-black/50 border border-white/10 text-center">
+              <span className="text-xs text-neutral-400 font-bold block uppercase">AI Auto-Triage</span>
               <span className="text-base font-black text-cyan-400 flex items-center justify-center gap-1">
                 <Bot className="w-4 h-4" /> Instant
               </span>
             </div>
-            <div className="p-3 rounded-2xl bg-black/50 border border-white/10 text-center col-span-2 sm:col-span-1">
-              <span className="text-[10px] text-neutral-400 font-bold block uppercase">Helpline</span>
+            <div className="p-3 rounded-xl bg-black/50 border border-white/10 text-center col-span-2 sm:col-span-1">
+              <span className="text-xs text-neutral-400 font-bold block uppercase">Helpline</span>
               <span className="text-base font-black text-amber-400 flex items-center justify-center gap-1">
                 <Phone className="w-4 h-4" /> 1800-180-1551
               </span>
@@ -212,14 +212,14 @@ export const CustomerSupportPage: React.FC = () => {
       </div>
 
       {/* ── Kisan Emergency Helpline Banner ── */}
-      <div className="p-4 rounded-2xl bg-gradient-to-r from-amber-950/40 via-amber-900/20 to-black border border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="p-4 rounded-xl bg-gradient-to-r from-amber-950/40 via-amber-900/20 to-black border border-amber-500/30 flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="p-2.5 bg-amber-500/20 rounded-xl text-amber-400 shrink-0">
             <ShieldAlert className="w-6 h-6" />
           </div>
           <div>
             <p className="text-xs font-bold text-amber-300">Toll-Free Agricultural Support Helpline (Multi-Lingual)</p>
-            <p className="text-[11px] text-neutral-300">
+            <p className="text-xs text-neutral-300">
               Government Kisan Call Centre: <strong className="text-white font-mono">1800-180-1551</strong> • Direct Krishi Grow Escalation Desk: <strong className="text-white font-mono">+91 1800-572-4769</strong>
             </p>
           </div>
@@ -247,13 +247,13 @@ export const CustomerSupportPage: React.FC = () => {
 
         {/* Left Column: Create Support Ticket Form (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl">
+          <div className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md">
             <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-emerald-400" />
                 <h2 className="text-base font-bold text-white">Create Support Ticket</h2>
               </div>
-              <span className="text-[10px] px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-400/30">
+              <span className="text-xs px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-400/30">
                 Auto-Reply Email Active
               </span>
             </div>
@@ -286,13 +286,13 @@ export const CustomerSupportPage: React.FC = () => {
                         type="button"
                         key={u}
                         onClick={() => setUrgency(u)}
-                        className={`py-2 px-1 rounded-xl font-bold text-[10px] text-center border transition-all cursor-pointer ${
+                        className={`py-2 px-1 rounded-xl font-bold text-xs text-center border transition-all cursor-pointer ${
                           isSel
                             ? u === 'CRITICAL_URGENT'
                               ? 'bg-rose-600 text-white border-rose-400 shadow-md shadow-rose-950'
                               : u === 'HIGH'
                               ? 'bg-amber-600 text-white border-amber-400 shadow-md shadow-amber-950'
-                              : 'bg-emerald-600 text-white border-emerald-400 shadow-md shadow-emerald-950'
+                              : 'bg-emerald-600 text-white border-emerald-400 shadow-md shadow-md'
                             : 'bg-white/5 text-neutral-400 border-white/10 hover:bg-white/10 hover:text-white'
                         }`}
                       >
@@ -346,23 +346,23 @@ export const CustomerSupportPage: React.FC = () => {
               {/* Contact Email & Phone */}
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <div>
-                  <label className="block text-neutral-400 text-[10px] font-semibold mb-1">Email for Auto-Reply Receipt</label>
+                  <label className="block text-neutral-400 text-xs font-semibold mb-1">Email for Auto-Reply Receipt</label>
                   <input
                     type="email"
                     value={contactEmail}
                     onChange={e => setContactEmail(e.target.value)}
                     required
-                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-[11px] text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-neutral-400 text-[10px] font-semibold mb-1">Contact Phone</label>
+                  <label className="block text-neutral-400 text-xs font-semibold mb-1">Contact Phone</label>
                   <input
                     type="tel"
                     value={contactPhone}
                     onChange={e => setContactPhone(e.target.value)}
                     required
-                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-[11px] text-white focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500"
                   />
                 </div>
               </div>
@@ -370,7 +370,7 @@ export const CustomerSupportPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full mt-2 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full mt-2 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <>
@@ -392,12 +392,12 @@ export const CustomerSupportPage: React.FC = () => {
         <div className="lg:col-span-7 space-y-6">
 
           {/* Ticket Selector Bar */}
-          <div className="bg-[#12161c]/80 backdrop-blur-xl p-4 rounded-3xl border border-white/10 shadow-2xl space-y-3">
+          <div className="bg-[#12161c]/80 backdrop-blur-xl p-4 rounded-xl border border-white/10 shadow-md space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-neutral-300 flex items-center gap-1.5">
                 <FileText className="w-4 h-4 text-emerald-400" /> Active Support Tickets ({tickets.length})
               </span>
-              <span className="text-[10px] text-neutral-400">Click any ticket to view live chat & email receipt</span>
+              <span className="text-xs text-neutral-400">Click any ticket to view live chat & email receipt</span>
             </div>
 
             <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
@@ -407,22 +407,22 @@ export const CustomerSupportPage: React.FC = () => {
                   <button
                     key={t.id}
                     onClick={() => setSelectedTicketId(t.id)}
-                    className={`shrink-0 p-3 rounded-2xl border text-left transition-all cursor-pointer min-w-[200px] ${
+                    className={`shrink-0 p-3 rounded-xl border text-left transition-all cursor-pointer min-w-[200px] ${
                       isSel
-                        ? 'bg-emerald-950/60 border-emerald-500/60 shadow-lg text-white'
+                        ? 'bg-emerald-950/60 border-emerald-500/60 shadow-md text-white'
                         : 'bg-black/40 border-white/10 text-neutral-400 hover:bg-white/5 hover:text-white'
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2 mb-1">
-                      <span className="font-mono text-[10px] font-bold text-emerald-400">{t.ticketNumber}</span>
-                      <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase ${
+                      <span className="font-mono text-xs font-bold text-emerald-400">{t.ticketNumber}</span>
+                      <span className={`text-xs px-1.5 py-0.5 rounded-full font-bold uppercase ${
                         t.urgency === 'CRITICAL_URGENT' || t.urgency === 'HIGH' ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'
                       }`}>
                         {t.urgency}
                       </span>
                     </div>
                     <p className="text-xs font-bold text-white truncate max-w-[180px]">{t.subject}</p>
-                    <p className="text-[10px] text-neutral-400 mt-1 capitalize">{t.category.toLowerCase().replace(/_/g, ' ')}</p>
+                    <p className="text-xs text-neutral-400 mt-1 capitalize">{t.category.toLowerCase().replace(/_/g, ' ')}</p>
                   </button>
                 );
               })}
@@ -431,7 +431,7 @@ export const CustomerSupportPage: React.FC = () => {
 
           {/* Selected Ticket Conversation & Resolution Pane */}
           {selectedTicket ? (
-            <div className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl space-y-5">
+            <div className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md space-y-5">
               {/* Ticket Top Info */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-white/10 gap-3">
                 <div>
@@ -470,7 +470,7 @@ export const CustomerSupportPage: React.FC = () => {
                   return (
                     <div
                       key={rep.id}
-                      className={`p-4 rounded-2xl border text-xs leading-relaxed ${
+                      className={`p-4 rounded-xl border text-xs leading-relaxed ${
                         isAi
                           ? 'bg-gradient-to-r from-emerald-950/40 to-teal-950/20 border-emerald-500/30 ml-4'
                           : isUser
@@ -483,7 +483,7 @@ export const CustomerSupportPage: React.FC = () => {
                           {isAi ? <Bot className="w-4 h-4 text-emerald-400" /> : <UserCheck className="w-4 h-4 text-neutral-400" />}
                           {rep.senderName}
                         </span>
-                        <span className="text-[10px] text-neutral-400">{rep.timestamp}</span>
+                        <span className="text-xs text-neutral-400">{rep.timestamp}</span>
                       </div>
                       <p className="text-neutral-200 whitespace-pre-line">{rep.message}</p>
                     </div>
@@ -510,7 +510,7 @@ export const CustomerSupportPage: React.FC = () => {
               </form>
             </div>
           ) : (
-            <div className="p-8 text-center text-neutral-400 bg-white/5 rounded-3xl border border-white/10">
+            <div className="p-8 text-center text-neutral-400 bg-white/5 rounded-xl border border-white/10">
               Select or create a ticket to begin.
             </div>
           )}
@@ -518,7 +518,7 @@ export const CustomerSupportPage: React.FC = () => {
       </div>
 
       {/* ── FAQ Section ── */}
-      <div className="bg-[#12161c]/80 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl">
+      <div className="bg-[#12161c]/80 backdrop-blur-xl p-6 md:p-8 rounded-xl border border-white/10 shadow-md">
         <div className="flex items-center gap-2 mb-6">
           <HelpCircle className="w-6 h-6 text-emerald-400" />
           <h2 className="text-lg font-black text-white">
@@ -532,7 +532,7 @@ export const CustomerSupportPage: React.FC = () => {
             return (
               <div
                 key={idx}
-                className="rounded-2xl bg-black/40 border border-white/10 overflow-hidden transition-colors"
+                className="rounded-xl bg-black/40 border border-white/10 overflow-hidden transition-colors"
               >
                 <button
                   onClick={() => setActiveFaq(isOpen ? null : idx)}
@@ -567,7 +567,7 @@ export const CustomerSupportPage: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
-              className="bg-[#161b22] border border-emerald-500/30 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto relative"
+              className="bg-[#161b22] border border-emerald-500/30 rounded-xl max-w-2xl w-full p-6 shadow-md space-y-4 max-h-[90vh] overflow-y-auto relative"
             >
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div className="flex items-center gap-2">
@@ -576,7 +576,7 @@ export const CustomerSupportPage: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-white">Automated Customer Support Email</h3>
-                    <p className="text-[10px] text-neutral-400 font-mono">
+                    <p className="text-xs text-neutral-400 font-mono">
                       To: {emailModalTicket.autoReplyEmailPreview.recipient} • Sent: {emailModalTicket.autoReplyEmailPreview.sentAt}
                     </p>
                   </div>
@@ -590,15 +590,15 @@ export const CustomerSupportPage: React.FC = () => {
               </div>
 
               {/* Email Content Container */}
-              <div className="rounded-2xl border border-white/10 p-5 bg-[#0d1117] space-y-4 text-xs">
+              <div className="rounded-xl border border-white/10 p-5 bg-[#0d1117] space-y-4 text-xs">
                 <div className="bg-emerald-950/60 p-4 rounded-xl border border-emerald-500/30 text-center">
                   <span className="text-lg font-black text-white block">🌾 Krishi Grow Support Desk</span>
-                  <span className="text-[10px] text-emerald-300 uppercase tracking-widest font-bold">
+                  <span className="text-xs text-emerald-300 uppercase tracking-widest font-bold">
                     Official Ticket Receipt & Immediate Action Advisory
                   </span>
                 </div>
 
-                <div className="p-3 bg-black/40 rounded-xl border border-white/10 space-y-1.5 text-[11px]">
+                <div className="p-3 bg-black/40 rounded-xl border border-white/10 space-y-1.5 text-xs">
                   <div className="flex justify-between"><span className="text-neutral-400">Ticket ID:</span><span className="font-mono font-bold text-emerald-400">{emailModalTicket.ticketNumber}</span></div>
                   <div className="flex justify-between"><span className="text-neutral-400">Recipient:</span><span className="font-bold text-white">{emailModalTicket.userName} ({emailModalTicket.userRole})</span></div>
                   <div className="flex justify-between"><span className="text-neutral-400">Category:</span><span className="font-bold text-white">{emailModalTicket.category.replace(/_/g, ' ')}</span></div>
@@ -606,7 +606,7 @@ export const CustomerSupportPage: React.FC = () => {
                 </div>
 
                 <div className="p-4 bg-emerald-950/30 border-l-4 border-emerald-500 rounded-r-xl space-y-2">
-                  <span className="font-bold text-emerald-400 block uppercase tracking-wider text-[10px]">
+                  <span className="font-bold text-emerald-400 block uppercase tracking-wider text-xs">
                     ⚡ Instant Automated Resolution Assessment:
                   </span>
                   <p className="text-neutral-200 whitespace-pre-line leading-relaxed">
@@ -614,7 +614,7 @@ export const CustomerSupportPage: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="pt-2 border-t border-white/10 text-center text-[10px] text-neutral-400 space-y-1">
+                <div className="pt-2 border-t border-white/10 text-center text-xs text-neutral-400 space-y-1">
                   <p>24x7 Kisan Grievance Toll-Free: <strong>1800-180-1551</strong></p>
                   <p>Direct Support: <strong>support@krishigrow.in</strong> • Krishi Grow Value-Chain Platform</p>
                 </div>

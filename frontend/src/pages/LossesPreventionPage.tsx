@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ShieldAlert, Bug, CloudRain, PackageOpen, ThermometerSun, MapPin, AlertTriangle, Info, Sprout, Wind, Droplet, MoveDown, ArrowRight, ShieldCheck } from 'lucide-react';
 import { KrishiRakshakModule } from '../components/KrishiRakshakModule';
 
 export const LossesPreventionPage: React.FC = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'PRE_HARVEST' | 'POST_HARVEST' | 'PESTICIDES'>('PESTICIDES');
 
   const preHarvestData = [
@@ -151,16 +153,16 @@ export const LossesPreventionPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto space-y-8">
       {/* Header */}
-      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-white/5 shadow-sm">
+      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-xl border border-white/5 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-white/5 text-white flex items-center justify-center font-bold shadow-inner">
               <ShieldAlert className="w-7 h-7 text-emerald-400" />
             </div>
             <div>
-              <h2 className="text-3xl font-medium tracking-tight text-white">Losses & Prevention</h2>
-              <p className="text-sm text-neutral-400 mt-2 font-light max-w-2xl">
-                Comprehensive guide to identifying, understanding, and mitigating both pre-harvest and post-harvest agricultural losses to maximize yield and profitability.
+              <h2 className="text-3xl font-medium tracking-tight text-white">{t('lossesPrevention.title')}</h2>
+              <p className="text-sm text-neutral-400 mt-2 font-normal max-w-2xl">
+                {t('lossesPrevention.description')}
               </p>
             </div>
           </div>
@@ -169,14 +171,14 @@ export const LossesPreventionPage: React.FC = () => {
         {/* Custom Tab Navigation */}
         <div className="flex gap-4 mt-8 overflow-x-auto pb-2 scrollbar-hide">
           {[
-            { id: 'PESTICIDES', label: 'Krishi Rakshak (Crop Protection & Pesticides)', icon: ShieldAlert },
-            { id: 'PRE_HARVEST', label: 'Pre-Harvest Losses', icon: CloudRain },
-            { id: 'POST_HARVEST', label: 'Post-Harvest Losses', icon: PackageOpen }
+            { id: 'PESTICIDES', label: t('lossesPrevention.krishiRakshak'), icon: ShieldAlert },
+            { id: 'PRE_HARVEST', label: t('lossesPrevention.preHarvest'), icon: CloudRain },
+            { id: 'POST_HARVEST', label: t('lossesPrevention.postHarvest'), icon: PackageOpen }
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-medium transition-all whitespace-nowrap border ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all whitespace-nowrap border ${
                 activeTab === tab.id
                   ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 shadow-sm'
                   : 'bg-white/5 border-white/5 text-neutral-400 hover:bg-white/10 hover:text-white'
@@ -195,15 +197,16 @@ export const LossesPreventionPage: React.FC = () => {
         {/* PRE-HARVEST TAB */}
         {activeTab === 'PRE_HARVEST' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/5 text-sm text-neutral-300 font-light">
-              <span className="font-medium text-white">Pre-harvest losses</span> occur while the crop is actively growing in the field. They are divided into three primary drivers: Biotic (pests/pathogens), Abiotic (weather/soil), and Agronomic (management practices).
-            </div>
+            <div 
+              className="bg-white/5 rounded-xl p-6 border border-white/5 text-sm text-neutral-300 font-normal"
+              dangerouslySetInnerHTML={{ __html: t('lossesPrevention.preHarvestDesc') }}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {preHarvestData.map((category, idx) => (
-                <div key={idx} className="bg-black/60 backdrop-blur-xl rounded-3xl border border-white/5 p-8 space-y-6 shadow-sm hover:border-white/10 transition-colors">
+                <div key={idx} className="bg-black/60 backdrop-blur-xl rounded-xl border border-white/5 p-8 space-y-6 shadow-sm hover:border-white/10 transition-colors">
                   <div className="flex items-center gap-4 border-b border-white/5 pb-6">
-                    <div className={`w-12 h-12 rounded-2xl ${category.bg} ${category.border} border flex items-center justify-center shrink-0`}>
+                    <div className={`w-12 h-12 rounded-xl ${category.bg} ${category.border} border flex items-center justify-center shrink-0`}>
                       <category.icon className={`w-6 h-6 ${category.color}`} />
                     </div>
                     <h3 className="text-xl font-medium text-white leading-tight">{category.category}</h3>
@@ -215,17 +218,17 @@ export const LossesPreventionPage: React.FC = () => {
                         <h4 className={`text-sm font-semibold tracking-wide uppercase ${category.color}`}>
                           {item.title}
                         </h4>
-                        <p className="text-sm text-neutral-400 font-light leading-relaxed">
+                        <p className="text-sm text-neutral-400 font-normal leading-relaxed">
                           {item.description}
                         </p>
-                        <div className="bg-white/5 rounded-2xl p-5 border border-white/5 space-y-3">
+                        <div className="bg-white/5 rounded-xl p-5 border border-white/5 space-y-3">
                           <div className="flex items-center gap-2 mb-1">
                             <ShieldAlert className="w-4 h-4 text-emerald-400" />
                             <span className="text-xs font-medium text-white uppercase tracking-widest">Prevention</span>
                           </div>
                           <ul className="space-y-2">
                             {item.prevention.map((prev, pIdx) => (
-                              <li key={pIdx} className="text-sm text-neutral-300 font-light flex items-start gap-2">
+                              <li key={pIdx} className="text-sm text-neutral-300 font-normal flex items-start gap-2">
                                 <span className="text-emerald-500 mt-1 flex-shrink-0">•</span>
                                 <span>{prev}</span>
                               </li>
@@ -244,20 +247,21 @@ export const LossesPreventionPage: React.FC = () => {
         {/* POST-HARVEST TAB */}
         {activeTab === 'POST_HARVEST' && (
           <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/5 text-sm text-neutral-300 font-light">
-              <span className="font-medium text-white">Post-harvest loss (PHL)</span> refers to the measurable reduction in both quantity (weight, volume) and quality (nutritional, commercial, or aesthetic value) of agricultural produce from the moment of harvest until consumption. Globally, approximately one-third of all food produced for human consumption is lost or wasted along supply chains.
-            </div>
+            <div 
+              className="bg-white/5 rounded-xl p-6 border border-white/5 text-sm text-neutral-300 font-normal"
+              dangerouslySetInnerHTML={{ __html: t('lossesPrevention.postHarvestDesc') }}
+            />
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Types of Losses Summary Table */}
-              <div className="lg:col-span-8 bg-black/60 backdrop-blur-xl rounded-3xl border border-white/5 p-8 shadow-sm">
-                <h3 className="text-xl font-medium text-white mb-6">Types of Post-Harvest Losses</h3>
-                <div className="overflow-x-auto rounded-2xl border border-white/5">
+              <div className="lg:col-span-8 bg-black/60 backdrop-blur-xl rounded-xl border border-white/5 p-8 shadow-sm">
+                <h3 className="text-xl font-medium text-white mb-6">{t('lossesPrevention.typesOfPostHarvest')}</h3>
+                <div className="overflow-x-auto rounded-xl border border-white/5">
                   <table className="w-full text-left text-sm">
                     <thead className="bg-white/5 text-neutral-400 font-medium text-xs border-b border-white/5">
                       <tr>
-                        <th className="py-4 px-6 uppercase tracking-wider">Category</th>
-                        <th className="py-4 px-6 uppercase tracking-wider">Definition & Key Focus</th>
+                        <th className="py-4 px-6 uppercase tracking-wider">{t('lossesPrevention.category')}</th>
+                        <th className="py-4 px-6 uppercase tracking-wider">{t('lossesPrevention.definition')}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/5 text-neutral-300">
@@ -270,7 +274,7 @@ export const LossesPreventionPage: React.FC = () => {
                       ].map((type, idx) => (
                         <tr key={idx} className="hover:bg-white/5 transition-colors">
                           <td className="py-5 px-6 font-medium text-white whitespace-nowrap">{type.name}</td>
-                          <td className="py-5 px-6 font-light leading-relaxed">{type.desc}</td>
+                          <td className="py-5 px-6 font-normal leading-relaxed">{type.desc}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -279,13 +283,13 @@ export const LossesPreventionPage: React.FC = () => {
               </div>
 
               {/* Major Causes */}
-              <div className="lg:col-span-4 bg-black/60 backdrop-blur-xl rounded-3xl border border-white/5 p-8 shadow-sm">
-                <h3 className="text-xl font-medium text-white mb-6">Major Causes of PHL</h3>
+              <div className="lg:col-span-4 bg-black/60 backdrop-blur-xl rounded-xl border border-white/5 p-8 shadow-sm">
+                <h3 className="text-xl font-medium text-white mb-6">{t('lossesPrevention.majorCauses')}</h3>
                 <div className="space-y-4">
                   {postHarvestCauses.map((cause, idx) => (
-                    <div key={idx} className="bg-white/5 rounded-2xl p-5 border border-white/5">
+                    <div key={idx} className="bg-white/5 rounded-xl p-5 border border-white/5">
                       <h4 className="text-sm font-medium text-rose-400 mb-2">{cause.title}</h4>
-                      <p className="text-xs text-neutral-400 leading-relaxed font-light">{cause.desc}</p>
+                      <p className="text-xs text-neutral-400 leading-relaxed font-normal">{cause.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -293,17 +297,17 @@ export const LossesPreventionPage: React.FC = () => {
             </div>
 
             {/* Prevention & Mitigation Strategies */}
-            <div className="bg-black/60 backdrop-blur-xl rounded-3xl border border-white/5 p-8 shadow-sm space-y-8">
-              <h3 className="text-2xl font-medium text-white">Prevention and Mitigation Strategies</h3>
+            <div className="bg-black/60 backdrop-blur-xl rounded-xl border border-white/5 p-8 shadow-sm space-y-8">
+              <h3 className="text-2xl font-medium text-white">{t('lossesPrevention.preventionStrategies')}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {postHarvestPrevention.map((section, idx) => (
-                  <div key={idx} className="bg-white/5 rounded-3xl p-6 md:p-8 border border-white/5 hover:border-white/10 transition-colors">
+                  <div key={idx} className="bg-white/5 rounded-xl p-6 md:p-8 border border-white/5 hover:border-white/10 transition-colors">
                     <h4 className="text-lg font-medium text-emerald-400 mb-6">{section.category}</h4>
                     <ul className="space-y-4">
                       {section.points.map((point, pIdx) => {
                         const [boldPart, ...rest] = point.split(': ');
                         return (
-                          <li key={pIdx} className="text-sm font-light text-neutral-300 flex items-start gap-3">
+                          <li key={pIdx} className="text-sm font-normal text-neutral-300 flex items-start gap-3">
                             <div className="mt-1 w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
                             <div className="leading-relaxed">
                               {rest.length > 0 ? (

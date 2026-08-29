@@ -83,7 +83,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
     <div className="space-y-8 animate-in fade-in duration-300">
       
       {/* Header Bar */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 text-xs font-bold uppercase tracking-wider mb-2">
             <Factory className="w-3.5 h-3.5" /> Processing Floor Operations
@@ -91,7 +91,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
             Industrial Machines & Packaging Hub
           </h2>
-          <p className="text-xs md:text-sm text-neutral-300 font-light">
+          <p className="text-xs md:text-sm text-neutral-300 font-normal">
             Monitor real-time machine telemetry, schedule preventive maintenance, and generate serialized packaging batches.
           </p>
         </div>
@@ -100,7 +100,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
           {activeTab === 'MACHINES' ? (
             <button
               onClick={() => setIsAddMachineModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-cyan-950 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-md shadow-cyan-950 transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
               <span>+ Register New Machine</span>
@@ -108,7 +108,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
           ) : (
             <button
               onClick={() => setIsNewBatchModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-950 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md shadow-md transition-all cursor-pointer"
             >
               <PlusCircle className="w-4 h-4" />
               <span>+ Create Packaging Batch</span>
@@ -118,12 +118,12 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
       </div>
 
       {/* Sub-Tabs Toggle */}
-      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 max-w-md">
+      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-xl border border-white/10 max-w-md">
         <button
           onClick={() => setActiveTab('MACHINES')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'MACHINES'
-              ? 'bg-cyan-600 text-white shadow-lg'
+              ? 'bg-cyan-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -134,7 +134,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
           onClick={() => setActiveTab('PACKAGING')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'PACKAGING'
-              ? 'bg-emerald-600 text-white shadow-lg'
+              ? 'bg-emerald-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -149,7 +149,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
           {processingMachines.map((machine) => (
             <div
               key={machine.id}
-              className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-cyan-500/30 transition-all space-y-5 shadow-xl flex flex-col justify-between"
+              className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-cyan-500/30 transition-all space-y-5 shadow-xl flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <div className="flex items-start justify-between gap-3">
@@ -158,7 +158,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
                     <p className="text-xs text-neutral-400 font-mono mt-0.5">Line Code: {machine.code} • {machine.type}</p>
                   </div>
 
-                  <span className={`text-[10px] font-bold px-3 py-1 rounded-full uppercase ${
+                  <span className={`text-xs font-bold px-3 py-1 rounded-full uppercase ${
                     machine.status === 'RUNNING' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
                     machine.status === 'MAINTENANCE' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
                     machine.status === 'BREAKDOWN' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' :
@@ -169,22 +169,22 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
                 </div>
 
                 {/* Telemetry Sensor Metrics */}
-                <div className="grid grid-cols-3 gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 text-xs font-mono">
+                <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-white/5 border border-white/10 text-xs font-mono">
                   <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                    <span className="text-[10px] text-neutral-400 block font-sans">Capacity Rate</span>
+                    <span className="text-xs text-neutral-400 block font-sans">Capacity Rate</span>
                     <strong className="text-white text-sm">{machine.capacityTonnesPerHour} T/hr</strong>
                   </div>
                   <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                    <span className="text-[10px] text-neutral-400 block font-sans">Today's Output</span>
+                    <span className="text-xs text-neutral-400 block font-sans">Today's Output</span>
                     <strong className="text-cyan-400 text-sm">{machine.todayOutputTonnes} T</strong>
                   </div>
                   <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                    <span className="text-[10px] text-neutral-400 block font-sans">Temp / Power</span>
+                    <span className="text-xs text-neutral-400 block font-sans">Temp / Power</span>
                     <strong className="text-amber-300 text-xs font-mono">{machine.temperatureCelsius ? `${machine.temperatureCelsius}°C` : 'Norm'}</strong>
                   </div>
                 </div>
 
-                <div className="text-xs space-y-1 text-neutral-300 font-light">
+                <div className="text-xs space-y-1 text-neutral-300 font-normal">
                   <div className="flex justify-between">
                     <span className="text-neutral-400">Chief Operator:</span>
                     <strong className="text-white">{machine.operatorInCharge}</strong>
@@ -230,7 +230,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
           {packagingBatches.map((batch) => (
             <div
               key={batch.id}
-              className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-emerald-500/30 transition-all space-y-4 shadow-xl"
+              className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-emerald-500/30 transition-all space-y-4 shadow-xl"
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -240,12 +240,12 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
                   </span>
                 </div>
 
-                <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
                   {batch.status}
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-2 text-xs font-mono">
+              <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-2 text-xs font-mono">
                 <div className="flex justify-between">
                   <span className="text-neutral-400 font-sans">Packaged Quantity:</span>
                   <strong className="text-white font-bold">{batch.quantityUnits.toLocaleString()} units ({batch.packageSize})</strong>
@@ -264,9 +264,9 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-3 rounded-2xl bg-emerald-950/20 border border-emerald-500/20 text-xs">
-                <span className="text-[10px] uppercase font-bold text-emerald-400 block mb-1">Source Lineage Record</span>
-                <p className="text-neutral-300 text-[11px]">
+              <div className="p-3 rounded-xl bg-emerald-950/20 border border-emerald-500/20 text-xs">
+                <span className="text-xs uppercase font-bold text-emerald-400 block mb-1">Source Lineage Record</span>
+                <p className="text-neutral-300 text-xs">
                   Raw Material: <strong>{batch.rawMaterialSource.crop}</strong> from Cultivator <strong>{batch.rawMaterialSource.farmer}</strong>.
                 </p>
               </div>
@@ -307,7 +307,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
       {/* Modal: Register New Machine */}
       {isAddMachineModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleAddMachine} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleAddMachine} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
                 <Factory className="w-5 h-5 text-cyan-400" />
@@ -388,7 +388,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Register Machine Line
               </button>
@@ -400,7 +400,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
       {/* Modal: Create Packaging Batch */}
       {isNewBatchModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleCreateBatch} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleCreateBatch} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
                 <Package className="w-5 h-5 text-emerald-400" />
@@ -503,7 +503,7 @@ export const ProcessorProductionMachinesPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Encode & Package Batch
               </button>

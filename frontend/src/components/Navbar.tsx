@@ -68,7 +68,7 @@ export const Navbar: React.FC = () => {
   const currentNavItems = user.role === 'FARMER' ? farmerNavItems : buyerNavItems;
 
   return (
-    <header className="sticky top-0 z-40 bg-black/60 backdrop-blur-2xl border-b border-white/10 shadow-2xl">
+    <header className="sticky top-0 z-40 bg-black/60 backdrop-blur-2xl border-b border-white/10 shadow-md">
       <div className="max-w-[1440px] mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
 
         {/* Brand Logo */}
@@ -77,7 +77,7 @@ export const Navbar: React.FC = () => {
             onClick={() => setActiveTab(user.role === 'FARMER' ? 'landing' : 'buyer-dashboard')}
             className="flex items-center gap-2.5 group focus:outline-none pr-2 cursor-pointer"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-lg group-hover:bg-emerald-500 transition-colors">
+            <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white shadow-md group-hover:bg-emerald-500 transition-colors">
               <Sprout className="w-6 h-6" />
             </div>
             <span className="font-black text-lg md:text-xl text-white tracking-tight leading-none">
@@ -147,7 +147,7 @@ export const Navbar: React.FC = () => {
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
-                  className="absolute right-0 mt-2 w-32 bg-[#121214] backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/15 p-2 z-50"
+                  className="absolute right-0 mt-2 w-32 bg-[#121214] backdrop-blur-2xl rounded-xl shadow-md border border-white/15 p-2 z-50"
                 >
                   <button
                     onClick={() => changeLanguage('en')}
@@ -176,13 +176,13 @@ export const Navbar: React.FC = () => {
           <div
             className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-full border ${
               user.role === 'BUYER'
-                ? 'bg-purple-600/20 text-purple-300 border-purple-500/30'
+                ? 'bg-blue-600/20 text-blue-300 border-blue-500/30'
                 : 'bg-emerald-600/20 text-emerald-300 border-emerald-500/30'
             }`}
           >
-            <span className="uppercase text-[10px] tracking-wider font-black">{user.role}</span>
+            <span className="uppercase text-xs tracking-wider font-black">{user.role}</span>
             {isAuthenticated && (
-              <span className="text-[9px] text-neutral-300 font-normal">•  {user.name.split(' ')[0]}</span>
+              <span className="text-xs text-neutral-300 font-normal">•  {user.name.split(' ')[0]}</span>
             )}
           </div>
 
@@ -200,7 +200,7 @@ export const Navbar: React.FC = () => {
             >
               <Bell className="w-5 h-5" />
               {unreadCount > 0 && (
-                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center animate-pulse">
+                <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-xs font-bold flex items-center justify-center animate-pulse">
                   {unreadCount}
                 </span>
               )}
@@ -212,7 +212,7 @@ export const Navbar: React.FC = () => {
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
-                  className="absolute right-0 mt-2 w-80 bg-[#121214] backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/15 p-4 z-50"
+                  className="absolute right-0 mt-2 w-80 bg-[#121214] backdrop-blur-2xl rounded-xl shadow-md border border-white/15 p-4 z-50"
                 >
                   <div className="flex items-center justify-between pb-3 border-b border-white/10">
                     <span className="font-bold text-sm text-white">{t('nav.notifications')}</span>
@@ -223,7 +223,7 @@ export const Navbar: React.FC = () => {
                       <div key={n.id} className="text-xs p-2.5 rounded-xl bg-white/5 border border-white/10">
                         <div className="font-bold text-white flex items-center justify-between">
                           <span>{n.title}</span>
-                          <span className="text-[10px] text-neutral-400">{n.timestamp}</span>
+                          <span className="text-xs text-neutral-400">{n.timestamp}</span>
                         </div>
                         <p className="text-neutral-300 mt-1 leading-snug">{n.message}</p>
                       </div>
@@ -250,13 +250,13 @@ export const Navbar: React.FC = () => {
                     initial={{ opacity: 0, y: -8 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    className="absolute right-0 mt-2 w-52 bg-[#121214] border border-white/15 rounded-2xl shadow-2xl p-2 z-50"
+                    className="absolute right-0 mt-2 w-52 bg-[#121214] border border-white/15 rounded-xl shadow-md p-2 z-50"
                   >
                     <div className="px-3 py-2 border-b border-white/10 mb-1">
                       <p className="text-xs font-bold text-white">{user.name}</p>
-                      <p className="text-[10px] text-neutral-400">{user.email || 'No email set'}</p>
-                      <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
-                        user.role === 'BUYER' ? 'bg-purple-900 text-purple-300' : 'bg-emerald-900 text-emerald-300'
+                      <p className="text-xs text-neutral-400">{user.email || 'No email set'}</p>
+                      <span className={`inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-bold uppercase ${
+                        user.role === 'BUYER' ? 'bg-blue-900 text-blue-300' : 'bg-emerald-900 text-emerald-300'
                       }`}>
                         {user.role}{user.role === 'BUYER' && user.buyerType ? ` — ${user.buyerType}` : ''}
                       </span>
@@ -286,7 +286,7 @@ export const Navbar: React.FC = () => {
                       <span>{t('nav.signOut')}</span>
                     </button>
                     <div className="border-t border-white/10 mt-1 pt-1">
-                      <p className="px-3 py-1.5 text-[9px] text-neutral-500">
+                      <p className="px-3 py-1.5 text-xs text-neutral-500">
                         {t('nav.switchRoleHelp')}
                       </p>
                     </div>
@@ -317,9 +317,9 @@ export const Navbar: React.FC = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2 w-64 bg-[#141418] border border-white/15 rounded-2xl shadow-2xl p-2 z-50 backdrop-blur-2xl"
+                      className="absolute right-0 mt-2 w-64 bg-[#141418] border border-white/15 rounded-xl shadow-md p-2 z-50 backdrop-blur-2xl"
                     >
-                      <p className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                      <p className="px-3 py-1 text-xs font-bold uppercase tracking-wider text-neutral-400">
                         {t('nav.selectDemo')}
                       </p>
 
@@ -336,7 +336,7 @@ export const Navbar: React.FC = () => {
                         </div>
                         <div>
                           <p className="text-xs font-bold text-white group-hover:text-emerald-300">🌾 {t('nav.demoFarmer')}</p>
-                          <p className="text-[10px] text-neutral-400 leading-tight">{t('nav.demoFarmerDesc')}</p>
+                          <p className="text-xs text-neutral-400 leading-tight">{t('nav.demoFarmerDesc')}</p>
                         </div>
                       </button>
 
@@ -346,14 +346,14 @@ export const Navbar: React.FC = () => {
                           loginAsDemo('BUYER', 'AGGREGATOR');
                           setIsDemoMenuOpen(false);
                         }}
-                        className="flex items-start gap-2.5 w-full p-2.5 hover:bg-purple-950/40 rounded-xl transition-all text-left cursor-pointer group"
+                        className="flex items-start gap-2.5 w-full p-2.5 hover:bg-blue-950/40 rounded-xl transition-all text-left cursor-pointer group"
                       >
-                        <div className="w-8 h-8 rounded-lg bg-purple-600/30 text-purple-400 flex items-center justify-center shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                        <div className="w-8 h-8 rounded-lg bg-blue-600/30 text-blue-400 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                           <Building2 className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="text-xs font-bold text-white group-hover:text-purple-300">🏢 {t('nav.demoAggregator')}</p>
-                          <p className="text-[10px] text-neutral-400 leading-tight">{t('nav.demoAggregatorDesc')}</p>
+                          <p className="text-xs font-bold text-white group-hover:text-blue-300">🏢 {t('nav.demoAggregator')}</p>
+                          <p className="text-xs text-neutral-400 leading-tight">{t('nav.demoAggregatorDesc')}</p>
                         </div>
                       </button>
 
@@ -370,7 +370,7 @@ export const Navbar: React.FC = () => {
                         </div>
                         <div>
                           <p className="text-xs font-bold text-white group-hover:text-cyan-300">🏭 {t('nav.demoProcessor')}</p>
-                          <p className="text-[10px] text-neutral-400 leading-tight">{t('nav.demoProcessorDesc')}</p>
+                          <p className="text-xs text-neutral-400 leading-tight">{t('nav.demoProcessorDesc')}</p>
                         </div>
                       </button>
                     </motion.div>
@@ -430,7 +430,7 @@ export const Navbar: React.FC = () => {
             ))}
             {!isAuthenticated && (
               <div className="pt-3 border-t border-white/10 space-y-2">
-                <p className="text-[10px] uppercase font-bold text-neutral-400 px-1">{t('nav.instantDemo')}</p>
+                <p className="text-xs uppercase font-bold text-neutral-400 px-1">{t('nav.instantDemo')}</p>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => { loginAsDemo('FARMER'); setIsMobileMenuOpen(false); }}
@@ -440,7 +440,7 @@ export const Navbar: React.FC = () => {
                   </button>
                   <button
                     onClick={() => { loginAsDemo('BUYER', 'AGGREGATOR'); setIsMobileMenuOpen(false); }}
-                    className="px-3 py-2 bg-purple-600/30 border border-purple-500/40 text-purple-300 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
+                    className="px-3 py-2 bg-blue-600/30 border border-blue-500/40 text-blue-300 font-bold text-xs rounded-xl flex items-center justify-center gap-1.5 cursor-pointer"
                   >
                     <span>🏢 {t('nav.demoAggregator')}</span>
                   </button>

@@ -44,14 +44,14 @@ export const ProfilePage: React.FC = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/5 shadow-sm">
+      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-xl border border-white/5 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-white/5 text-white flex items-center justify-center font-bold">
             <User className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
             <h2 className="text-2xl font-medium tracking-tight text-white">Account & Profile Settings</h2>
-            <p className="text-sm text-neutral-400 mt-1 font-light">Manage personal info, location, and farm verification status.</p>
+            <p className="text-sm text-neutral-400 mt-1 font-normal">Manage personal info, location, and farm verification status.</p>
           </div>
         </div>
       </div>
@@ -63,7 +63,7 @@ export const ProfilePage: React.FC = () => {
         </div>
       )}
 
-      <form onSubmit={handleSave} className="bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-white/5 shadow-sm space-y-8">
+      <form onSubmit={handleSave} className="bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-xl border border-white/5 shadow-sm space-y-8">
         <div>
           <label className="block text-sm font-medium text-neutral-400 mb-2">Full Name</label>
           <input

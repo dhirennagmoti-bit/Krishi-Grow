@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   TrendingUp, ArrowUpRight, ArrowDownRight, Minus, Search, MapPin,
@@ -17,6 +17,16 @@ export const MarketPricesPage: React.FC = () => {
   const [selectedCrop, setSelectedCrop] = useState<string>('Red Onion');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState<string>('ALL');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate network fetch for data-heavy section
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [selectedCrop, selectedDistrict]);
 
   const cropList = useMemo(() => Object.keys(CROP_BASE_PRICES).sort(), []);
 
@@ -100,28 +110,28 @@ export const MarketPricesPage: React.FC = () => {
     <div className="space-y-6">
       
       {/* Header with Crop Selector Dropdown and Down Arrow */}
-      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl">
+      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-xl border border-white/10 shadow-md">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold shadow-lg shadow-emerald-950">
+            <div className="w-12 h-12 rounded-xl bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold shadow-md">
               <TrendingUp className="w-6 h-6" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white">{t('marketPrices.headerTitle')}</h2>
-                <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   {t('marketPrices.liveFeeds')}
                 </span>
               </div>
-              <p className="text-xs text-neutral-400 mt-1 font-light">
+              <p className="text-xs text-neutral-400 mt-1 font-normal">
                 {t('marketPrices.headerSubtitle')}
               </p>
             </div>
           </div>
 
           {/* Select Crop with Down Arrow */}
-          <div className="flex items-center gap-3 bg-white/5 p-2 rounded-2xl border border-white/10">
+          <div className="flex items-center gap-3 bg-white/5 p-2 rounded-xl border border-white/10">
             <span className="text-xs font-bold text-neutral-300 pl-2">{t('marketPrices.selectCrop')}</span>
             <div className="relative">
               <select
@@ -139,98 +149,88 @@ export const MarketPricesPage: React.FC = () => {
                   </option>
                 ))}
               </select>
-              {/* Prominent Down Arrow */}
               <ChevronDown className="w-4 h-4 text-emerald-400 absolute right-3 top-3 pointer-events-none transition-transform" />
             </div>
           </div>
         </div>
 
-        {/* Selected Crop Summary Cards */}
+        {/* Selected Crop Summary Cards - With Skeleton Support */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mt-6 pt-6 border-t border-white/10">
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-            <span className="text-[11px] text-neutral-400 font-medium block">{t('marketPrices.stateAvgPrice')}</span>
-            <div className="text-xl md:text-2xl font-black text-emerald-400 font-mono mt-1">
-              ₹{stats.avg.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">{t('marketPrices.qtl')}</span>
+          {[
+            { label: t('marketPrices.stateAvgPrice'), val: `₹${stats.avg.toLocaleString()}`, unit: t('marketPrices.qtl'), sub: t('marketPrices.acrossAPMCs', { count: cropRecords.length }), color: 'text-emerald-400' },
+            { label: t('marketPrices.highestRate'), val: `₹${stats.max.toLocaleString()}`, unit: t('marketPrices.qtl'), sub: `📍 ${stats.topMarket || t('marketPrices.primaryMandis')}`, color: 'text-cyan-400' },
+            { label: t('marketPrices.lowestRate'), val: `₹${stats.min.toLocaleString()}`, unit: t('marketPrices.qtl'), sub: `📍 ${stats.lowMarket || t('marketPrices.farmGateAPMC')}`, color: 'text-amber-300' },
+            { label: t('marketPrices.totalArrivals'), val: stats.totalArrivals.toLocaleString(), unit: t('marketPrices.qtlLabel'), sub: t('marketPrices.volumeToday', { count: (stats.totalArrivals / 10).toFixed(0) }), color: 'text-blue-400' }
+          ].map((stat, idx) => (
+            <div key={idx} className="p-4 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-xs text-neutral-400 font-medium block">{stat.label}</span>
+              {isLoading ? (
+                <div className="h-8 w-24 bg-white/10 rounded mt-1 animate-pulse" />
+              ) : (
+                <div className={`text-xl md:text-2xl font-black ${stat.color} font-mono mt-1`}>
+                  {stat.val} <span className="text-xs text-neutral-400 font-sans font-normal">{stat.unit}</span>
+                </div>
+              )}
+              {isLoading ? (
+                <div className="h-4 w-32 bg-white/5 rounded mt-1.5 animate-pulse" />
+              ) : (
+                <span className="text-xs text-neutral-500 mt-0.5 block truncate" title={stat.sub}>{stat.sub}</span>
+              )}
             </div>
-            <span className="text-[10px] text-neutral-500 mt-0.5 block">{t('marketPrices.acrossAPMCs', { count: cropRecords.length })}</span>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-            <span className="text-[11px] text-neutral-400 font-medium block">{t('marketPrices.highestRate')}</span>
-            <div className="text-xl md:text-2xl font-black text-cyan-400 font-mono mt-1">
-              ₹{stats.max.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">{t('marketPrices.qtl')}</span>
-            </div>
-            <span className="text-[10px] text-neutral-400 truncate block mt-0.5" title={stats.topMarket}>
-              📍 {stats.topMarket || t('marketPrices.primaryMandis')}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-            <span className="text-[11px] text-neutral-400 font-medium block">{t('marketPrices.lowestRate')}</span>
-            <div className="text-xl md:text-2xl font-black text-amber-300 font-mono mt-1">
-              ₹{stats.min.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">{t('marketPrices.qtl')}</span>
-            </div>
-            <span className="text-[10px] text-neutral-400 truncate block mt-0.5" title={stats.lowMarket}>
-              📍 {stats.lowMarket || t('marketPrices.farmGateAPMC')}
-            </span>
-          </div>
-
-          <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-            <span className="text-[11px] text-neutral-400 font-medium block">{t('marketPrices.totalArrivals')}</span>
-            <div className="text-xl md:text-2xl font-black text-purple-400 font-mono mt-1">
-              {stats.totalArrivals.toLocaleString()} <span className="text-xs text-neutral-400 font-sans font-normal">{t('marketPrices.qtlLabel')}</span>
-            </div>
-            <span className="text-[10px] text-neutral-500 mt-0.5 block">{t('marketPrices.volumeToday', { count: (stats.totalArrivals / 10).toFixed(0) })}</span>
-          </div>
+          ))}
         </div>
       </div>
 
       {/* Recharts 7-Day APMC Price Trend Chart */}
-      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl border border-white/10 shadow-2xl space-y-4">
+      <div className="bg-black/60 backdrop-blur-xl p-6 md:p-8 rounded-xl border border-white/10 shadow-md space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <h3 className="text-xs font-bold text-neutral-400 uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               {t('marketPrices.trendTitle')} — {selectedCrop} (₹ {t('marketPrices.qtl')})
             </h3>
-            <p className="text-[11px] text-neutral-500">{t('marketPrices.trendSubtitle')}</p>
+            <p className="text-xs text-neutral-500">{t('marketPrices.trendSubtitle')}</p>
           </div>
           <span className="text-xs text-emerald-400 font-mono font-medium">{t('marketPrices.dailyUpdate')}</span>
         </div>
 
         <div className="h-64 w-full pt-2">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData as any[]}>
-              <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#ffffff15" />
-              <XAxis dataKey="date" stroke="#888888" fontSize={11} />
-              <YAxis stroke="#888888" fontSize={11} domain={['auto', 'auto']} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#0e120f',
-                  borderRadius: '16px',
-                  border: '1px solid rgba(255,255,255,0.15)',
-                  color: '#fff',
-                  fontSize: '12px',
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.8)'
-                }}
-              />
-              {mandiKeys.map((key, idx) => (
-                <Line 
-                  key={key} 
-                  type="monotone" 
-                  dataKey={key} 
-                  stroke={lineColors[idx % lineColors.length]} 
-                  strokeWidth={3} 
-                  dot={{ r: 3, fill: lineColors[idx % lineColors.length] }} 
+          {isLoading ? (
+            <div className="w-full h-full bg-white/5 rounded-xl animate-pulse" />
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={chartData as any[]}>
+                <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="#ffffff15" />
+                <XAxis dataKey="date" stroke="#888888" fontSize={11} />
+                <YAxis stroke="#888888" fontSize={11} domain={['auto', 'auto']} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#0e120f',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255,255,255,0.15)',
+                    color: '#fff',
+                    fontSize: '12px',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.8)'
+                  }}
                 />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
+                {mandiKeys.map((key, idx) => (
+                  <Line 
+                    key={key} 
+                    type="monotone" 
+                    dataKey={key} 
+                    stroke={lineColors[idx % lineColors.length]} 
+                    strokeWidth={3} 
+                    dot={{ r: 3, fill: lineColors[idx % lineColors.length] }} 
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </div>
 
       {/* Complete Maharashtra Place-by-Place Mandi Table */}
-      <div className="bg-black/60 backdrop-blur-xl rounded-3xl border border-white/10 shadow-2xl overflow-hidden p-6 md:p-8 space-y-6">
+      <div className="bg-black/60 backdrop-blur-xl rounded-xl border border-white/10 shadow-md overflow-hidden p-6 md:p-8 space-y-6">
         
         {/* Controls: Search & District Filters */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -260,7 +260,7 @@ export const MarketPricesPage: React.FC = () => {
 
         {/* District Fast-Filter Pills */}
         <div className="space-y-1.5">
-          <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
+          <span className="text-xs font-bold uppercase tracking-wider text-neutral-400 flex items-center gap-1">
             <Filter className="w-3 h-3 text-emerald-400" /> {t('marketPrices.filterDistrict')}
           </span>
           <div className="flex flex-wrap gap-1.5 max-h-24 overflow-y-auto pr-1">
@@ -269,9 +269,9 @@ export const MarketPricesPage: React.FC = () => {
                 key={dist}
                 type="button"
                 onClick={() => setSelectedDistrict(dist)}
-                className={`px-3 py-1 text-[11px] font-bold rounded-xl border transition-all cursor-pointer ${
+                className={`px-3 py-1 text-xs font-bold rounded-xl border transition-all cursor-pointer ${
                   selectedDistrict === dist
-                    ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm shadow-emerald-950'
+                    ? 'bg-emerald-600 text-white border-emerald-500 shadow-sm'
                     : 'bg-white/5 hover:bg-white/10 text-neutral-400 hover:text-white border-white/10'
                 }`}
               >
@@ -282,7 +282,7 @@ export const MarketPricesPage: React.FC = () => {
         </div>
 
         {/* Data Table */}
-        <div className="overflow-x-auto rounded-2xl border border-white/10">
+        <div className="overflow-x-auto rounded-xl border border-white/10">
           <table className="w-full text-left text-xs">
             <thead className="bg-white/5 text-neutral-400 font-bold border-b border-white/10">
               <tr>
@@ -297,7 +297,20 @@ export const MarketPricesPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 text-neutral-300">
-              {filteredPrices.length === 0 ? (
+              {isLoading ? (
+                [...Array(6)].map((_, i) => (
+                  <tr key={i} className="hover:bg-white/5 transition-colors">
+                    <td className="py-3.5 px-4"><div className="h-4 w-24 bg-white/10 rounded animate-pulse" /></td>
+                    <td className="py-3.5 px-4"><div className="h-4 w-20 bg-white/5 rounded animate-pulse" /><div className="h-3 w-16 bg-white/5 rounded animate-pulse mt-1" /></td>
+                    <td className="py-3.5 px-4"><div className="h-4 w-16 bg-white/10 rounded animate-pulse" /></td>
+                    <td className="py-3.5 px-4"><div className="h-4 w-12 bg-white/5 rounded animate-pulse" /></td>
+                    <td className="py-3.5 px-4"><div className="h-4 w-12 bg-white/10 rounded animate-pulse" /></td>
+                    <td className="py-3.5 px-4"><div className="h-4 w-14 bg-emerald-500/20 rounded animate-pulse" /></td>
+                    <td className="py-3.5 px-4"><div className="h-4 w-12 bg-white/5 rounded animate-pulse" /></td>
+                    <td className="py-3.5 px-4"><div className="h-5 w-16 bg-white/10 rounded-full animate-pulse" /></td>
+                  </tr>
+                ))
+              ) : filteredPrices.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-8 text-center text-neutral-500">
                     {t('marketPrices.noMarketFound', { searchTerm })}
@@ -312,32 +325,32 @@ export const MarketPricesPage: React.FC = () => {
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="text-white font-medium">{m.taluka}</div>
-                      <div className="text-[11px] text-neutral-400">{m.district}, {t('marketPrices.mh')}</div>
+                      <div className="text-xs text-neutral-400">{m.district}, {t('marketPrices.mh')}</div>
                     </td>
                     <td className="py-3.5 px-4">
                       <div className="text-neutral-200">{m.variety}</div>
-                      <div className="text-[10px] text-emerald-400">{m.grade}</div>
+                      <div className="text-xs text-emerald-400">{m.grade}</div>
                     </td>
                     <td className="py-3.5 px-4 font-mono text-neutral-300">₹{m.minPrice.toLocaleString()}</td>
                     <td className="py-3.5 px-4 font-mono text-neutral-300">₹{m.maxPrice.toLocaleString()}</td>
                     <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
-                      ₹{m.modalPrice.toLocaleString()} <span className="text-[10px] font-normal text-neutral-400">{t('marketPrices.qtl')}</span>
+                      ₹{m.modalPrice.toLocaleString()} <span className="text-xs font-normal text-neutral-400">{t('marketPrices.qtl')}</span>
                     </td>
                     <td className="py-3.5 px-4 font-mono">
                       <span className="font-bold text-white">{m.arrivalsQuintal.toLocaleString()}</span>{' '}
-                      <span className="text-neutral-500 text-[10px]">{t('marketPrices.qtlLabel')}</span>
+                      <span className="text-neutral-500 text-xs">{t('marketPrices.qtlLabel')}</span>
                     </td>
                     <td className="py-3.5 px-4">
                       {m.trend === 'UP' ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold text-[10px]">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 font-bold text-xs">
                           <ArrowUpRight className="w-3 h-3" /> {t('marketPrices.up')}
                         </span>
                       ) : m.trend === 'DOWN' ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold text-[10px]">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/20 border border-rose-500/30 text-rose-400 font-bold text-xs">
                           <ArrowDownRight className="w-3 h-3" /> {t('marketPrices.down')}
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-neutral-400 font-bold text-[10px]">
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white/10 border border-white/10 text-neutral-400 font-bold text-xs">
                           <Minus className="w-3 h-3" /> {t('marketPrices.stable')}
                         </span>
                       )}
@@ -352,3 +365,4 @@ export const MarketPricesPage: React.FC = () => {
     </div>
   );
 };
+

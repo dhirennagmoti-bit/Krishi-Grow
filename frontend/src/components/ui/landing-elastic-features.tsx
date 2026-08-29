@@ -66,7 +66,7 @@ export function LandingElasticFeatures() {
             onMouseEnter={() => setActiveId(item.id)}
             onClick={() => setActiveId(item.id)}
             className={cn(
-              "relative cursor-pointer overflow-hidden rounded-3xl border border-white/10 bg-black/20 shadow-xl backdrop-blur-md",
+              "relative cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-black/20 shadow-xl backdrop-blur-md",
               "transition-[flex,filter] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)]",
               activeId === item.id ? "flex-[4]" : "flex-[1]",
               activeId === item.id

@@ -63,7 +63,7 @@ export const AggregatorFarmersPage: React.FC = () => {
     <div className="space-y-8 animate-in fade-in duration-300">
       
       {/* Header Bar */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider mb-2">
             <Users className="w-3.5 h-3.5" /> Farmer Network CRM
@@ -71,14 +71,14 @@ export const AggregatorFarmersPage: React.FC = () => {
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
             Registered Cultivators & FPO Farmers
           </h2>
-          <p className="text-xs md:text-sm text-neutral-300 font-light">
+          <p className="text-xs md:text-sm text-neutral-300 font-normal">
             Manage contract farmers, upcoming harvest forecasts, historical supplies, and direct dispatch routing.
           </p>
         </div>
 
         <button
           onClick={() => setIsAddModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-emerald-950 transition-all cursor-pointer shrink-0"
+          className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md shadow-md transition-all cursor-pointer shrink-0"
         >
           <PlusCircle className="w-4 h-4" />
           <span>+ Register New Farmer</span>
@@ -86,7 +86,7 @@ export const AggregatorFarmersPage: React.FC = () => {
       </div>
 
       {/* Search & Filter Controls */}
-      <div className="p-4 md:p-6 rounded-2xl bg-black/40 backdrop-blur-xl border border-white/10 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
+      <div className="p-4 md:p-6 rounded-xl bg-black/40 backdrop-blur-xl border border-white/10 flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-3" />
           <input
@@ -131,7 +131,7 @@ export const AggregatorFarmersPage: React.FC = () => {
         {filteredFarmers.map((farmer) => (
           <div
             key={farmer.id}
-            className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-emerald-500/30 transition-all flex flex-col justify-between space-y-4 shadow-xl group"
+            className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-emerald-500/30 transition-all flex flex-col justify-between space-y-4 shadow-xl group"
           >
             <div>
               {/* Farmer Header info */}
@@ -151,7 +151,7 @@ export const AggregatorFarmersPage: React.FC = () => {
                   </p>
                 </div>
 
-                <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
+                <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${
                   farmer.status === 'ACTIVE'
                     ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                     : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
@@ -162,7 +162,7 @@ export const AggregatorFarmersPage: React.FC = () => {
 
               {/* Crops Grown Pills */}
               <div className="mt-4 pt-3 border-t border-white/10 space-y-2">
-                <span className="text-[10px] uppercase font-bold text-neutral-400 tracking-wider block">Crops Cultivated</span>
+                <span className="text-xs uppercase font-bold text-neutral-400 tracking-wider block">Crops Cultivated</span>
                 <div className="flex flex-wrap gap-1.5">
                   {farmer.cropsGrown.map((crop) => (
                     <span
@@ -178,26 +178,26 @@ export const AggregatorFarmersPage: React.FC = () => {
 
               {/* Expected Harvests Forecast */}
               {farmer.expectedHarvests.length > 0 && (
-                <div className="mt-3 p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1">
-                  <span className="text-[10px] text-amber-400 font-bold uppercase block flex items-center gap-1">
+                <div className="mt-3 p-3 rounded-xl bg-white/5 border border-white/10 space-y-1">
+                  <span className="text-xs text-amber-400 font-bold uppercase block flex items-center gap-1">
                     <Calendar className="w-3 h-3" /> Next Expected Harvest
                   </span>
                   <div className="text-xs font-mono text-white flex justify-between">
                     <span>{farmer.expectedHarvests[0].crop} ({farmer.expectedHarvests[0].variety})</span>
                     <strong className="text-emerald-400">{farmer.expectedHarvests[0].expectedTonnes} Tonnes</strong>
                   </div>
-                  <span className="text-[10px] text-neutral-400 block">Due: {farmer.expectedHarvests[0].expectedDate}</span>
+                  <span className="text-xs text-neutral-400 block">Due: {farmer.expectedHarvests[0].expectedDate}</span>
                 </div>
               )}
 
               {/* Metrics */}
               <div className="grid grid-cols-2 gap-2 mt-3 text-xs font-mono text-neutral-300">
                 <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[10px] text-neutral-500 block font-sans">Supplied</span>
+                  <span className="text-xs text-neutral-500 block font-sans">Supplied</span>
                   <span className="font-bold text-white">{farmer.totalSuppliedTonnes} T</span>
                 </div>
                 <div className="p-2 rounded-xl bg-black/40 border border-white/5">
-                  <span className="text-[10px] text-neutral-500 block font-sans">Rating</span>
+                  <span className="text-xs text-neutral-500 block font-sans">Rating</span>
                   <span className="font-bold text-amber-400 flex items-center gap-1">
                     <Star className="w-3 h-3 fill-amber-400 text-amber-400" /> {farmer.rating} / 5.0
                   </span>
@@ -250,7 +250,7 @@ export const AggregatorFarmersPage: React.FC = () => {
       {/* Modal: Full Farmer Profile & Harvest Details */}
       {selectedFarmerForModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-[#121214] border border-white/15 rounded-3xl max-w-xl w-full p-6 md:p-8 space-y-6 shadow-2xl">
+          <div className="bg-[#121214] border border-white/15 rounded-xl max-w-xl w-full p-6 md:p-8 space-y-6 shadow-md">
             <div className="flex items-center justify-between pb-4 border-b border-white/10">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-lg">
@@ -270,7 +270,7 @@ export const AggregatorFarmersPage: React.FC = () => {
             </div>
 
             <div className="space-y-4 text-xs">
-              <div className="grid grid-cols-2 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+              <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-white/5 border border-white/10">
                 <div>
                   <span className="text-neutral-400 block font-bold">Location</span>
                   <span className="text-white font-medium">{selectedFarmerForModal.village}, {selectedFarmerForModal.taluka}, {selectedFarmerForModal.district}</span>
@@ -300,7 +300,7 @@ export const AggregatorFarmersPage: React.FC = () => {
                     </div>
                     <div className="text-right">
                       <span className="text-emerald-400 font-bold block">{h.expectedTonnes} Tonnes</span>
-                      <span className="text-[10px] text-neutral-400">{h.expectedDate}</span>
+                      <span className="text-xs text-neutral-400">{h.expectedDate}</span>
                     </div>
                   </div>
                 ))}
@@ -333,7 +333,7 @@ export const AggregatorFarmersPage: React.FC = () => {
       {/* Modal: Register New Farmer */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleCreateFarmer} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleCreateFarmer} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
                 <PlusCircle className="w-5 h-5 text-emerald-400" />
@@ -443,7 +443,7 @@ export const AggregatorFarmersPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Confirm Registration
               </button>

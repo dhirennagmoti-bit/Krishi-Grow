@@ -28,7 +28,7 @@ export const SolutionsHub: React.FC = () => {
       id: 'schemes',
       title: t('solutions.schemes.title'),
       icon: FileText,
-      color: 'bg-purple-500',
+      color: 'bg-blue-500',
       desc: t('solutions.schemes.desc')
     },
     {
@@ -49,9 +49,9 @@ export const SolutionsHub: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-white/5 shadow-sm">
+      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-xl border border-white/5 shadow-sm">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
+          <div className="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
             <ShieldAlert className="w-6 h-6 text-blue-400" />
           </div>
           <div>
@@ -68,16 +68,16 @@ export const SolutionsHub: React.FC = () => {
             <div
               key={s.id}
               onClick={() => setActiveTab(s.id)}
-              className="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-white/5 shadow-sm hover:border-white/10 hover:bg-white/5 transition-all cursor-pointer space-y-6 flex flex-col justify-between group"
+              className="bg-black/60 backdrop-blur-xl p-8 rounded-xl border border-white/5 shadow-sm hover:border-white/10 hover:bg-white/5 transition-all cursor-pointer space-y-6 flex flex-col justify-between group"
             >
               <div className="space-y-4">
-                <div className={`w-12 h-12 rounded-2xl ${s.color} text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform`}>
+                <div className={`w-12 h-12 rounded-xl ${s.color} text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform`}>
                   <Icon className="w-5 h-5" />
                 </div>
                 <h3 className="text-lg font-medium text-white group-hover:text-emerald-400 transition-colors">
                   {s.title}
                 </h3>
-                <p className="text-sm text-neutral-400 leading-relaxed font-light">
+                <p className="text-sm text-neutral-400 leading-relaxed font-normal">
                   {s.desc}
                 </p>
               </div>

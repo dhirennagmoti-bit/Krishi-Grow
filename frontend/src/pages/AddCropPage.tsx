@@ -180,14 +180,14 @@ export const AddCropPage: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-6">
       
       {/* Wizard Header */}
-      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-3xl border border-white/5 shadow-sm">
+      <div className="bg-black/60 backdrop-blur-xl p-8 rounded-xl border border-white/5 shadow-sm">
         <div className="flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-white/5 text-white flex items-center justify-center font-bold">
             <Sprout className="w-5 h-5 text-emerald-400" />
           </div>
           <div>
             <h2 className="text-2xl font-medium tracking-tight text-white">{t('addCrop.title')}</h2>
-            <p className="text-sm text-neutral-400 mt-1 font-light">
+            <p className="text-sm text-neutral-400 mt-1 font-normal">
               Step {currentStep} of 5 — {wizardSteps[currentStep - 1]}
             </p>
           </div>
@@ -202,14 +202,14 @@ export const AddCropPage: React.FC = () => {
                   currentStep > idx ? 'bg-emerald-500' : currentStep === idx + 1 ? 'bg-emerald-400/50' : 'bg-white/10'
                 }`}
               />
-              <span className={`text-[10px] font-semibold block truncate ${currentStep === idx + 1 ? 'text-white' : 'text-neutral-500'}`}>{s}</span>
+              <span className={`text-xs font-semibold block truncate ${currentStep === idx + 1 ? 'text-white' : 'text-neutral-500'}`}>{s}</span>
             </div>
           ))}
         </div>
       </div>
 
       {/* Step Content Card */}
-      <div className="bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-3xl border border-white/5 shadow-sm space-y-8">
+      <div className="bg-black/60 backdrop-blur-xl p-8 md:p-10 rounded-xl border border-white/5 shadow-sm space-y-8">
         
         {/* Step 1: Crop Selection */}
         {currentStep === 1 && (
@@ -253,7 +253,7 @@ export const AddCropPage: React.FC = () => {
                     key={g}
                     type="button"
                     onClick={() => setGrade(g)}
-                    className={`flex-1 py-4 text-sm font-medium rounded-2xl border transition-all ${
+                    className={`flex-1 py-4 text-sm font-medium rounded-xl border transition-all ${
                       grade === g ? 'border-emerald-500 bg-emerald-500/10 text-emerald-400 scale-105 shadow-sm' : 'border-white/10 text-neutral-400 hover:border-white/30 hover:bg-white/5'
                     }`}
                   >
@@ -277,7 +277,7 @@ export const AddCropPage: React.FC = () => {
                 onChange={(e) => setShelfLifeDays(e.target.value)}
                 className="w-full max-w-sm px-4 py-3 text-sm border border-white/10 bg-black/50 text-white rounded-xl focus:border-emerald-500/50 outline-none font-mono transition-all"
               />
-              <p className="text-xs text-neutral-500 mt-2 font-light">
+              <p className="text-xs text-neutral-500 mt-2 font-normal">
                 We use this to prevent recommending markets that are too far away for highly perishable crops.
               </p>
             </div>
@@ -290,15 +290,15 @@ export const AddCropPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-medium tracking-tight text-white">Step 5 — {t('addCrop.step5', 'Where to Sell')}</h3>
-                <p className="text-sm text-neutral-400 mt-1 font-light">Based on {district} location, 1 Tonne load, {cropName} (Grade {grade}).</p>
+                <p className="text-sm text-neutral-400 mt-1 font-normal">Based on {district} location, 1 Tonne load, {cropName} (Grade {grade}).</p>
               </div>
             </div>
 
             <div className="space-y-5">
               {recommendedMarkets.map((market, idx) => (
-                <div key={market.id} className={`p-6 rounded-2xl border relative overflow-hidden transition-all ${idx === 0 ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-white/5 bg-black/60 backdrop-blur-xl'}`}>
+                <div key={market.id} className={`p-6 rounded-xl border relative overflow-hidden transition-all ${idx === 0 ? 'border-emerald-500/50 bg-emerald-500/5' : 'border-white/5 bg-black/60 backdrop-blur-xl'}`}>
                   {idx === 0 && (
-                    <div className="absolute top-0 right-0 bg-emerald-500/20 text-emerald-400 text-[10px] font-semibold px-4 py-1.5 rounded-bl-xl border-l border-b border-emerald-500/20 uppercase tracking-widest">
+                    <div className="absolute top-0 right-0 bg-emerald-500/20 text-emerald-400 text-xs font-semibold px-4 py-1.5 rounded-bl-xl border-l border-b border-emerald-500/20 uppercase tracking-widest">
                       BEST MATCH
                     </div>
                   )}
@@ -307,25 +307,25 @@ export const AddCropPage: React.FC = () => {
                       <div className="flex items-center gap-3">
                         <h4 className="text-lg font-medium text-white">{market.marketName}</h4>
                         {market.isHighRisk && (
-                          <span className="bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">High Risk (Shelf Life)</span>
+                          <span className="bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">High Risk (Shelf Life)</span>
                         )}
                       </div>
-                      <div className="text-sm text-neutral-400 flex items-center gap-1.5 font-light">
+                      <div className="text-sm text-neutral-400 flex items-center gap-1.5 font-normal">
                         <MapPin className="w-4 h-4 text-emerald-500" /> {market.district} APMC ({market.distanceKm} km away)
                       </div>
                     </div>
                     
                     <div className="flex items-center gap-6">
                       <div className="text-right">
-                        <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-widest">Est. Revenue</p>
+                        <p className="text-xs font-semibold text-neutral-500 uppercase tracking-widest">Est. Revenue</p>
                         <p className="font-mono text-base font-medium text-white">₹{Math.round(market.grossRevenue).toLocaleString()}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-[10px] font-semibold text-neutral-500 uppercase tracking-widest">Transport Cost</p>
+                        <p className="text-xs font-semibold text-neutral-500 uppercase tracking-widest">Transport Cost</p>
                         <p className="font-mono text-base font-medium text-red-400">-₹{Math.round(market.transportCost).toLocaleString()}</p>
                       </div>
                       <div className="text-right bg-black/50 px-4 py-3 rounded-xl border border-white/5 min-w-[120px]">
-                        <p className="text-[10px] font-semibold text-emerald-400 uppercase tracking-widest">Net Profit / Tonne</p>
+                        <p className="text-xs font-semibold text-emerald-400 uppercase tracking-widest">Net Profit / Tonne</p>
                         <p className="font-mono text-xl font-medium text-white">₹{Math.round(market.netProfit).toLocaleString()}</p>
                       </div>
                     </div>

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   ShieldAlert, Bug, Droplet, Search, Filter, AlertTriangle, ExternalLink,
   CheckCircle2, Info, ChevronDown, ChevronUp, Sparkles, ScanLine, Sprout,
@@ -13,6 +14,7 @@ interface KrishiRakshakModuleProps {
 }
 
 export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initialCropId = 'rice' }) => {
+  const { t } = useTranslation();
   const { setIsScannerModalOpen, requireAuth } = useApp();
   const [selectedCropId, setSelectedCropId] = useState<string>(initialCropId);
   const [searchQuery, setSearchQuery] = useState('');
@@ -67,7 +69,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
       case 'Weed':
         return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30';
       case 'Virus':
-        return 'bg-purple-500/15 text-purple-300 border-purple-500/30';
+        return 'bg-blue-500/15 text-blue-300 border-blue-500/30';
       default:
         return 'bg-white/10 text-white border-white/20';
     }
@@ -90,61 +92,62 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
     <div className="space-y-8 animate-in fade-in">
       
       {/* 1. TOP SAFETY BANNER & CIB&RC COMPLIANCE NOTICE */}
-      <div className="bg-gradient-to-r from-red-950/80 via-neutral-900 to-amber-950/80 p-5 rounded-3xl border border-amber-500/30 shadow-2xl space-y-3">
+      <div className="bg-gradient-to-r from-red-950/80 via-neutral-900 to-amber-950/80 p-5 rounded-xl border border-amber-500/30 shadow-md space-y-3">
         <div className="flex items-start gap-3.5">
-          <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0 mt-0.5">
+          <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0 mt-0.5">
             <AlertOctagon className="w-6 h-6 text-amber-400" />
           </div>
           <div className="space-y-1">
             <div className="flex flex-wrap items-center gap-2">
               <h4 className="text-base font-black text-white tracking-tight">
-                Krishi Rakshak — CIB&RC & PPQS Official Safety Protocol
+                {t('krishiRakshak.safetyProtocol')}
               </h4>
-              <span className="text-[10px] bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/40 font-bold uppercase tracking-wider">
-                Mandatory Agricultural Guidelines
+              <span className="text-xs bg-amber-400/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/40 font-bold uppercase tracking-wider">
+                {t('krishiRakshak.mandatoryGuidelines')}
               </span>
             </div>
-            <p className="text-xs text-neutral-300 leading-relaxed font-light">
-              Pesticides must <strong>never</strong> be used indiscriminately. Prioritize Integrated Pest Management (IPM: Cultural, Biological & Mechanical controls).
-            </p>
+            <p 
+              className="text-xs text-neutral-300 leading-relaxed font-normal"
+              dangerouslySetInnerHTML={{ __html: t('krishiRakshak.pesticideWarningHtml') }}
+            />
           </div>
         </div>
 
         {/* Core Rules Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-2 border-t border-white/10 text-[11px] text-neutral-300">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-2 border-t border-white/10 text-xs text-neutral-300">
           <div className="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-white/5">
             <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
-            <span><strong>No Pesticides for Viruses:</strong> Viruses have no chemical cure. Manage vectors only.</span>
+            <span><strong>{t('krishiRakshak.noViruses')}</strong> {t('krishiRakshak.noVirusesDesc')}</span>
           </div>
           <div className="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-white/5">
             <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-            <span><strong>Targeted Action:</strong> Never spray insecticides for fungal rot, or fungicides for insects.</span>
+            <span><strong>{t('krishiRakshak.targetedAction')}</strong> {t('krishiRakshak.targetedActionDesc')}</span>
           </div>
           <div className="flex items-center gap-2 bg-black/40 p-2.5 rounded-xl border border-white/5">
             <FileCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span><strong>Verify Dosage/PHI:</strong> Strictly follow product labels and pre-harvest intervals (PHI).</span>
+            <span><strong>{t('krishiRakshak.verifyDosage')}</strong> {t('krishiRakshak.verifyDosageDesc')}</span>
           </div>
         </div>
       </div>
 
       {/* 2. CROP SELECTION FLOW: 25 CROPS GRID WITH PROBLEM COUNTS */}
-      <div className="bg-black/60 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl space-y-4">
+      <div className="bg-black/60 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-white/10">
           <div>
             <h3 className="text-xl font-bold text-white flex items-center gap-2">
               <Sprout className="w-5 h-5 text-emerald-400" />
-              Select Crop to Access Protection Guide
+              {t('krishiRakshak.selectCropTitle')}
             </h3>
             <p className="text-xs text-neutral-400 mt-0.5">
-              Choose from 25 crops to view verified pests, fungal/bacterial diseases, weeds, and IPM solutions.
+              {t('krishiRakshak.selectCropDesc')}
             </p>
           </div>
           <button
             onClick={() => requireAuth(() => setIsScannerModalOpen(true))}
-            className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl shadow-lg flex items-center gap-2 transition-all shrink-0"
+            className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl shadow-md flex items-center gap-2 transition-all shrink-0"
           >
             <ScanLine className="w-4 h-4 text-white" />
-            <span>Diagnose Leaf with AI Scanner</span>
+            <span>{t('krishiRakshak.diagnoseAI')}</span>
           </button>
         </div>
 
@@ -163,14 +166,14 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
                   setSelectedCropId(crop.id);
                   setExpandedProblemId(null);
                 }}
-                className={`relative p-3.5 rounded-2xl flex flex-col items-center justify-between text-center transition-all group border cursor-pointer ${
+                className={`relative p-3.5 rounded-xl flex flex-col items-center justify-between text-center transition-all group border cursor-pointer ${
                   isSelected
                     ? 'border-2 border-emerald-500 bg-emerald-950/40 shadow-[0_0_20px_rgba(16,185,129,0.25)] ring-1 ring-emerald-400 scale-[1.02]'
                     : 'bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20'
                 }`}
               >
                 {/* Crop Icon */}
-                <div className="w-14 h-14 rounded-2xl overflow-hidden border border-white/10 relative mb-1.5 transition-transform group-hover:scale-105 shadow-md bg-black/40">
+                <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/10 relative mb-1.5 transition-transform group-hover:scale-105 shadow-md bg-black/40">
                   <img
                     src={crop.iconUrl}
                     alt={crop.name}
@@ -185,7 +188,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
 
                 {/* Major Problems Badge */}
                 <div className="mt-2 flex items-center gap-1">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
                     isSelected ? 'bg-emerald-500 text-black' : 'bg-white/10 text-neutral-300'
                   }`}>
                     {probCount} Problems
@@ -198,10 +201,10 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
       </div>
 
       {/* 3. SELECTED CROP OVERVIEW CARD */}
-      <div className="bg-black/60 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-xl space-y-4">
+      <div className="bg-black/60 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-xl space-y-4">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-18 h-18 rounded-2xl overflow-hidden border border-white/20 shadow-lg shrink-0 bg-black/40">
+            <div className="w-18 h-18 rounded-xl overflow-hidden border border-white/20 shadow-md shrink-0 bg-black/40">
               <img
                 src={selectedCrop.iconUrl}
                 alt={selectedCrop.name}
@@ -215,7 +218,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
                   {selectedCrop.category}
                 </span>
               </div>
-              <p className="text-xs text-neutral-300 mt-1 max-w-2xl font-light">
+              <p className="text-xs text-neutral-300 mt-1 max-w-2xl font-normal">
                 {cropSummary.description}
               </p>
             </div>
@@ -224,23 +227,23 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
           {/* Quick Problem Distribution Metric Counters */}
           <div className="flex flex-wrap gap-2 shrink-0">
             <div className="bg-rose-950/60 border border-rose-500/30 px-3 py-1.5 rounded-xl text-center">
-              <span className="text-[10px] text-rose-300 uppercase block font-bold">Pests</span>
+              <span className="text-xs text-rose-300 uppercase block font-bold">Pests</span>
               <span className="text-base font-black text-rose-400 font-mono">{cropSummary.pestCount}</span>
             </div>
             <div className="bg-amber-950/60 border border-amber-500/30 px-3 py-1.5 rounded-xl text-center">
-              <span className="text-[10px] text-amber-300 uppercase block font-bold">Diseases</span>
+              <span className="text-xs text-amber-300 uppercase block font-bold">Diseases</span>
               <span className="text-base font-black text-amber-400 font-mono">{cropSummary.diseaseCount}</span>
             </div>
             {cropSummary.weedCount > 0 && (
               <div className="bg-emerald-950/60 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-center">
-                <span className="text-[10px] text-emerald-300 uppercase block font-bold">Weeds</span>
+                <span className="text-xs text-emerald-300 uppercase block font-bold">Weeds</span>
                 <span className="text-base font-black text-emerald-400 font-mono">{cropSummary.weedCount}</span>
               </div>
             )}
             {cropSummary.virusCount > 0 && (
-              <div className="bg-purple-950/60 border border-purple-500/30 px-3 py-1.5 rounded-xl text-center">
-                <span className="text-[10px] text-purple-300 uppercase block font-bold">Viruses</span>
-                <span className="text-base font-black text-purple-400 font-mono">{cropSummary.virusCount}</span>
+              <div className="bg-blue-950/60 border border-blue-500/30 px-3 py-1.5 rounded-xl text-center">
+                <span className="text-xs text-blue-300 uppercase block font-bold">Viruses</span>
+                <span className="text-base font-black text-blue-400 font-mono">{cropSummary.virusCount}</span>
               </div>
             )}
           </div>
@@ -312,7 +315,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
         </div>
 
         {filteredProblems.length === 0 ? (
-          <div className="bg-black/40 rounded-3xl p-12 text-center border border-white/10 space-y-3">
+          <div className="bg-black/40 rounded-xl p-12 text-center border border-white/10 space-y-3">
             <Info className="w-10 h-10 text-neutral-400 mx-auto" />
             <p className="text-base font-bold text-white">No matching protection records found</p>
             <p className="text-xs text-neutral-400 max-w-md mx-auto">
@@ -337,9 +340,9 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
               return (
                 <div
                   key={item.id}
-                  className={`bg-black/60 backdrop-blur-xl rounded-3xl border transition-all duration-200 overflow-hidden ${
+                  className={`bg-black/60 backdrop-blur-xl rounded-xl border transition-all duration-200 overflow-hidden ${
                     isExpanded
-                      ? 'border-emerald-500/50 shadow-2xl bg-black/80'
+                      ? 'border-emerald-500/50 shadow-md bg-black/80'
                       : 'border-white/10 hover:border-white/20 shadow-md'
                   }`}
                 >
@@ -349,24 +352,24 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
                     className="p-5 sm:p-6 cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4 select-none"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
+                      <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 mt-0.5">
                         {item.type === 'Pest' && <Bug className="w-6 h-6 text-rose-400" />}
                         {item.type === 'Disease' && <Droplet className="w-6 h-6 text-amber-400" />}
                         {item.type === 'Weed' && <Sprout className="w-6 h-6 text-emerald-400" />}
-                        {item.type === 'Virus' && <AlertTriangle className="w-6 h-6 text-purple-400" />}
+                        {item.type === 'Virus' && <AlertTriangle className="w-6 h-6 text-blue-400" />}
                       </div>
 
                       <div className="space-y-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <h5 className="text-lg font-black text-white">{item.problem}</h5>
-                          <span className={`text-[10px] px-2.5 py-0.5 rounded-full border font-bold uppercase tracking-wider ${getTypeBadgeStyle(item.type)}`}>
+                          <span className={`text-xs px-2.5 py-0.5 rounded-full border font-bold uppercase tracking-wider ${getTypeBadgeStyle(item.type)}`}>
                             {item.type}
                           </span>
-                          <span className={`text-[10px] px-2.5 py-0.5 rounded-full ${getSeverityBadgeStyle(item.severity)}`}>
+                          <span className={`text-xs px-2.5 py-0.5 rounded-full ${getSeverityBadgeStyle(item.severity)}`}>
                             {item.severity} Risk
                           </span>
                         </div>
-                        <p className="text-xs text-neutral-300 font-light flex items-center gap-1.5">
+                        <p className="text-xs text-neutral-300 font-normal flex items-center gap-1.5">
                           <span className="font-semibold text-neutral-400">Symptoms:</span> {item.symptoms}
                         </p>
                       </div>
@@ -374,7 +377,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
 
                     <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
                       <div className="text-right hidden sm:block">
-                        <span className="text-[10px] text-neutral-400 block uppercase font-medium">Potential Loss</span>
+                        <span className="text-xs text-neutral-400 block uppercase font-medium">Potential Loss</span>
                         <span className="text-xs font-bold text-rose-400 font-mono">{item.potentialLoss.split(' ')[0]} {item.potentialLoss.split(' ')[1]}</span>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-neutral-300">
@@ -388,33 +391,33 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
                     <div className="px-5 pb-6 sm:px-6 space-y-6 pt-2 border-t border-white/10 animate-in fade-in">
                       
                       {/* Potential Loss Warning */}
-                      <div className="bg-rose-950/40 p-4 rounded-2xl border border-rose-500/30 flex items-start gap-3">
+                      <div className="bg-rose-950/40 p-4 rounded-xl border border-rose-500/30 flex items-start gap-3">
                         <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0 mt-0.5" />
                         <div>
                           <strong className="text-xs font-bold text-rose-300 uppercase tracking-wide block">
                             Potential Loss Without Intervention:
                           </strong>
-                          <p className="text-xs text-neutral-200 mt-0.5 font-light leading-relaxed">
+                          <p className="text-xs text-neutral-200 mt-0.5 font-normal leading-relaxed">
                             {item.potentialLoss}
                           </p>
                         </div>
                       </div>
 
                       {/* Integrated Pest Management (IPM) */}
-                      <div className="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-3">
+                      <div className="bg-white/5 p-5 rounded-xl border border-white/10 space-y-3">
                         <div className="flex items-center gap-2">
                           <ShieldCheck className="w-5 h-5 text-emerald-400" />
                           <h6 className="text-sm font-bold text-emerald-300 uppercase tracking-wider">
                             Integrated Pest Management (IPM) & Prevention
                           </h6>
                         </div>
-                        <div className="p-3.5 bg-black/40 rounded-xl border border-white/5 text-xs text-neutral-300 leading-relaxed font-light">
+                        <div className="p-3.5 bg-black/40 rounded-xl border border-white/5 text-xs text-neutral-300 leading-relaxed font-normal">
                           {item.preventionIPM}
                         </div>
                       </div>
 
                       {/* Official Treatment / Active Ingredient Guidance */}
-                      <div className="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-3">
+                      <div className="bg-white/5 p-5 rounded-xl border border-white/10 space-y-3">
                         <div className="flex items-center justify-between flex-wrap gap-2">
                           <div className="flex items-center gap-2">
                             <Droplet className="w-5 h-5 text-amber-400" />
@@ -422,7 +425,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
                               Treatment / Active Ingredient Guidance
                             </h6>
                           </div>
-                          <span className="text-[10px] text-neutral-400 bg-black/40 px-2.5 py-1 rounded-md border border-white/10 font-mono">
+                          <span className="text-xs text-neutral-400 bg-black/40 px-2.5 py-1 rounded-md border border-white/10 font-mono">
                             CIB&RC Registered Only
                           </span>
                         </div>
@@ -434,15 +437,15 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
                         {/* Dose & PHI Official Status */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
                           <div className="p-3 bg-black/30 rounded-xl border border-white/5">
-                            <span className="text-[10px] font-bold text-neutral-400 uppercase block mb-1">Dose & Dilution</span>
-                            <span className="text-amber-300/90 font-mono text-[11px] flex items-center gap-1.5">
+                            <span className="text-xs font-bold text-neutral-400 uppercase block mb-1">Dose & Dilution</span>
+                            <span className="text-amber-300/90 font-mono text-xs flex items-center gap-1.5">
                               <Info className="w-3.5 h-3.5 shrink-0" />
                               {item.dosePhi}
                             </span>
                           </div>
                           <div className="p-3 bg-black/30 rounded-xl border border-white/5">
-                            <span className="text-[10px] font-bold text-neutral-400 uppercase block mb-1">Pre-Harvest Interval (PHI)</span>
-                            <span className="text-amber-300/90 font-mono text-[11px] flex items-center gap-1.5">
+                            <span className="text-xs font-bold text-neutral-400 uppercase block mb-1">Pre-Harvest Interval (PHI)</span>
+                            <span className="text-amber-300/90 font-mono text-xs flex items-center gap-1.5">
                               <Info className="w-3.5 h-3.5 shrink-0" />
                               Verify registered crop label before harvest
                             </span>
@@ -467,7 +470,7 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
                           href={item.amazonSearchUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-5 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all active:scale-95"
+                          className="px-5 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white text-xs font-bold rounded-xl shadow-md flex items-center justify-center gap-2 transition-all active:scale-95"
                         >
                           <span>Search Registered Products on Amazon India</span>
                           <ExternalLink className="w-4 h-4" />
@@ -484,17 +487,17 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
       </div>
 
       {/* 6. BOTTOM SAFETY WARNING & REGULATORY CITATION */}
-      <div className="bg-black/60 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl space-y-4">
+      <div className="bg-black/60 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md space-y-4">
         <div className="flex items-center gap-3 border-b border-white/10 pb-4">
           <ShieldAlert className="w-6 h-6 text-emerald-400" />
           <div>
             <h4 className="text-base font-bold text-white">Krishi Grow Advisory & Regulatory Citation</h4>
-            <p className="text-xs text-neutral-400 font-light">Official references and farmer safety compliance</p>
+            <p className="text-xs text-neutral-400 font-normal">Official references and farmer safety compliance</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-neutral-300 font-light">
-          <div className="space-y-2 bg-white/5 p-4 rounded-2xl border border-white/5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-neutral-300 font-normal">
+          <div className="space-y-2 bg-white/5 p-4 rounded-xl border border-white/5">
             <h5 className="font-bold text-emerald-400 text-xs uppercase tracking-wider">Official Data Sources:</h5>
             <ul className="space-y-1.5 list-disc list-inside marker:text-emerald-400">
               <li>Central Insecticide Board & Registration Committee (CIB&RC)</li>
@@ -504,9 +507,9 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
             </ul>
           </div>
 
-          <div className="space-y-2 bg-white/5 p-4 rounded-2xl border border-white/5">
+          <div className="space-y-2 bg-white/5 p-4 rounded-xl border border-white/5">
             <h5 className="font-bold text-amber-400 text-xs uppercase tracking-wider">Safety & Legal Disclaimer:</h5>
-            <p className="leading-relaxed text-[11px]">
+            <p className="leading-relaxed text-xs">
               Always use Personal Protective Equipment (PPE: gloves, mask, eye protection). Follow label directions, recommended dilution rates, and pre-harvest intervals. Never spray during windy days or near water bodies. Consult your local Krishi Vigyan Kendra (KVK) for area-specific advisories.
             </p>
           </div>

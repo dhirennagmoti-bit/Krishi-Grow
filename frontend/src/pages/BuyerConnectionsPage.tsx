@@ -22,6 +22,16 @@ export const BuyerConnectionsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'BUYERS' | 'STORAGES' | 'FARMERS' | 'MY_CONNECTIONS'>('BUYERS');
   const [selectedCropFilter, setSelectedCropFilter] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate network fetch for data-heavy section
+  React.useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [activeTab]);
 
   // Proposal Modal State
   const [proposalTarget, setProposalTarget] = useState<{
@@ -138,16 +148,16 @@ export const BuyerConnectionsPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* ── Header Banner ── */}
-      <div className="bg-gradient-to-r from-purple-950/60 via-[#121218] to-black p-6 md:p-8 rounded-3xl border border-purple-500/20 backdrop-blur-xl relative overflow-hidden shadow-2xl">
-        <div className="absolute -right-12 -top-12 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="bg-gradient-to-r from-blue-950/60 via-[#121218] to-black p-6 md:p-8 rounded-xl border border-blue-500/20 backdrop-blur-xl relative overflow-hidden shadow-md">
+        <div className="absolute -right-12 -top-12 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div>
             <div className="flex items-center gap-3">
-              <div className="p-3 bg-purple-600/30 border border-purple-400/40 rounded-2xl text-purple-400">
+              <div className="p-3 bg-blue-600/30 border border-blue-400/40 rounded-xl text-blue-400">
                 <Users className="w-8 h-8" />
               </div>
               <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-purple-400">
+                <span className="text-xs font-bold uppercase tracking-widest text-blue-400">
                   {t('buyers.directTrade', 'Direct Trade & Cold Chain Network')}
                 </span>
                 <h1 className="text-2xl md:text-3xl font-black text-white">
@@ -161,16 +171,16 @@ export const BuyerConnectionsPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="p-3 rounded-2xl bg-black/50 border border-white/10 text-center">
-              <span className="text-[10px] text-neutral-400 font-bold block uppercase">Active Trades</span>
+            <div className="p-3 rounded-xl bg-black/50 border border-white/10 text-center">
+              <span className="text-xs text-neutral-400 font-bold block uppercase">Active Trades</span>
               <span className="text-base font-black text-emerald-400 font-mono">{connectionRequests.length} Conns</span>
             </div>
-            <div className="p-3 rounded-2xl bg-black/50 border border-white/10 text-center">
-              <span className="text-[10px] text-neutral-400 font-bold block uppercase">Verified Buyers</span>
-              <span className="text-base font-black text-purple-400 font-mono">{buyerReqs.length} Buyers</span>
+            <div className="p-3 rounded-xl bg-black/50 border border-white/10 text-center">
+              <span className="text-xs text-neutral-400 font-bold block uppercase">Verified Buyers</span>
+              <span className="text-base font-black text-blue-400 font-mono">{buyerReqs.length} Buyers</span>
             </div>
-            <div className="p-3 rounded-2xl bg-black/50 border border-white/10 text-center">
-              <span className="text-[10px] text-neutral-400 font-bold block uppercase">Cold Storages</span>
+            <div className="p-3 rounded-xl bg-black/50 border border-white/10 text-center">
+              <span className="text-xs text-neutral-400 font-bold block uppercase">Cold Storages</span>
               <span className="text-base font-black text-cyan-400 font-mono">{storageFacilities.length} Units</span>
             </div>
           </div>
@@ -180,9 +190,9 @@ export const BuyerConnectionsPage: React.FC = () => {
         <div className="flex flex-wrap gap-2 mt-6 pt-6 border-t border-white/10">
           <button
             onClick={() => setActiveTab('BUYERS')}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'BUYERS'
-                ? 'bg-purple-600 text-white shadow-lg shadow-purple-950 border border-purple-400/40'
+                ? 'bg-blue-600 text-white shadow-md shadow-md border border-blue-400/40'
                 : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
             }`}
           >
@@ -192,9 +202,9 @@ export const BuyerConnectionsPage: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('STORAGES')}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'STORAGES'
-                ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-950 border border-cyan-400/40'
+                ? 'bg-cyan-600 text-white shadow-md shadow-cyan-950 border border-cyan-400/40'
                 : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
             }`}
           >
@@ -204,9 +214,9 @@ export const BuyerConnectionsPage: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('FARMERS')}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'FARMERS'
-                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950 border border-emerald-400/40'
+                ? 'bg-emerald-600 text-white shadow-md shadow-md border border-emerald-400/40'
                 : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
             }`}
           >
@@ -216,9 +226,9 @@ export const BuyerConnectionsPage: React.FC = () => {
 
           <button
             onClick={() => setActiveTab('MY_CONNECTIONS')}
-            className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
               activeTab === 'MY_CONNECTIONS'
-                ? 'bg-amber-600 text-white shadow-lg shadow-amber-950 border border-amber-400/40'
+                ? 'bg-amber-600 text-white shadow-md shadow-amber-950 border border-amber-400/40'
                 : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
             }`}
           >
@@ -230,7 +240,7 @@ export const BuyerConnectionsPage: React.FC = () => {
 
       {/* ── Filters & Search ── */}
       {activeTab !== 'MY_CONNECTIONS' && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#12161c]/80 backdrop-blur-xl p-4 rounded-2xl border border-white/10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-[#12161c]/80 backdrop-blur-xl p-4 rounded-xl border border-white/10">
           <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
             <span className="text-xs font-bold text-neutral-400 flex items-center gap-1 shrink-0">
               <Filter className="w-3.5 h-3.5" /> Crop Filter:
@@ -241,7 +251,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                 onClick={() => setSelectedCropFilter(c)}
                 className={`px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
                   selectedCropFilter === c
-                    ? 'bg-purple-600 text-white border border-purple-400/40'
+                    ? 'bg-blue-600 text-white border border-blue-400/40'
                     : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
                 }`}
               >
@@ -257,7 +267,7 @@ export const BuyerConnectionsPage: React.FC = () => {
               placeholder="Search by name, district, or region..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-black/60 border border-white/15 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500"
+              className="w-full pl-9 pr-4 py-2 bg-black/60 border border-white/15 rounded-xl text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500"
             />
           </div>
         </div>
@@ -266,31 +276,57 @@ export const BuyerConnectionsPage: React.FC = () => {
       {/* ── TAB 1: BUYERS DIRECTORY ── */}
       {activeTab === 'BUYERS' && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBuyers.map(req => {
+          {isLoading ? (
+            [...Array(6)].map((_, i) => (
+              <div key={i} className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md flex flex-col justify-between space-y-5 animate-pulse h-[350px]">
+                <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/10" />
+                    <div>
+                      <div className="h-4 w-24 bg-white/10 rounded mb-1.5" />
+                      <div className="h-4 w-16 bg-blue-950 rounded" />
+                    </div>
+                  </div>
+                  <div className="h-8 w-16 bg-white/5 rounded" />
+                </div>
+                <div className="grid grid-cols-2 gap-2 bg-black/40 p-3 rounded-xl border border-white/10">
+                  <div className="h-10 bg-white/5 rounded" />
+                  <div className="h-10 bg-white/5 rounded" />
+                  <div className="h-10 bg-white/5 rounded" />
+                  <div className="h-10 bg-white/5 rounded" />
+                </div>
+                <div className="h-10 bg-white/5 rounded w-full" />
+                <div className="pt-3 border-t border-white/10 mt-auto">
+                  <div className="h-10 bg-white/10 rounded-xl w-full" />
+                </div>
+              </div>
+            ))
+          ) : (
+            filteredBuyers.map(req => {
             const hasRequested = connectionRequests.some(c => c.receiverId === req.buyerId || c.buyerId === req.buyerId);
             return (
               <div
                 key={req.id}
-                className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl flex flex-col justify-between space-y-5 hover:border-purple-500/40 transition-all group"
+                className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md flex flex-col justify-between space-y-5 hover:border-blue-500/40 transition-all group"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-white/10">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-purple-600/20 border border-purple-500/30 text-purple-300 flex items-center justify-center font-bold">
+                      <div className="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/30 text-blue-300 flex items-center justify-center font-bold">
                         <Building2 className="w-5 h-5" />
                       </div>
                       <div>
-                        <h3 className="font-bold text-sm text-white group-hover:text-purple-300 transition-colors">
+                        <h3 className="font-bold text-sm text-white group-hover:text-blue-300 transition-colors">
                           {req.buyerName}
                         </h3>
-                        <span className="text-[9px] font-bold text-purple-400 uppercase tracking-wider bg-purple-950 px-2 py-0.5 rounded border border-purple-500/20">
+                        <span className="text-xs font-bold text-blue-400 uppercase tracking-wider bg-blue-950 px-2 py-0.5 rounded border border-blue-500/20">
                           {req.buyerType}
                         </span>
                       </div>
                     </div>
 
                     <div className="text-right">
-                      <span className="text-[9px] text-emerald-400 block font-bold uppercase">AI Match</span>
+                      <span className="text-xs text-emerald-400 block font-bold uppercase">AI Match</span>
                       <span className="text-base font-bold text-emerald-400 font-mono">{req.matchScore}%</span>
                     </div>
                   </div>
@@ -298,19 +334,19 @@ export const BuyerConnectionsPage: React.FC = () => {
                   {/* Requirements details */}
                   <div className="grid grid-cols-2 gap-2 bg-black/40 p-3 rounded-xl border border-white/10 text-xs">
                     <div>
-                      <span className="text-[10px] text-neutral-400 block">Required Crop</span>
+                      <span className="text-xs text-neutral-400 block">Required Crop</span>
                       <span className="font-bold text-white">{req.crop}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-neutral-400 block">Target Quantity</span>
+                      <span className="text-xs text-neutral-400 block">Target Quantity</span>
                       <span className="font-bold text-white font-mono">{req.quantityRequiredTonnes} Tonnes</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-neutral-400 block">Indicative Price</span>
+                      <span className="text-xs text-neutral-400 block">Indicative Price</span>
                       <span className="font-bold text-emerald-400 font-mono">₹{req.targetPricePerQuintal}/Qtl</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-neutral-400 block">Min Grade</span>
+                      <span className="text-xs text-neutral-400 block">Min Grade</span>
                       <span className="font-bold text-cyan-300">Grade {req.minGrade}</span>
                     </div>
                   </div>
@@ -320,7 +356,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                   </p>
 
                   <div className="flex items-center gap-1.5 text-xs text-neutral-400 pt-1">
-                    <MapPin className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                    <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
                     <span>Pickup: <strong className="text-white">{req.pickupRegion}</strong></span>
                   </div>
                 </div>
@@ -346,7 +382,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                         defaultPrice: req.targetPricePerQuintal,
                         type: 'CROP_TRADE'
                       })}
-                      className="w-full py-2.5 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white text-xs font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>Propose Trade & Notify via Email</span>
@@ -355,17 +391,45 @@ export const BuyerConnectionsPage: React.FC = () => {
                 </div>
               </div>
             );
-          })}
+          }))}
         </div>
       )}
 
       {/* ── TAB 2: COLD STORAGE & SILOS ── */}
       {activeTab === 'STORAGES' && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredStorages.map(st => (
+          {isLoading ? (
+            [...Array(6)].map((_, i) => (
+              <div key={i} className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md flex flex-col justify-between space-y-5 animate-pulse h-[350px]">
+                <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/10" />
+                    <div>
+                      <div className="h-4 w-32 bg-white/10 rounded mb-1.5" />
+                      <div className="h-4 w-24 bg-cyan-950 rounded" />
+                    </div>
+                  </div>
+                  <div className="h-6 w-16 bg-white/5 rounded" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-40 bg-white/5 rounded" />
+                  <div className="h-4 w-32 bg-white/5 rounded" />
+                </div>
+                <div className="h-16 bg-black/40 rounded-xl border border-white/10" />
+                <div className="flex gap-2">
+                  <div className="h-5 w-20 bg-white/5 rounded-full" />
+                  <div className="h-5 w-24 bg-white/5 rounded-full" />
+                </div>
+                <div className="pt-3 border-t border-white/10 mt-auto">
+                  <div className="h-10 bg-white/10 rounded-xl w-full" />
+                </div>
+              </div>
+            ))
+          ) : (
+            filteredStorages.map(st => (
             <div
               key={st.id}
-              className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl flex flex-col justify-between space-y-5 hover:border-cyan-500/40 transition-all group"
+              className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md flex flex-col justify-between space-y-5 hover:border-cyan-500/40 transition-all group"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between pb-3 border-b border-white/10">
@@ -377,14 +441,14 @@ export const BuyerConnectionsPage: React.FC = () => {
                       <h3 className="font-bold text-sm text-white group-hover:text-cyan-300 transition-colors">
                         {st.name}
                       </h3>
-                      <span className="text-[9px] font-bold text-cyan-400 uppercase tracking-wider bg-cyan-950 px-2 py-0.5 rounded border border-cyan-500/20">
+                      <span className="text-xs font-bold text-cyan-400 uppercase tracking-wider bg-cyan-950 px-2 py-0.5 rounded border border-cyan-500/20">
                         {st.type.replace('_', ' ')}
                       </span>
                     </div>
                   </div>
 
                   <span className="text-xs font-mono font-bold text-emerald-400">
-                    ₹{st.pricePerTonDay} <span className="text-[9px] text-neutral-400 font-sans">/T/Day</span>
+                    ₹{st.pricePerTonDay} <span className="text-xs text-neutral-400 font-sans">/T/Day</span>
                   </span>
                 </div>
 
@@ -400,7 +464,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                 </div>
 
                 <div className="bg-black/40 p-3 rounded-xl border border-white/10 space-y-1 text-xs">
-                  <div className="flex justify-between text-[11px]">
+                  <div className="flex justify-between text-xs">
                     <span className="text-neutral-400">Available Space:</span>
                     <span className="font-bold text-cyan-300 font-mono">
                       {st.availableCapacityTonnes.toLocaleString()} / {st.totalCapacityTonnes.toLocaleString()} Tonnes
@@ -416,7 +480,7 @@ export const BuyerConnectionsPage: React.FC = () => {
 
                 <div className="flex flex-wrap gap-1">
                   {st.features.map((feat, i) => (
-                    <span key={i} className="text-[9px] px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-neutral-300">
+                    <span key={i} className="text-xs px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-neutral-300">
                       ✓ {feat}
                     </span>
                   ))}
@@ -436,24 +500,50 @@ export const BuyerConnectionsPage: React.FC = () => {
                     defaultQty: 25,
                     type: 'COLD_STORAGE_BOOKING'
                   })}
-                  className="w-full py-2.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Warehouse className="w-3.5 h-3.5" />
                   <span>Reserve Storage & Notify Owner</span>
                 </button>
               </div>
             </div>
-          ))}
+          )))}
         </div>
       )}
 
       {/* ── TAB 3: FARMERS DIRECTORY (FOR BUYERS) ── */}
       {activeTab === 'FARMERS' && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredFarmers.map(crop => (
+          {isLoading ? (
+            [...Array(6)].map((_, i) => (
+              <div key={i} className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md flex flex-col justify-between space-y-5 animate-pulse h-[350px]">
+                <div className="flex items-center gap-3 pb-3 border-b border-white/10">
+                  <div className="w-12 h-12 rounded-xl bg-white/10" />
+                  <div>
+                    <div className="h-4 w-28 bg-white/10 rounded mb-1.5" />
+                    <div className="flex gap-2">
+                      <div className="h-4 w-20 bg-emerald-950 rounded" />
+                      <div className="h-4 w-16 bg-cyan-950 rounded" />
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2 bg-black/40 p-3 rounded-xl border border-white/10">
+                  <div className="h-10 bg-white/5 rounded" />
+                  <div className="h-10 bg-white/5 rounded" />
+                  <div className="h-10 bg-white/5 rounded" />
+                  <div className="h-10 bg-white/5 rounded" />
+                </div>
+                <div className="h-4 w-48 bg-white/5 rounded" />
+                <div className="pt-3 border-t border-white/10 mt-auto">
+                  <div className="h-10 bg-white/10 rounded-xl w-full" />
+                </div>
+              </div>
+            ))
+          ) : (
+            filteredFarmers.map(crop => (
             <div
               key={crop.id}
-              className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl flex flex-col justify-between space-y-5 hover:border-emerald-500/40 transition-all group"
+              className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md flex flex-col justify-between space-y-5 hover:border-emerald-500/40 transition-all group"
             >
               <div className="space-y-4">
                 <div className="flex items-center gap-3 pb-3 border-b border-white/10">
@@ -467,10 +557,10 @@ export const BuyerConnectionsPage: React.FC = () => {
                       {crop.farmerName}
                     </h3>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/20">
+                      <span className="text-xs font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-500/20">
                         {crop.name} ({crop.variety})
                       </span>
-                      <span className="text-[9px] font-bold text-cyan-300 bg-cyan-950 px-1.5 py-0.5 rounded">
+                      <span className="text-xs font-bold text-cyan-300 bg-cyan-950 px-1.5 py-0.5 rounded">
                         Grade {crop.grade}
                       </span>
                     </div>
@@ -479,19 +569,19 @@ export const BuyerConnectionsPage: React.FC = () => {
 
                 <div className="grid grid-cols-2 gap-2 bg-black/40 p-3 rounded-xl border border-white/10 text-xs">
                   <div>
-                    <span className="text-[10px] text-neutral-400 block">Available Batch</span>
+                    <span className="text-xs text-neutral-400 block">Available Batch</span>
                     <span className="font-bold text-white font-mono">{crop.quantity} {crop.unit}s</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-neutral-400 block">Harvest Date</span>
+                    <span className="text-xs text-neutral-400 block">Harvest Date</span>
                     <span className="font-bold text-white">{crop.harvestDate}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-neutral-400 block">Shelf Life Remaining</span>
+                    <span className="text-xs text-neutral-400 block">Shelf Life Remaining</span>
                     <span className="font-bold text-amber-400 font-mono">{crop.daysRemaining} Days</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-neutral-400 block">Farming Mode</span>
+                    <span className="text-xs text-neutral-400 block">Farming Mode</span>
                     <span className="font-bold text-emerald-300">{crop.isOrganic ? '🌿 Organic' : 'Standard'}</span>
                   </div>
                 </div>
@@ -516,22 +606,44 @@ export const BuyerConnectionsPage: React.FC = () => {
                     defaultPrice: 2800,
                     type: 'CROP_TRADE'
                   })}
-                  className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Place Procurement Bid & Email Farmer</span>
                 </button>
               </div>
             </div>
-          ))}
+          )))}
         </div>
       )}
 
       {/* ── TAB 4: MY CONNECTIONS & TRADES ── */}
       {activeTab === 'MY_CONNECTIONS' && (
         <div className="space-y-4">
-          {connectionRequests.length === 0 ? (
-            <div className="p-12 text-center text-neutral-400 bg-white/5 rounded-3xl border border-white/10">
+          {isLoading ? (
+            [...Array(3)].map((_, i) => (
+              <div key={i} className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md space-y-4 animate-pulse">
+                <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/10" />
+                    <div>
+                      <div className="flex gap-2 mb-1.5">
+                        <div className="h-4 w-16 bg-emerald-950 rounded" />
+                        <div className="h-4 w-16 bg-emerald-950 rounded-full" />
+                      </div>
+                      <div className="h-4 w-48 bg-white/10 rounded" />
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-black/40 p-4 rounded-xl border border-white/10">
+                  <div className="h-10 bg-white/5 rounded" />
+                  <div className="h-10 bg-white/5 rounded" />
+                  <div className="h-10 bg-white/5 rounded" />
+                </div>
+              </div>
+            ))
+          ) : connectionRequests.length === 0 ? (
+            <div className="p-12 text-center text-neutral-400 bg-white/5 rounded-xl border border-white/10">
               No active connection proposals yet. Browse buyers, farmers, or cold storage units to dispatch your first trade proposal!
             </div>
           ) : (
@@ -541,7 +653,7 @@ export const BuyerConnectionsPage: React.FC = () => {
               return (
                 <div
                   key={conn.id}
-                  className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-3xl border border-white/10 shadow-2xl space-y-4 hover:border-white/20 transition-all"
+                  className="bg-[#12161c]/80 backdrop-blur-xl p-6 rounded-xl border border-white/10 shadow-md space-y-4 hover:border-white/20 transition-all"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
                     <div className="flex items-center gap-3">
@@ -555,7 +667,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                           <span className="font-mono text-xs font-bold text-emerald-400">
                             {conn.requestNumber || conn.id}
                           </span>
-                          <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-bold uppercase ${
                             isAccepted ? 'bg-emerald-950 text-emerald-300 border border-emerald-500/30' : 'bg-amber-950 text-amber-300 border border-amber-500/30'
                           }`}>
                             {conn.status}
@@ -571,7 +683,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                     {conn.emailPreview && (
                       <button
                         onClick={() => setPreviewConn(conn)}
-                        className="px-3.5 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-300 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shrink-0"
+                        className="px-3.5 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shrink-0"
                         title="View auto-sent notification email"
                       >
                         <Mail className="w-3.5 h-3.5" />
@@ -580,26 +692,26 @@ export const BuyerConnectionsPage: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-black/40 p-4 rounded-2xl border border-white/10 text-xs">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-black/40 p-4 rounded-xl border border-white/10 text-xs">
                     <div>
-                      <span className="text-[10px] text-neutral-400 uppercase tracking-wider block">Sender Party</span>
+                      <span className="text-xs text-neutral-400 uppercase tracking-wider block">Sender Party</span>
                       <strong className="text-white block mt-0.5">{conn.senderName || conn.farmerName}</strong>
-                      <span className="text-[10px] text-neutral-400">{conn.senderDistrict || 'Nashik'}</span>
+                      <span className="text-xs text-neutral-400">{conn.senderDistrict || 'Nashik'}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-neutral-400 uppercase tracking-wider block">Receiver Party</span>
+                      <span className="text-xs text-neutral-400 uppercase tracking-wider block">Receiver Party</span>
                       <strong className="text-white block mt-0.5">{conn.receiverName || conn.buyerName}</strong>
-                      <span className="text-[10px] text-neutral-400">{conn.receiverType || 'Buyer / Facility'}</span>
+                      <span className="text-xs text-neutral-400">{conn.receiverType || 'Buyer / Facility'}</span>
                     </div>
                     <div>
-                      <span className="text-[10px] text-neutral-400 uppercase tracking-wider block">Contact Information</span>
+                      <span className="text-xs text-neutral-400 uppercase tracking-wider block">Contact Information</span>
                       {isAccepted ? (
                         <div className="text-emerald-300 font-mono font-bold mt-0.5 flex items-center gap-1">
                           <Phone className="w-3 h-3" />
                           <span>{conn.buyerPhone || conn.receiverPhone || '+91 98220 99881'}</span>
                         </div>
                       ) : (
-                        <span className="text-neutral-500 text-[11px] block mt-0.5 italic">
+                        <span className="text-neutral-500 text-xs block mt-0.5 italic">
                           🔒 Unlocks upon acceptance
                         </span>
                       )}
@@ -643,17 +755,17 @@ export const BuyerConnectionsPage: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
-              className="bg-[#161b22] border border-purple-500/30 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto"
+              className="bg-[#161b22] border border-blue-500/30 rounded-xl max-w-lg w-full p-6 shadow-md space-y-4 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div className="flex items-center gap-2.5">
-                  <div className="p-2 bg-purple-500/20 text-purple-400 rounded-xl">
+                  <div className="p-2 bg-blue-500/20 text-blue-400 rounded-xl">
                     <Send className="w-5 h-5" />
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-white">Send Direct Trade Proposal</h3>
-                    <p className="text-[10px] text-neutral-400">
-                      To: <strong className="text-purple-300">{proposalTarget.name}</strong> ({proposalTarget.role})
+                    <p className="text-xs text-neutral-400">
+                      To: <strong className="text-blue-300">{proposalTarget.name}</strong> ({proposalTarget.role})
                     </p>
                   </div>
                 </div>
@@ -686,7 +798,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                       value={propQuantity}
                       onChange={e => setPropQuantity(Number(e.target.value))}
                       required
-                      className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-white font-mono focus:outline-none focus:border-purple-500"
+                      className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                     />
                   </div>
                   <div>
@@ -697,7 +809,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                       step={50}
                       value={propPrice}
                       onChange={e => setPropPrice(Number(e.target.value))}
-                      className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-emerald-400 font-mono font-bold focus:outline-none focus:border-purple-500"
+                      className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-emerald-400 font-mono font-bold focus:outline-none focus:border-blue-500"
                     />
                   </div>
                 </div>
@@ -709,7 +821,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                     value={propDeliveryDate}
                     onChange={e => setPropDeliveryDate(e.target.value)}
                     required
-                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-purple-500"
+                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-white focus:outline-none focus:border-blue-500"
                   />
                 </div>
 
@@ -720,12 +832,12 @@ export const BuyerConnectionsPage: React.FC = () => {
                     value={propMessage}
                     onChange={e => setPropMessage(e.target.value)}
                     placeholder="Include moisture percentage, packaging preference, or weighbridge pickup terms..."
-                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 resize-none leading-relaxed"
+                    className="w-full bg-black/60 border border-white/15 rounded-xl px-3.5 py-2 text-white placeholder-neutral-500 focus:outline-none focus:border-blue-500 resize-none leading-relaxed"
                   />
                 </div>
 
-                <div className="p-3 bg-purple-950/30 rounded-xl border border-purple-500/20 text-[11px] text-neutral-300 flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-purple-400 shrink-0" />
+                <div className="p-3 bg-blue-950/30 rounded-xl border border-blue-500/20 text-xs text-neutral-300 flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-blue-400 shrink-0" />
                   <span>An automated official email notification with trade details will be dispatched immediately to <strong>{proposalTarget.email}</strong>.</span>
                 </div>
 
@@ -740,7 +852,7 @@ export const BuyerConnectionsPage: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSending}
-                    className="px-5 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold transition-all shadow-lg flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                    className="px-5 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
                   >
                     <Send className="w-3.5 h-3.5" />
                     <span>{isSending ? 'Sending Notification...' : 'Dispatch Connection Request'}</span>
@@ -760,16 +872,16 @@ export const BuyerConnectionsPage: React.FC = () => {
               initial={{ opacity: 0, scale: 0.95, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 12 }}
-              className="bg-[#161b22] border border-purple-500/30 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto"
+              className="bg-[#161b22] border border-blue-500/30 rounded-xl max-w-2xl w-full p-6 shadow-md space-y-4 max-h-[90vh] overflow-y-auto"
             >
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <div className="p-2 bg-purple-500/20 text-purple-400 rounded-xl">
+                  <div className="p-2 bg-blue-500/20 text-blue-400 rounded-xl">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-white">Automated Trade Notification Email</h3>
-                    <p className="text-[10px] text-neutral-400 font-mono">
+                    <p className="text-xs text-neutral-400 font-mono">
                       To: {previewConn.emailPreview.recipient} • Sent: {previewConn.emailPreview.sentAt}
                     </p>
                   </div>
@@ -783,16 +895,16 @@ export const BuyerConnectionsPage: React.FC = () => {
               </div>
 
               {/* Email Body Card */}
-              <div className="rounded-2xl border border-white/10 p-5 bg-[#0d1117] space-y-4 text-xs">
-                <div className="bg-purple-950/60 p-4 rounded-xl border border-purple-500/30 text-center">
+              <div className="rounded-xl border border-white/10 p-5 bg-[#0d1117] space-y-4 text-xs">
+                <div className="bg-blue-950/60 p-4 rounded-xl border border-blue-500/30 text-center">
                   <span className="text-lg font-black text-white block">🌾 Krishi Grow Matchmaking Network</span>
-                  <span className="text-[10px] text-purple-300 uppercase tracking-widest font-bold">
+                  <span className="text-xs text-blue-300 uppercase tracking-widest font-bold">
                     Official Trade Procurement Connection Notice
                   </span>
                 </div>
 
-                <div className="p-3 bg-black/40 rounded-xl border border-white/10 space-y-1.5 text-[11px]">
-                  <div className="flex justify-between"><span className="text-neutral-400">Reference ID:</span><span className="font-mono font-bold text-purple-400">{previewConn.requestNumber || previewConn.id}</span></div>
+                <div className="p-3 bg-black/40 rounded-xl border border-white/10 space-y-1.5 text-xs">
+                  <div className="flex justify-between"><span className="text-neutral-400">Reference ID:</span><span className="font-mono font-bold text-blue-400">{previewConn.requestNumber || previewConn.id}</span></div>
                   <div className="flex justify-between"><span className="text-neutral-400">Sender Party:</span><span className="font-bold text-white">{previewConn.senderName || user.name} ({user.district})</span></div>
                   <div className="flex justify-between"><span className="text-neutral-400">Recipient Party:</span><span className="font-bold text-white">{previewConn.receiverName || previewConn.buyerName}</span></div>
                   <div className="flex justify-between"><span className="text-neutral-400">Crop / Service:</span><span className="font-bold text-emerald-400">{previewConn.quantityTonnes} Tonnes {previewConn.cropName}</span></div>
@@ -803,12 +915,12 @@ export const BuyerConnectionsPage: React.FC = () => {
                 </div>
 
                 {previewConn.customMessage && (
-                  <div className="p-3 bg-purple-950/30 border-l-4 border-purple-500 rounded-r-xl text-neutral-200 italic">
+                  <div className="p-3 bg-blue-950/30 border-l-4 border-blue-500 rounded-r-xl text-neutral-200 italic">
                     "{previewConn.customMessage}"
                   </div>
                 )}
 
-                <div className="pt-2 border-t border-white/10 text-center text-[10px] text-neutral-400 space-y-1">
+                <div className="pt-2 border-t border-white/10 text-center text-xs text-neutral-400 space-y-1">
                   <p>24x7 Kisan Grievance Toll-Free: <strong>1800-180-1551</strong></p>
                   <p>Direct Portal: <strong>https://krishigrow.in</strong> • Escrow Protected Trade</p>
                 </div>
@@ -817,7 +929,7 @@ export const BuyerConnectionsPage: React.FC = () => {
               <div className="flex justify-end">
                 <button
                   onClick={() => setPreviewConn(null)}
-                  className="px-5 py-2 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl transition-all cursor-pointer"
+                  className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition-all cursor-pointer"
                 >
                   Close Email Preview
                 </button>

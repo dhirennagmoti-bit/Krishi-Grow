@@ -60,22 +60,22 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
     <div className="space-y-8 animate-in fade-in duration-300">
       
       {/* Header Bar */}
-      <div className="p-6 md:p-8 rounded-3xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 md:p-8 rounded-xl bg-black/60 backdrop-blur-2xl border border-white/10 shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-2">
             <Users className="w-3.5 h-3.5" /> Institutional Client Accounts & Outbound Logistics
           </div>
           <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">
             Customer CRM & Shipment Dispatch Tracking
           </h2>
-          <p className="text-xs md:text-sm text-neutral-300 font-light">
+          <p className="text-xs md:text-sm text-neutral-300 font-normal">
             Manage credit limits for major retail & hotel buyers, and monitor real-time shipment dispatches.
           </p>
         </div>
 
         <button
           onClick={() => setIsAddCustomerModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-purple-950 transition-all cursor-pointer shrink-0"
+          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md shadow-md transition-all cursor-pointer shrink-0"
         >
           <PlusCircle className="w-4 h-4" />
           <span>+ Add Customer Account</span>
@@ -83,12 +83,12 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
       </div>
 
       {/* Sub-Tabs Toggle */}
-      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 max-w-md">
+      <div className="flex p-1.5 bg-black/40 backdrop-blur-xl rounded-xl border border-white/10 max-w-md">
         <button
           onClick={() => setActiveTab('CUSTOMERS')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'CUSTOMERS'
-              ? 'bg-purple-600 text-white shadow-lg'
+              ? 'bg-blue-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -99,7 +99,7 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
           onClick={() => setActiveTab('LOGISTICS')}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
             activeTab === 'LOGISTICS'
-              ? 'bg-blue-600 text-white shadow-lg'
+              ? 'bg-blue-600 text-white shadow-md'
               : 'text-neutral-400 hover:text-white'
           }`}
         >
@@ -118,7 +118,7 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
               placeholder="Search customers by business name, city, or phone..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-2xl text-xs text-white placeholder-neutral-500 focus:border-purple-500 outline-none"
+              className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white placeholder-neutral-500 focus:border-blue-500 outline-none"
             />
           </div>
 
@@ -126,29 +126,29 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
             {filteredCustomers.map((cust) => (
               <div
                 key={cust.id}
-                className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-purple-500/30 transition-all space-y-4 shadow-xl flex flex-col justify-between"
+                className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-blue-500/30 transition-all space-y-4 shadow-xl flex flex-col justify-between"
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <h4 className="font-bold text-white text-base leading-tight">{cust.businessName}</h4>
                       <p className="text-xs text-neutral-400 flex items-center gap-1 mt-0.5">
-                        <MapPin className="w-3.5 h-3.5 text-purple-400" /> {cust.city}, {cust.state}
+                        <MapPin className="w-3.5 h-3.5 text-blue-400" /> {cust.city}, {cust.state}
                       </p>
                     </div>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                    <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
                       {cust.type}
                     </span>
                   </div>
 
-                  <div className="p-3 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
+                  <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
                     <div className="flex justify-between">
                       <span className="text-neutral-400 font-sans">Contact:</span>
                       <strong className="text-white font-sans">{cust.contactPerson}</strong>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-neutral-400 font-sans">Phone:</span>
-                      <a href={`tel:${cust.phone}`} className="text-purple-300 underline">{cust.phone}</a>
+                      <a href={`tel:${cust.phone}`} className="text-blue-300 underline">{cust.phone}</a>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-neutral-400 font-sans">Credit Limit:</span>
@@ -171,7 +171,7 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
                     href={`tel:${cust.phone}`}
                     className="flex-1 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all text-center flex items-center justify-center gap-1.5"
                   >
-                    <Phone className="w-3.5 h-3.5 text-purple-400" />
+                    <Phone className="w-3.5 h-3.5 text-blue-400" />
                     <span>Call Client</span>
                   </a>
                 </div>
@@ -187,7 +187,7 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
           {bulkSalesOrders.map((order) => (
             <div
               key={order.id}
-              className="p-6 rounded-3xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-blue-500/30 transition-all space-y-4 shadow-xl flex flex-col justify-between"
+              className="p-6 rounded-xl bg-black/60 backdrop-blur-xl border border-white/10 hover:border-blue-500/30 transition-all space-y-4 shadow-xl flex flex-col justify-between"
             >
               <div className="space-y-3">
                 <div className="flex items-start justify-between">
@@ -196,7 +196,7 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
                     <span className="text-xs text-blue-400 font-mono font-bold block mt-0.5">{order.orderNumber}</span>
                   </div>
 
-                  <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase ${
+                  <span className={`text-xs font-bold px-2.5 py-1 rounded-full uppercase ${
                     order.status === 'DELIVERED' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
                     order.status === 'DISPATCHED' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
                     'bg-amber-500/20 text-amber-300 border border-amber-500/30'
@@ -205,7 +205,7 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
                   </span>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
+                <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 space-y-1.5 text-xs font-mono">
                   <div className="flex justify-between">
                     <span className="text-neutral-400 font-sans">Recipient Client:</span>
                     <strong className="text-white font-sans truncate max-w-[170px]">{order.customerName}</strong>
@@ -264,10 +264,10 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
       {/* Modal: Add Customer Account */}
       {isAddCustomerModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-          <form onSubmit={handleCreateCustomer} className="bg-[#121214] border border-white/15 rounded-3xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-2xl">
+          <form onSubmit={handleCreateCustomer} className="bg-[#121214] border border-white/15 rounded-xl max-w-lg w-full p-6 md:p-8 space-y-5 shadow-md">
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <h3 className="font-bold text-white text-base flex items-center gap-2">
-                <Users className="w-5 h-5 text-purple-400" />
+                <Users className="w-5 h-5 text-blue-400" />
                 Register Institutional B2B Customer
               </h3>
               <button type="button" onClick={() => setIsAddCustomerModalOpen(false)} className="p-2 text-neutral-400 hover:text-white rounded-xl">
@@ -284,7 +284,7 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
                   placeholder="e.g. Radhakrishna Retail Marts"
                   value={bizName}
                   onChange={(e) => setBizName(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white outline-none focus:border-blue-500"
                 />
               </div>
 
@@ -360,7 +360,7 @@ export const WholesalerCustomersLogisticsPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-lg cursor-pointer"
+                className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-md cursor-pointer"
               >
                 Register Account
               </button>

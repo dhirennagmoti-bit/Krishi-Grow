@@ -506,5 +506,33 @@
     "coldStorages": "Cold Storages & Silos",
     "activeFarmers": "Active Farmers",
     "myConnections": "My Connections & Trades"
+  },
+  "lossesPrevention": {
+    "title": "Losses & Prevention",
+    "description": "Comprehensive guide to identifying, understanding, and mitigating both pre-harvest and post-harvest agricultural losses to maximize yield and profitability.",
+    "krishiRakshak": "Krishi Rakshak (Crop Protection & Pesticides)",
+    "preHarvest": "Pre-Harvest Losses",
+    "postHarvest": "Post-Harvest Losses",
+    "preHarvestDesc": "<span className='font-medium text-white'>Pre-harvest losses</span> occur while the crop is actively growing in the field. They are divided into three primary drivers: Biotic (pests/pathogens), Abiotic (weather/soil), and Agronomic (management practices).",
+    "postHarvestDesc": "<span className='font-medium text-white'>Post-harvest loss (PHL)</span> refers to the measurable reduction in both quantity (weight, volume) and quality (nutritional, commercial, or aesthetic value) of agricultural produce from the moment of harvest until consumption. Globally, approximately one-third of all food produced for human consumption is lost or wasted along supply chains.",
+    "typesOfPostHarvest": "Types of Post-Harvest Losses",
+    "category": "Category",
+    "definition": "Definition & Key Focus",
+    "majorCauses": "Major Causes of PHL",
+    "preventionStrategies": "Prevention and Mitigation Strategies"
+  },
+  "krishiRakshak": {
+    "safetyProtocol": "Krishi Rakshak — CIB&RC & PPQS Official Safety Protocol",
+    "mandatoryGuidelines": "Mandatory Agricultural Guidelines",
+    "pesticideWarningHtml": "Pesticides must <strong>never</strong> be used indiscriminately. Prioritize Integrated Pest Management (IPM: Cultural, Biological & Mechanical controls).",
+    "noViruses": "No Pesticides for Viruses:",
+    "noVirusesDesc": "Viruses have no chemical cure. Manage vectors only.",
+    "targetedAction": "Targeted Action:",
+    "targetedActionDesc": "Never spray insecticides for fungal rot, or fungicides for insects.",
+    "verifyDosage": "Verify Dosage/PHI:",
+    "verifyDosageDesc": "Strictly follow product labels and pre-harvest intervals (PHI).",
+    "selectCropTitle": "Select Crop to Access Protection Guide",
+    "selectCropDesc": "Choose from 25 crops to view verified pests, fungal/bacterial diseases, weeds, and IPM solutions.",
+    "diagnoseAI": "Diagnose Leaf with AI Scanner"
   }
 }

@@ -55,8 +55,8 @@ export const ValueChainFlow: React.FC = () => {
       title: 'Market & Buyer Deal',
       subtitle: 'Direct Farmer Connection',
       icon: Store,
-      color: 'bg-purple-500',
-      textColor: 'text-purple-300',
+      color: 'bg-blue-500',
+      textColor: 'text-blue-300',
       badge: 'Step 5',
       desc: 'Direct match with verified Aggregators, Processors, and Wholesalers with transparent Mandi pricing.',
       metrics: { 'Match Score': '96% Match', 'Buyer Type': 'Aggregator', 'Payout Time': 'Instant UPI' }
@@ -93,7 +93,7 @@ export const ValueChainFlow: React.FC = () => {
           {/* Animated Connecting Line */}
           <div className="absolute top-1/2 left-8 right-8 h-1 bg-white/10 -translate-y-1/2 z-0 rounded-full">
             <div 
-              className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-indigo-500 to-purple-500 transition-all duration-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
+              className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-indigo-500 to-blue-500 transition-all duration-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"
               style={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}
             />
           </div>
@@ -110,7 +110,7 @@ export const ValueChainFlow: React.FC = () => {
                 className="relative z-10 flex flex-col items-center group focus:outline-none"
               >
                 <div
-                  className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 transform backdrop-blur-md ${
+                  className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 transform backdrop-blur-md ${
                     isActive
                       ? `${step.color} text-white shadow-[0_0_20px_rgba(16,185,129,0.4)] scale-110 ring-2 ring-offset-2 ring-offset-black/50 ring-white/50`
                       : isCompleted
@@ -120,10 +120,10 @@ export const ValueChainFlow: React.FC = () => {
                 >
                   <Icon className="w-6 h-6" />
                 </div>
-                <span className={`text-[11px] font-semibold mt-4 transition-colors ${isActive ? 'text-white font-bold' : 'text-gray-400 group-hover:text-gray-300'}`}>
+                <span className={`text-xs font-semibold mt-4 transition-colors ${isActive ? 'text-white font-bold' : 'text-gray-400 group-hover:text-gray-300'}`}>
                   {step.title}
                 </span>
-                <span className="text-[9px] text-gray-500 font-medium uppercase tracking-wider">{step.badge}</span>
+                <span className="text-xs text-gray-500 font-medium uppercase tracking-wider">{step.badge}</span>
               </button>
             );
           })}
@@ -136,7 +136,7 @@ export const ValueChainFlow: React.FC = () => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="mt-2 bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 flex flex-col gap-6 shadow-2xl"
+        className="mt-2 bg-white/10 backdrop-blur-xl rounded-xl p-6 border border-white/20 flex flex-col gap-6 shadow-md"
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-3">
@@ -160,7 +160,7 @@ export const ValueChainFlow: React.FC = () => {
 
         {/* Dynamic Node Metrics */}
         <div className="w-full bg-black/30 p-5 rounded-xl border border-white/10 shadow-inner">
-          <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+          <div className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
             Live Node Telemetry
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
