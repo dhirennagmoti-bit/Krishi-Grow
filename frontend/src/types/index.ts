@@ -184,16 +184,48 @@ export interface BuyerRequirement {
   matchScore?: number;
 }
 
+export interface ConnectionEmailPreview {
+  subject: string;
+  recipient: string;
+  recipientRole?: string;
+  sentAt: string;
+  htmlContent: string;
+  plainText: string;
+}
+
 export interface ConnectionRequest {
   id: string;
-  farmerId: string;
-  farmerName: string;
-  buyerId: string;
-  buyerName: string;
+  requestNumber?: string;
+  farmerId?: string;
+  farmerName?: string;
+  buyerId?: string;
+  buyerName?: string;
+  senderId?: string;
+  senderName?: string;
+  senderRole?: UserRole;
+  senderEmail?: string;
+  senderPhone?: string;
+  senderDistrict?: string;
+  senderState?: string;
+  receiverId?: string;
+  receiverName?: string;
+  receiverType?: string;
+  receiverEmail?: string;
+  receiverPhone?: string;
+  receiverDistrict?: string;
+  targetType?: 'CROP_TRADE' | 'COLD_STORAGE_BOOKING' | 'PROCESSING_FACILITY';
   cropName: string;
+  variety?: string;
   quantityTonnes: number;
-  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+  offeredPricePerQuintal?: number;
+  targetDate?: string;
+  customMessage?: string;
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'IN_NEGOTIATION';
   requestDate: string;
+  createdAt?: string;
+  updatedAt?: string;
+  emailSent?: boolean;
+  emailPreview?: ConnectionEmailPreview;
   farmerPhone?: string;
   buyerPhone?: string;
 }
