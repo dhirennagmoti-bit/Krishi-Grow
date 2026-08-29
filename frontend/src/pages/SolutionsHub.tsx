@@ -12,38 +12,38 @@ export const SolutionsHub: React.FC = () => {
   const solutions = [
     {
       id: 'weather',
-      title: t('solutions.weather.title'),
+      title: t('solutions.sol1Title'),
       icon: CloudSun,
       color: 'bg-blue-500',
-      desc: t('solutions.weather.desc')
+      desc: t('solutions.sol1Desc')
     },
     {
       id: 'storage-processing',
-      title: t('solutions.storage.title'),
+      title: t('solutions.sol2Title'),
       icon: Warehouse,
       color: 'bg-indigo-500',
-      desc: t('solutions.storage.desc')
+      desc: t('solutions.sol2Desc')
     },
     {
       id: 'schemes',
-      title: t('solutions.schemes.title'),
+      title: t('solutions.sol3Title'),
       icon: FileText,
       color: 'bg-blue-500',
-      desc: t('solutions.schemes.desc')
+      desc: t('solutions.sol3Desc')
     },
     {
       id: 'products',
-      title: t('solutions.products.title'),
+      title: t('solutions.sol4Title'),
       icon: Factory,
       color: 'bg-amber-500',
-      desc: t('solutions.products.desc')
+      desc: t('solutions.sol4Desc')
     },
     {
       id: 'ai-assistant',
-      title: t('solutions.ai.title'),
+      title: t('solutions.sol5Title'),
       icon: Bot,
       color: 'bg-agri-600',
-      desc: t('solutions.ai.desc')
+      desc: t('solutions.sol5Desc')
     }
   ];
 
