@@ -1,3 +1,4 @@
+declare const process: any;
 import { seedSupabaseDatabase } from './lib/seed';
 
 seedSupabaseDatabase().then(() => {
@@ -7,3 +8,4 @@ seedSupabaseDatabase().then(() => {
   console.error('Seeding failed:', err);
   process.exit(1);
 });
+

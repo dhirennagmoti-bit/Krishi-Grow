@@ -2,7 +2,7 @@ import type {
   TransportCalculation, WeatherAdvisory, ProductRecommendation,
   BuyerRequirement, CropRecord, AIDiagnosticResult, MandiPrice,
   StorageFacility, ProcessingFacility, GovernmentScheme, ConnectionRequest,
-  NotificationItem
+  NotificationItem, SupportTicket
 } from '../types';
 import { supabase } from '../lib/supabase';
 import { productRecommendations } from '../data/mockData';

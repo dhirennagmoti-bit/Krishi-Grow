@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export const CustomerSupportPage: React.FC = () => {
   const { user } = useApp();
-  const { showToast } = useToast();
+  const { success, error } = useToast();
 
   const [tickets, setTickets] = useState<SupportTicket[]>(initialSupportTickets);
   const [selectedTicketId, setSelectedTicketId] = useState<string>(initialSupportTickets[0]?.id || '');
@@ -63,7 +63,7 @@ export const CustomerSupportPage: React.FC = () => {
   const handleSubmitTicket = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!subject.trim() || !description.trim()) {
-      showToast('Please provide both subject and detailed description', 'error');
+      error('Please provide both subject and detailed description');
       return;
     }
 
@@ -85,14 +85,14 @@ export const CustomerSupportPage: React.FC = () => {
       setTickets([newTicket, ...tickets]);
       setSelectedTicketId(newTicket.id);
       setEmailModalTicket(newTicket); // Open automatic email receipt preview!
-      showToast(`Support Ticket ${newTicket.ticketNumber} registered! Auto-reply email delivered.`, 'success');
+      success(`Support Ticket ${newTicket.ticketNumber} registered! Auto-reply email delivered.`);
 
       // Reset form
       setSubject('');
       setDescription('');
       setLotOrOrderReference('');
     } catch {
-      showToast('Error registering support ticket. Please try again.', 'error');
+      error('Error registering support ticket. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -127,7 +127,7 @@ export const CustomerSupportPage: React.FC = () => {
 
     setTickets(tickets.map(t => t.id === selectedTicket.id ? updated : t));
     setReplyMessage('');
-    showToast('Follow-up message sent to support desk', 'success');
+    success('Follow-up message sent to support desk');
   };
 
   const faqs = user.role === 'FARMER' ? [
