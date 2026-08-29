@@ -39,6 +39,11 @@ body {
   min-height: 100vh;
 }
 
+/* Slightly increase base font size for Indic languages to improve readability */
+html:lang(hi), html:lang(mr) {
+  font-size: 106.25%; /* 1rem = 17px */
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
