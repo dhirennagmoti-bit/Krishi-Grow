@@ -534,7 +534,35 @@
     "selectCropTitle": "सुरक्षा मार्गदर्शक पाहण्यासाठी पीक निवडा",
     "selectCropDesc": "सत्यापित कीटक, बुरशीजन्य/जिवाणू रोग, तण आणि IPM उपाय पाहण्यासाठी 25 पिकांमधून निवडा.",
     "diagnoseAI": "AI स्कॅनरने पानाचे निदान करा",
-    "cropOverview": "पीक संरक्षण विहंगावलोकन"
+    "cropOverview": "पीक संरक्षण विहंगावलोकन",
+    "problems": {
+      "Stem borer": "खोडकिडा (Stem borer)",
+      "Brown planthopper": "तपकिरी तुडतुडे (Brown planthopper)",
+      "Leaf folder": "पाने गुंडाळणारी अळी (Leaf folder)",
+      "Sheath blight": "करपा (Sheath blight)",
+      "Blast": "ब्लास्ट रोग (Blast)"
+    },
+    "types": {
+      "PEST": "कीड",
+      "DISEASE": "रोग",
+      "WEED": "तण",
+      "VIRUS": "विषाणू"
+    },
+    "severities": {
+      "High Risk": "उच्च धोका",
+      "Severe Risk": "गंभीर धोका",
+      "Moderate Risk": "मध्यम धोका",
+      "Low Risk": "कमी धोका"
+    },
+    "symptomsDesc": {
+      "Dead hearts in young plants; white earheads later": "तरुण रोपांमध्ये डेड हार्ट्स; नंतर पांढऱ्या ओंब्या",
+      "Hoppers near plant base; yellowing and hopper burn": "रोपाच्या मुळाजवळ तुडतुडे; पिवळे पडणे आणि हॉपर बर्न",
+      "Folded leaves scraped from inside": "दुमडलेली पाने आतून खरवडलेली",
+      "Oval lesions on leaf sheaths near water level": "पाण्याजवळ पानांच्या आवरणावर अंडाकृती डाग",
+      "Spindle-shaped lesions on leaves/panicles": "पाने/ओंब्यांवर लांबट आकाराचे डाग"
+    },
+    "symptomsLabel": "लक्षणे:",
+    "potentialLoss": "संभाव्य नुकसान"
   },
   "crops": {
     "Tomato": "टोमॅटो",

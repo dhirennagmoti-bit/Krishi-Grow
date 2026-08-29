@@ -361,23 +361,23 @@ export const KrishiRakshakModule: React.FC<KrishiRakshakModuleProps> = ({ initia
 
                       <div className="space-y-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <h5 className="text-lg font-black text-white">{item.problem}</h5>
+                          <h5 className="text-lg font-black text-white">{t(`krishiRakshak.problems.${item.problem}`, item.problem)}</h5>
                           <span className={`text-xs px-2.5 py-0.5 rounded-full border font-bold uppercase tracking-wider ${getTypeBadgeStyle(item.type)}`}>
-                            {item.type}
+                            {t(`krishiRakshak.types.${item.type.toUpperCase()}`, item.type.toUpperCase())}
                           </span>
                           <span className={`text-xs px-2.5 py-0.5 rounded-full ${getSeverityBadgeStyle(item.severity)}`}>
-                            {item.severity} Risk
+                            {t(`krishiRakshak.severities.${item.severity} Risk`, `${item.severity} Risk`)}
                           </span>
                         </div>
                         <p className="text-xs text-neutral-300 font-normal flex items-center gap-1.5">
-                          <span className="font-semibold text-neutral-400">Symptoms:</span> {item.symptoms}
+                          <span className="font-semibold text-neutral-400">{t('krishiRakshak.symptomsLabel', 'Symptoms:')}</span> {t(`krishiRakshak.symptomsDesc.${item.symptoms}`, item.symptoms)}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0 self-end md:self-center">
                       <div className="text-right hidden sm:block">
-                        <span className="text-xs text-neutral-400 block uppercase font-medium">Potential Loss</span>
+                        <span className="text-xs text-neutral-400 block uppercase font-medium">{t('krishiRakshak.potentialLoss', 'Potential Loss')}</span>
                         <span className="text-xs font-bold text-rose-400 font-mono">{item.potentialLoss.split(' ')[0]} {item.potentialLoss.split(' ')[1]}</span>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-neutral-300">

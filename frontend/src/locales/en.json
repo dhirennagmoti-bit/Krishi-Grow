@@ -534,7 +534,35 @@
     "selectCropTitle": "Select Crop to Access Protection Guide",
     "selectCropDesc": "Choose from 25 crops to view verified pests, fungal/bacterial diseases, weeds, and IPM solutions.",
     "diagnoseAI": "Diagnose Leaf with AI Scanner",
-    "cropOverview": "Crop Protection Overview"
+    "cropOverview": "Crop Protection Overview",
+    "problems": {
+      "Stem borer": "Stem borer",
+      "Brown planthopper": "Brown planthopper",
+      "Leaf folder": "Leaf folder",
+      "Sheath blight": "Sheath blight",
+      "Blast": "Blast"
+    },
+    "types": {
+      "PEST": "PEST",
+      "DISEASE": "DISEASE",
+      "WEED": "WEED",
+      "VIRUS": "VIRUS"
+    },
+    "severities": {
+      "High Risk": "High Risk",
+      "Severe Risk": "Severe Risk",
+      "Moderate Risk": "Moderate Risk",
+      "Low Risk": "Low Risk"
+    },
+    "symptomsDesc": {
+      "Dead hearts in young plants; white earheads later": "Dead hearts in young plants; white earheads later",
+      "Hoppers near plant base; yellowing and hopper burn": "Hoppers near plant base; yellowing and hopper burn",
+      "Folded leaves scraped from inside": "Folded leaves scraped from inside",
+      "Oval lesions on leaf sheaths near water level": "Oval lesions on leaf sheaths near water level",
+      "Spindle-shaped lesions on leaves/panicles": "Spindle-shaped lesions on leaves/panicles"
+    },
+    "symptomsLabel": "Symptoms:",
+    "potentialLoss": "Potential Loss"
   },
   "crops": {
     "Tomato": "Tomato",

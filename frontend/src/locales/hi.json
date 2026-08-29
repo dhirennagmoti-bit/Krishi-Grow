@@ -534,7 +534,35 @@
     "selectCropTitle": "सुरक्षा गाइड तक पहुँचने के लिए फसल चुनें",
     "selectCropDesc": "सत्यापित कीटों, फंगल/बैक्टीरियल रोगों, खरपतवारों और IPM समाधानों को देखने के लिए 25 फसलों में से चुनें।",
     "diagnoseAI": "AI स्कैनर से पत्ती का निदान करें",
-    "cropOverview": "फसल संरक्षण अवलोकन"
+    "cropOverview": "फसल संरक्षण अवलोकन",
+    "problems": {
+      "Stem borer": "तना छेदक (Stem borer)",
+      "Brown planthopper": "भूरा फुदका (Brown planthopper)",
+      "Leaf folder": "पत्ता लपेटक (Leaf folder)",
+      "Sheath blight": "शीथ ब्लाइट (Sheath blight)",
+      "Blast": "ब्लास्ट रोग (Blast)"
+    },
+    "types": {
+      "PEST": "कीट",
+      "DISEASE": "रोग",
+      "WEED": "खरपतवार",
+      "VIRUS": "वायरस"
+    },
+    "severities": {
+      "High Risk": "उच्च जोखिम",
+      "Severe Risk": "गंभीर जोखिम",
+      "Moderate Risk": "मध्यम जोखिम",
+      "Low Risk": "कम जोखिम"
+    },
+    "symptomsDesc": {
+      "Dead hearts in young plants; white earheads later": "युवा पौधों में मृत हृदय (Dead hearts); बाद में सफेद बालियां",
+      "Hoppers near plant base; yellowing and hopper burn": "पौधे के आधार के पास फुदके; पीलापन और हॉपर बर्न",
+      "Folded leaves scraped from inside": "मुड़ी हुई पत्तियां अंदर से खुरची हुई",
+      "Oval lesions on leaf sheaths near water level": "जल स्तर के पास पत्ती म्यान पर अंडाकार घाव",
+      "Spindle-shaped lesions on leaves/panicles": "पत्तियों/बालियों पर धुरी के आकार के घाव"
+    },
+    "symptomsLabel": "लक्षण:",
+    "potentialLoss": "संभावित नुकसान"
   },
   "crops": {
     "Tomato": "टमाटर",
