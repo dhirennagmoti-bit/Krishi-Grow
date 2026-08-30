@@ -44,9 +44,10 @@ import { WholesalerDashboard } from './pages/wholesaler/WholesalerDashboard';
 import { WholesalerMarketplaceSalesPage } from './pages/wholesaler/WholesalerMarketplaceSalesPage';
 import { WholesalerCustomersLogisticsPage } from './pages/wholesaler/WholesalerCustomersLogisticsPage';
 import { CropIntelligencePage } from './pages/CropIntelligencePage';
+import { SavedInputsHistoryPage } from './pages/SavedInputsHistoryPage';
 
 // ─── Shared tabs accessible by all roles ───────────────────────────────────
-const SHARED_TABS = ['landing', 'crop-intelligence', 'market-prices', 'find-farmers', 'customer-support', 'profile'];
+const SHARED_TABS = ['landing', 'crop-intelligence', 'saved-history', 'market-prices', 'find-farmers', 'customer-support', 'profile'];
 
 // ─── Farmer pages with proper role guard ───────────────────────────────────
 const FARMER_TABS = [
@@ -113,6 +114,7 @@ const MainContent: React.FC = () => {
 
           {/* ── Shared Tabs ── */}
           {activeTab === 'crop-intelligence' && <CropIntelligencePage />}
+          {activeTab === 'saved-history' && <SavedInputsHistoryPage />}
           {activeTab === 'customer-support' && <CustomerSupportPage />}
           {activeTab === 'market-prices' && <MarketPricesPage />}
           {activeTab === 'find-farmers' && <FindFarmersPage />}

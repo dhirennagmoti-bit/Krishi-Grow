@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  CloudSun, Warehouse, FileText, Factory, Bot, ArrowRight, ShieldAlert, Sprout
+  CloudSun, Warehouse, FileText, Factory, Bot, ArrowRight, ShieldAlert, Sprout, History
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,13 @@ export const SolutionsHub: React.FC = () => {
       icon: Sprout,
       color: 'bg-emerald-500',
       desc: t('solutions.cropIntelDesc', { defaultValue: 'Analyze regional crop coverage density, historical yields, market arrivals, and supply outlooks.' })
+    },
+    {
+      id: 'saved-history',
+      title: t('solutions.savedHistoryTitle', { defaultValue: '📜 Saved Inputs & Calculation History' }),
+      icon: History,
+      color: 'bg-purple-500',
+      desc: t('solutions.savedHistoryDesc', { defaultValue: 'View and re-run your previous transport freight calculations, crop value-addition queries, and scheme drafts.' })
     },
     {
       id: 'weather',

@@ -5,6 +5,7 @@
     "dashboard": "Dashboard",
     "addCrop": "+ Add Crop",
     "cropIntelligence": "🌾 Crop Intelligence",
+    "savedHistory": "📜 Saved History",
     "krishiRakshak": "Krishi Rakshak",
     "solutions": "Solutions",
     "mandiPrices": "Mandi Prices",
@@ -100,6 +101,13 @@
     "elastic03Title": "Smart buyer matching links",
     "elastic03Subtitle": "Crop variety, harvest dates, and location with verified Aggregators, Processors, and Wholesalers.",
     "elastic03Action": "Find Buyers"
+  },
+  "savedHistory": {
+    "title": "Saved Inputs & Calculation History",
+    "subtitle": "Revisit, reload, or export your saved transport estimates, crop processing insights, mandi price watches, and scheme drafts.",
+    "clearAll": "Clear History",
+    "filterAll": "All Saved",
+    "searchPlaceholder": "Search history..."
   },
   "farmerDashboard": {
     "goodDay": "Good day, {{name}} 👋",
