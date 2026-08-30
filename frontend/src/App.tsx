@@ -43,10 +43,11 @@ import { ProcessorWasteTraceabilityPage } from './pages/processor/ProcessorWaste
 import { WholesalerDashboard } from './pages/wholesaler/WholesalerDashboard';
 import { WholesalerMarketplaceSalesPage } from './pages/wholesaler/WholesalerMarketplaceSalesPage';
 import { WholesalerCustomersLogisticsPage } from './pages/wholesaler/WholesalerCustomersLogisticsPage';
+import { CropIntelligencePage } from './pages/CropIntelligencePage';
 
 // ─── Farmer pages with proper role guard ───────────────────────────────────
 const FARMER_TABS = [
-  'farmer-dashboard', 'my-crops', 'add-crop', 'solutions', 'transport',
+  'farmer-dashboard', 'my-crops', 'add-crop', 'solutions', 'crop-intelligence', 'transport',
   'weather', 'storage-processing', 'schemes', 'products',
   'market-prices', 'buyer-connections', 'buyer-requirements',
   'losses-prevention', 'krishi-rakshak', 'pesticides', 'profile',
@@ -58,7 +59,7 @@ const BUYER_TABS = [
   'aggregator-weighing-qc', 'aggregator-inventory-market',
   'processor-dashboard', 'processor-machines', 'processor-traceability',
   'wholesaler-dashboard', 'wholesaler-marketplace', 'wholesaler-customers',
-  'find-farmers', 'market-prices', 'customer-support'
+  'crop-intelligence', 'find-farmers', 'market-prices', 'customer-support'
 ];
 
 const MainContent: React.FC = () => {
@@ -108,6 +109,7 @@ const MainContent: React.FC = () => {
           {activeTab === 'profile' && <ProfilePage />}
 
           {/* ── Shared Tabs ── */}
+          {activeTab === 'crop-intelligence' && <CropIntelligencePage />}
           {activeTab === 'customer-support' && <CustomerSupportPage />}
           {activeTab === 'market-prices' && <MarketPricesPage />}
           {activeTab === 'find-farmers' && <FindFarmersPage />}

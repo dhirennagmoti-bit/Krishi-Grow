@@ -13,6 +13,7 @@ export const Sidebar: React.FC = () => {
 
   const farmerItems = [
     { id: 'farmer-dashboard', label: t('sidebar.farmerHub'), icon: LayoutDashboard },
+    { id: 'crop-intelligence', label: t('nav.cropIntelligence', { defaultValue: '🌾 Crop Intelligence' }), icon: Sprout },
     { id: 'my-crops', label: t('sidebar.myCrops'), icon: Sprout },
     { id: 'add-crop', label: t('nav.addCrop'), icon: PlusCircle },
     { id: 'transport', label: t('sidebar.transport'), icon: Truck },

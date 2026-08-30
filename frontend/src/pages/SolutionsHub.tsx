@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  CloudSun, Warehouse, FileText, Factory, Bot, ArrowRight, ShieldAlert
+  CloudSun, Warehouse, FileText, Factory, Bot, ArrowRight, ShieldAlert, Sprout
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,13 @@ export const SolutionsHub: React.FC = () => {
   const { t } = useTranslation();
 
   const solutions = [
+    {
+      id: 'crop-intelligence',
+      title: t('solutions.cropIntelTitle', { defaultValue: '🌾 Crop Intelligence & Pik Pahani' }),
+      icon: Sprout,
+      color: 'bg-emerald-500',
+      desc: t('solutions.cropIntelDesc', { defaultValue: 'Analyze regional crop coverage density, historical yields, market arrivals, and supply outlooks.' })
+    },
     {
       id: 'weather',
       title: t('solutions.sol1Title'),
