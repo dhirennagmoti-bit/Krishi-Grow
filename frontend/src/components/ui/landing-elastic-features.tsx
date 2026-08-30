@@ -3,6 +3,7 @@ import { ArrowUpRight, Truck, Sparkles, Users } from "lucide-react";
 import { useState } from "react";
 import FoldText from "./FoldText";
 import { useApp } from "../../context/AppContext";
+import { useTranslation } from "react-i18next";
 
 interface ElasticFeatureProps {
   id: string;
@@ -18,39 +19,40 @@ interface ElasticFeatureProps {
 
 export function LandingElasticFeatures() {
   const { setActiveTab } = useApp();
+  const { t } = useTranslation();
   
   const items: ElasticFeatureProps[] = [
     {
       id: "01",
-      category: "Transport Cost Calculator",
-      title: "Calculate exact freight charges",
-      subtitle: "Route distance, vehicle capacity (1T to 24T reefer), toll taxes, and cost per kg for any destination.",
+      category: t('landing.elastic01Category'),
+      title: t('landing.elastic01Title'),
+      subtitle: t('landing.elastic01Subtitle'),
       src: "https://loremflickr.com/1000/800/truck,logistics?random=10",
       alt: "Transport Logistics",
       icon: <Truck className="w-5 h-5" />,
-      action: "Launch Calculator",
+      action: t('landing.elastic01Action'),
       onClickAction: () => setActiveTab('solutions')
     },
     {
       id: "02",
-      category: "AI Value-Add Products",
-      title: "Discover manufacturing ops",
-      subtitle: "Like Tomato Puree, Onion Flakes, and Cotton Seed Oil with score & margin predictions.",
+      category: t('landing.elastic02Category'),
+      title: t('landing.elastic02Title'),
+      subtitle: t('landing.elastic02Subtitle'),
       src: "https://loremflickr.com/1000/800/factory,technology?random=11",
       alt: "AI Value Add",
       icon: <Sparkles className="w-5 h-5" />,
-      action: "View Recommendations",
+      action: t('landing.elastic02Action'),
       onClickAction: () => setActiveTab('solutions')
     },
     {
       id: "03",
-      category: "90%+ Matchmaking Engine",
-      title: "Smart buyer matching links",
-      subtitle: "Crop variety, harvest dates, and location with verified Aggregators, Processors, and Wholesalers.",
+      category: t('landing.elastic03Category'),
+      title: t('landing.elastic03Title'),
+      subtitle: t('landing.elastic03Subtitle'),
       src: "https://loremflickr.com/1000/800/business,handshake?random=12",
       alt: "Matchmaking",
       icon: <Users className="w-5 h-5" />,
-      action: "Find Buyers",
+      action: t('landing.elastic03Action'),
       onClickAction: () => setActiveTab('buyer-connections')
     },
   ];

@@ -13,20 +13,20 @@ export const LandingPage: React.FC = () => {
   const { t } = useTranslation();
 
   const farmerBenefits = [
-    'Direct access to verified aggregators & bulk processing plants',
-    'Dynamic transport rate calculator & reefer truck matcher',
-    'Real-time Mandi price intelligence across Maharashtra & India',
-    'AI-driven crop processing recommendations (e.g. Puree & Flakes)',
-    'Cold storage & WDRA dry warehouse locator with live capacity',
-    'Government scheme subsidy checker & 1-click application support'
+    t('landing.farmerBenefit0'),
+    t('landing.farmerBenefit1'),
+    t('landing.farmerBenefit2'),
+    t('landing.farmerBenefit3'),
+    t('landing.farmerBenefit4'),
+    t('landing.farmerBenefit5')
   ];
 
   const buyerBenefits = [
-    'Direct farm-gate sourcing with verified crop quality grades (A/A+)',
-    'Traceable harvest dates, moisture level & GPS farm location',
-    'Bulk requirement posting with 90%+ match scoring algorithms',
-    'Transparent pricing & zero middleman hidden commission',
-    'Scheduled weekly/monthly supply contracts with local farmers'
+    t('landing.buyerBenefit0'),
+    t('landing.buyerBenefit1'),
+    t('landing.buyerBenefit2'),
+    t('landing.buyerBenefit3'),
+    t('landing.buyerBenefit4')
   ];
 
   return (
