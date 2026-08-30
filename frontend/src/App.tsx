@@ -45,21 +45,22 @@ import { WholesalerMarketplaceSalesPage } from './pages/wholesaler/WholesalerMar
 import { WholesalerCustomersLogisticsPage } from './pages/wholesaler/WholesalerCustomersLogisticsPage';
 import { CropIntelligencePage } from './pages/CropIntelligencePage';
 
+// ─── Shared tabs accessible by all roles ───────────────────────────────────
+const SHARED_TABS = ['landing', 'crop-intelligence', 'market-prices', 'find-farmers', 'customer-support', 'profile'];
+
 // ─── Farmer pages with proper role guard ───────────────────────────────────
 const FARMER_TABS = [
-  'farmer-dashboard', 'my-crops', 'add-crop', 'solutions', 'crop-intelligence', 'transport',
+  'farmer-dashboard', 'my-crops', 'add-crop', 'solutions', 'transport',
   'weather', 'storage-processing', 'schemes', 'products',
-  'market-prices', 'buyer-connections', 'buyer-requirements',
-  'losses-prevention', 'krishi-rakshak', 'pesticides', 'profile',
-  'find-farmers', 'customer-support'
+  'buyer-connections', 'buyer-requirements',
+  'losses-prevention', 'krishi-rakshak', 'pesticides'
 ];
 
 const BUYER_TABS = [
   'buyer-dashboard', 'aggregator-farmers', 'aggregator-collection',
   'aggregator-weighing-qc', 'aggregator-inventory-market',
   'processor-dashboard', 'processor-machines', 'processor-traceability',
-  'wholesaler-dashboard', 'wholesaler-marketplace', 'wholesaler-customers',
-  'crop-intelligence', 'find-farmers', 'market-prices', 'customer-support'
+  'wholesaler-dashboard', 'wholesaler-marketplace', 'wholesaler-customers'
 ];
 
 const MainContent: React.FC = () => {
@@ -74,10 +75,12 @@ const MainContent: React.FC = () => {
 
   // Guard: if a buyer tabs into a farmer section or vice versa, redirect
   useEffect(() => {
-    if (user.role === 'BUYER' && FARMER_TABS.includes(activeTab) && activeTab !== 'market-prices' && activeTab !== 'profile') {
+    if (SHARED_TABS.includes(activeTab)) return;
+
+    if (user.role === 'BUYER' && FARMER_TABS.includes(activeTab)) {
       setActiveTab('buyer-dashboard');
     }
-    if (user.role === 'FARMER' && BUYER_TABS.includes(activeTab) && activeTab !== 'market-prices' && activeTab !== 'find-farmers') {
+    if (user.role === 'FARMER' && BUYER_TABS.includes(activeTab)) {
       setActiveTab('farmer-dashboard');
     }
   }, [activeTab, user.role, setActiveTab]);
