@@ -48,7 +48,6 @@ export const Navbar: React.FC = () => {
   const farmerNavItems = [
     { id: 'landing', label: t('nav.home'), onClick: () => setActiveTab('landing') },
     { id: 'farmer-dashboard', label: t('nav.dashboard'), onClick: () => requireAuth(() => setActiveTab('farmer-dashboard')) },
-    { id: 'crop-intelligence', label: t('nav.cropIntelligence', { defaultValue: '🌾 Crop Intelligence' }), onClick: () => setActiveTab('crop-intelligence') },
     { id: 'add-crop', label: t('nav.addCrop'), onClick: () => requireAuth(() => setActiveTab('add-crop')) },
     { id: 'losses-prevention', label: t('nav.krishiRakshak'), onClick: () => setActiveTab('losses-prevention') },
     { id: 'solutions', label: t('nav.solutions'), onClick: () => setActiveTab('solutions') },
@@ -62,7 +61,6 @@ export const Navbar: React.FC = () => {
     { id: 'buyer-dashboard', label: t('nav.aggregatorHub'), onClick: () => { switchBuyerType('AGGREGATOR'); setActiveTab('buyer-dashboard'); } },
     { id: 'processor-dashboard', label: t('nav.processorPlant'), onClick: () => { switchBuyerType('PROCESSOR'); setActiveTab('processor-dashboard'); } },
     { id: 'wholesaler-dashboard', label: t('nav.wholesalerTerminal'), onClick: () => { switchBuyerType('WHOLESALER'); setActiveTab('wholesaler-dashboard'); } },
-    { id: 'crop-intelligence', label: t('nav.cropIntelligence', { defaultValue: '🌾 Crop Intelligence' }), onClick: () => setActiveTab('crop-intelligence') },
     { id: 'find-farmers', label: t('nav.findFarmers'), onClick: () => setActiveTab('find-farmers') },
     { id: 'market-prices', label: t('nav.mandiPrices'), onClick: () => setActiveTab('market-prices') },
   ];
