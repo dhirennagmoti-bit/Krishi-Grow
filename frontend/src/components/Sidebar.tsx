@@ -29,6 +29,7 @@ export const Sidebar: React.FC = () => {
   // Aggregator Sidebar
   const aggregatorItems = [
     { id: 'buyer-dashboard', label: t('sidebar.aggregatorOverview'), icon: LayoutDashboard },
+    { id: 'crop-intelligence', label: t('nav.cropIntelligence', { defaultValue: '🌾 Crop Intelligence' }), icon: Sprout },
     { id: 'aggregator-farmers', label: t('sidebar.farmers'), icon: Users },
     { id: 'aggregator-collection', label: t('sidebar.collection'), icon: Truck },
     { id: 'aggregator-weighing-qc', label: t('sidebar.weighing'), icon: Scale },
@@ -41,6 +42,7 @@ export const Sidebar: React.FC = () => {
   // Processor Sidebar
   const processorItems = [
     { id: 'processor-dashboard', label: t('sidebar.processorOverview'), icon: LayoutDashboard },
+    { id: 'crop-intelligence', label: t('nav.cropIntelligence', { defaultValue: '🌾 Crop Intelligence' }), icon: Sprout },
     { id: 'processor-machines', label: t('sidebar.machines'), icon: Factory },
     { id: 'processor-traceability', label: t('sidebar.traceability'), icon: QrCode },
     { id: 'find-farmers', label: t('nav.findFarmers'), icon: Search },
@@ -52,6 +54,7 @@ export const Sidebar: React.FC = () => {
   // Wholesaler Sidebar
   const wholesalerItems = [
     { id: 'wholesaler-dashboard', label: t('sidebar.wholesalerOverview'), icon: LayoutDashboard },
+    { id: 'crop-intelligence', label: t('nav.cropIntelligence', { defaultValue: '🌾 Crop Intelligence' }), icon: Sprout },
     { id: 'wholesaler-marketplace', label: t('sidebar.marketplace'), icon: Store },
     { id: 'wholesaler-customers', label: t('sidebar.customers'), icon: Users },
     { id: 'market-prices', label: t('nav.mandiPrices'), icon: TrendingUp },
