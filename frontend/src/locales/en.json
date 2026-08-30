@@ -694,6 +694,54 @@
       "eligibility": "Farmers with cultivable land",
       "subsidyBenefit": "Up to 55% subsidy for small/marginal farmers, 45% for others",
       "maxSubsidyAmount": "Varies"
+    },
+    "sch_10": {
+      "name": "Sub-Mission on Farm Mechanization",
+      "agency": "MahaDBT / GoI",
+      "description": "Supports adoption of agricultural machinery and farm mechanization to improve productivity.",
+      "eligibility": "All Farmers",
+      "subsidyBenefit": "Financial assistance for purchasing tractors and implements",
+      "maxSubsidyAmount": "Up to 50% subsidy"
+    },
+    "sch_11": {
+      "name": "Mission for Integrated Development of Horticulture (MIDH)",
+      "agency": "MahaDBT / NHB",
+      "description": "Promotes holistic growth of horticulture sector including planting, cold chain, and protected cultivation.",
+      "eligibility": "Horticulture farmers",
+      "subsidyBenefit": "35% to 50% subsidy for various horticulture projects",
+      "maxSubsidyAmount": "Varies"
+    },
+    "sch_12": {
+      "name": "Bhausaheb Fundkar Phalbaag Lagvad Yojana",
+      "agency": "Govt of Maharashtra",
+      "description": "Focused on fruit-orchard development by providing 100% subsidy for planting fruit trees over 3 years.",
+      "eligibility": "Eligible Maharashtra farmers without MNREGA coverage for the same",
+      "subsidyBenefit": "100% subsidy over 3 years (50:30:20 ratio)",
+      "maxSubsidyAmount": "100% material cost"
+    },
+    "sch_13": {
+      "name": "Rainfed Area Development Programme",
+      "agency": "MahaDBT / GoI",
+      "description": "Supports development of agricultural systems in rainfed areas to increase productivity and minimize risks.",
+      "eligibility": "Farmers in rainfed areas",
+      "subsidyBenefit": "Support for Integrated Farming Systems (crops + livestock/horticulture)",
+      "maxSubsidyAmount": "Varies"
+    },
+    "sch_14": {
+      "name": "State Agriculture Mechanization Scheme",
+      "agency": "Govt of Maharashtra",
+      "description": "Promotes the use of farm machinery and mechanization to improve agricultural productivity specifically in Maharashtra.",
+      "eligibility": "Maharashtra farmers",
+      "subsidyBenefit": "Financial assistance for farm implements and processing units",
+      "maxSubsidyAmount": "State-defined rates"
+    },
+    "sch_15": {
+      "name": "Chief Minister Sustainable Agriculture Irrigation Scheme",
+      "agency": "Govt of Maharashtra",
+      "description": "Supports agricultural irrigation and water-management-related activities (farm ponds, lining, etc.) in Maharashtra.",
+      "eligibility": "Eligible Maharashtra farmers",
+      "subsidyBenefit": "Subsidy for farm ponds, micro-irrigation, and water management",
+      "maxSubsidyAmount": "Varies"
     }
   },
   "common": {
